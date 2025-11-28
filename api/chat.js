@@ -54,10 +54,10 @@ export default async function handler(req, res) {
 
     // Son kullanıcı mesajı
     promptText += `Kullanıcı: ${message}\nAsistan:`;
-
+    
     const geminiUrl =
-  "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + apiKey
-  apiKey;
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=" +
+      apiKey;
 
     const geminiRes = await fetch(geminiUrl, {
       method: "POST",
