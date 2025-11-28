@@ -498,79 +498,81 @@
 </div>
 
 <script>
-    const chatEl = document.getElementById("chat");
-    const inputEl = document.getElementById("userInput");
-  
-    // Konuşma geçmişini tutuyoruz ki model bağlamı görsün
-    let history = [];
-  
-    function appendMessage(text, type) {
-      const msg = document.createElement("div");
-      msg.className = "message " + type;
-      msg.textContent = text;
-      chatEl.appendChild(msg);
-      chatEl.scrollTop = chatEl.scrollHeight;
-    }
-  
-    async function sendMessage() {
-      const text = inputEl.value.trim();
-      if (!text) return;
-  
-      // Kullanıcı mesajını göster
-      appendMessage(text, "user");
-      history.push({ role: "user", content: text });
-      inputEl.value = "";
-  
-      // Geçici "yazıyor..." balonu
-      const loading = document.createElement("div");
-      loading.className = "message bot";
-      loading.textContent = "Yazıyor...";
-      chatEl.appendChild(loading);
-      chatEl.scrollTop = chatEl.scrollHeight;
-  
-      try {
-        const res = await fetch("/api/chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            message: text,
-            history: history,
-          }),
-        });
-  
-        const data = await res.json();
-        chatEl.removeChild(loading);
-  
-        if (data.reply) {
-          appendMessage(data.reply, "bot");
-          history.push({ role: "assistant", content: data.reply });
-        } else {
-          appendMessage(
-            "Şu an beklenmeyen bir hata oluştu, lütfen daha sonra tekrar deneyin.",
-            "bot"
-          );
-        }
-      } catch (err) {
-        console.error(err);
-        chatEl.removeChild(loading);
+  const chatEl = document.getElementById("chat");
+  const inputEl = document.getElementById("userInput");
+
+  // Konuşma geçmişi
+  let history = [];
+
+  function appendMessage(text, type) {
+    const msg = document.createElement("div");
+    msg.className = "message " + type;
+    msg.textContent = text;
+    chatEl.appendChild(msg);
+    chatEl.scrollTop = chatEl.scrollHeight;
+  }
+
+  async function sendMessage() {
+    const text = inputEl.value.trim();
+    if (!text) return;
+
+    // Kullanıcı mesajını arayüzde göster
+    appendMessage(text, "user");
+    inputEl.value = "";
+
+    // "Yazıyor..." balonu
+    const loading = document.createElement("div");
+    loading.className = "message bot";
+    loading.textContent = "Yazıyor...";
+    chatEl.appendChild(loading);
+    chatEl.scrollTop = chatEl.scrollHeight;
+
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: text,       // son kullanıcı mesajı
+          history: history,    // önceki mesajlar
+        }),
+      });
+
+      const data = await res.json();
+      chatEl.removeChild(loading);
+
+      if (data.reply) {
+        appendMessage(data.reply, "bot");
+
+        // Artık geçmişe hem user hem assistant ekleyelim
+        history.push({ role: "user", content: text });
+        history.push({ role: "assistant", content: data.reply });
+      } else {
         appendMessage(
-          "Sunucuya bağlanırken bir hata oluştu. İnternet bağlantısını veya servisin durumunu kontrol etmek gerekebilir.",
+          "Şu an beklenmeyen bir hata oluştu, lütfen daha sonra tekrar deneyin.",
           "bot"
         );
       }
+    } catch (err) {
+      console.error(err);
+      chatEl.removeChild(loading);
+      appendMessage(
+        "Sunucuya bağlanırken bir hata oluştu. İnternet bağlantısını veya servisin durumunu kontrol etmek gerekebilir.",
+        "bot"
+      );
     }
-  
-    function fillQuick(text) {
-      inputEl.value = text;
-      inputEl.focus();
+  }
+
+  function fillQuick(text) {
+    inputEl.value = text;
+    inputEl.focus();
+  }
+
+  inputEl.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      sendMessage();
     }
-  
-    inputEl.addEventListener("keydown", function (e) {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        sendMessage();
-      }
-    });
-  </script>
+  });
+</script>
 </body>
 </html>
