@@ -31,59 +31,44 @@ export default async function handler(req, res) {
     contents.push({
       role: "user",
       parts: [
-        {
-          text: `
+        { text: `
 Sen Ebrar Albayrak’ın kişisel yapay zekâ asistanısın.
-Ebrar, DevOps, backend development, Docker, Jenkins, CI/CD, audit automation,
-FastAPI, SQLAlchemy ve PostgreSQL alanlarında uzmanlaşmış bir mühendistir.
-Sorulara profesyonel, açıklayıcı ve samimi bir dille yanıt ver.
-          `,
-        },
-      ],
+Ebrar; DevOps, backend development, Docker, Jenkins, CI/CD, audit automation,
+FastAPI, SQLAlchemy ve PostgreSQL konularında deneyimli bir mühendistir.
+
+Sen sakin, profesyonel ve doğal bir tonla konuşursun.
+Teknik sorulara detaylı ve doğru yanıt verirsin.
+Gündelik sorulara ise insan gibi doğal cevaplar verirsin.
+` }
+      ]
     });
 
-    // Geçmiş konuşmaları ekliyoruz
-    if (history?.length) {
-      history.forEach((msg) => {
-        contents.push({
-          role: msg.role === "assistant" ? "model" : "user",
-          parts: [{ text: msg.content }],
-        });
-      });
-    }
-
-    // Son kullanıcı mesajı
+    // Kullanıcı mesajı
     contents.push({
       role: "user",
-      parts: [{ text: message }],
+      parts: [{ text: message }]
     });
 
-    // G E M I N I   İ S T E Ğ İ
+    // API İsteği
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`,
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + apiKey,
       {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ contents }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ contents })
       }
     );
 
     const data = await response.json();
 
-    if (!response.ok) {
-      console.error("Gemini API error:", data);
-      return res.status(500).json({ error: "Gemini API Error", detail: data });
-    }
-
     const reply =
-      data?.candidates?.[0]?.content?.parts?.[0]?.text ||
-      "Cevap üretilemedi.";
+      data.candidates?.[0]?.content?.parts?.[0]?.text ||
+      "Cevap alınamadı.";
 
-    return res.status(200).json({ reply });
+    res.status(200).json({ reply });
+
   } catch (err) {
-    console.error("Server error:", err);
-    return res.status(500).json({ error: "Internal server error" });
+    console.error(err);
+    res.status(500).json({ error: "Gemini API error" });
   }
 }
