@@ -1,20 +1,12 @@
-// api/chat.js - Gemini backend (Vercel Serverless Function)
-
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ reply: "Only POST method allowed" });
   }
 
   try {
-    // Vercel bazen body'yi string, bazen obje verir; ikisini de destekleyelim
     let body = req.body || {};
     if (typeof body === "string") {
-      try {
-        body = JSON.parse(body);
-      } catch (e) {
-        console.error("JSON parse error:", e);
-        return res.status(400).json({ reply: "Invalid JSON format in request body." });
-      }
+      body = JSON.parse(body);
     }
 
     const { message, history = [] } = body;
@@ -31,20 +23,13 @@ export default async function handler(req, res) {
       });
     }
 
-    // Ebrar'ın asistanı için sistem prompt'u
-    const systemPrompt =
+    const systemPrompt = 
       "Sen Ebrar Albayrak’ın kişisel yapay zekâ asistanısın. " +
-      "Ebrar, DevOps, backend development, Docker, Jenkins, CI/CD, FastAPI, SQLAlchemy, PostgreSQL ve bağımsız denetim (audit automation) " +
-      "konularında deneyimli bir bilgisayar mühendisidir. " +
-      "Cevaplarında sakin, profesyonel, net ve akıcı ol. Teknik sorulara ayrıntılı, gündelik sorulara doğal ve samimi ama kurumsal üslupta yanıt ver. " +
-      "Gerektiğinde kısa örnek kodlar, mimari özetler ve pratik öneriler sun.";
+      "Profesyonel, akıcı ve teknik cevaplar ver.";
 
-    // Gemini'ye tek text prompt olarak göndereceğimiz içerik
     let promptText = systemPrompt + "\n\n";
 
-    // Tarihçe → basit metne çevir
     for (const item of history) {
-      if (!item || !item.role || !item.content) continue;
       if (item.role === "user") {
         promptText += `Kullanıcı: ${item.content}\n`;
       } else if (item.role === "assistant") {
@@ -52,23 +37,16 @@ export default async function handler(req, res) {
       }
     }
 
-    // Son kullanıcı mesajı
     promptText += `Kullanıcı: ${message}\nAsistan:`;
-    
-    const modelId = "gemini-1.5-flash"; // -latest yok
-    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelId}:generateContent?key=${apiKey}`;
 
-    const geminiRes = await fetch(geminiUrl, {
+    // ⭐ DOĞRU MODEL BURADA
+    const modelUrl = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
+
+    const geminiRes = await fetch(modelUrl, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        contents: [
-          {
-            parts: [{ text: promptText }],
-          },
-        ],
+        contents: [{ parts: [{ text: promptText }] }],
       }),
     });
 
@@ -77,10 +55,7 @@ export default async function handler(req, res) {
     if (!geminiRes.ok) {
       console.error("Gemini API error:", geminiRes.status, json);
       return res.status(500).json({
-        reply:
-          "Modelden yanıt alınamadı. (Gemini hata kodu: " +
-          geminiRes.status +
-          ")",
+        reply: `Modelden yanıt alınamadı. (Gemini hata kodu: ${geminiRes.status})`,
       });
     }
 
@@ -91,12 +66,11 @@ export default async function handler(req, res) {
         .trim() || "Model boş yanıt döndürdü.";
 
     return res.status(200).json({ reply });
+
   } catch (err) {
     console.error("Handler error:", err);
     return res.status(500).json({
-      reply:
-        "Sunucu tarafında bir hata oluştu: " +
-        (err.message || "Bilinmeyen hata."),
+      reply: "Sunucu tarafında bir hata oluştu: " + (err.message || "Bilinmeyen hata."),
     });
   }
 }
