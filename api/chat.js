@@ -1,12 +1,22 @@
+// api/chat.js - Gemini backend (OpenAI uyumlu chat/completions)
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ reply: "Only POST method allowed" });
   }
 
   try {
+    // Vercel bazen body'yi string, bazen obje verir; ikisini de destekleyelim
     let body = req.body || {};
     if (typeof body === "string") {
-      body = JSON.parse(body);
+      try {
+        body = JSON.parse(body);
+      } catch (e) {
+        console.error("JSON parse error:", e);
+        return res
+          .status(400)
+          .json({ reply: "Invalid JSON format in request body." });
+      }
     }
 
     const { message, history = [] } = body;
@@ -23,30 +33,42 @@ export default async function handler(req, res) {
       });
     }
 
-    const systemPrompt = 
+    // 1) Sistem mesajı (asistanın karakteri)
+    const systemPrompt =
       "Sen Ebrar Albayrak’ın kişisel yapay zekâ asistanısın. " +
-      "Profesyonel, akıcı ve teknik cevaplar ver.";
+      "Ebrar, DevOps, backend development, Docker, Jenkins, CI/CD, FastAPI, SQLAlchemy, PostgreSQL ve bağımsız denetim (audit automation) " +
+      "konularında deneyimli bir bilgisayar mühendisidir. " +
+      "Cevaplarında sakin, profesyonel, net ve akıcı ol. Teknik sorulara ayrıntılı, gündelik sorulara doğal ve samimi ama kurumsal üslupta yanıt ver. " +
+      "Gerektiğinde kısa örnek kodlar, mimari özetler ve pratik öneriler sun.";
 
-    let promptText = systemPrompt + "\n\n";
+    // 2) Gemini’nin chat/completions formatına uygun "messages" array'i
+    const messages = [
+      { role: "system", content: systemPrompt },
+      // geçmişi ekle
+      ...history
+        .filter((m) => m && m.role && m.content)
+        .map((m) => ({
+          role: m.role === "assistant" ? "assistant" : "user",
+          content: m.content,
+        })),
+      // son kullanıcı mesajı
+      { role: "user", content: message },
+    ];
 
-    for (const item of history) {
-      if (item.role === "user") {
-        promptText += `Kullanıcı: ${item.content}\n`;
-      } else if (item.role === "assistant") {
-        promptText += `Asistan: ${item.content}\n`;
-      }
-    }
+    // 3) OpenAI uyumlu Gemini endpoint’i
+    const geminiUrl =
+      "https://generativelanguage.googleapis.com/v1beta/chat/completions";
 
-    promptText += `Kullanıcı: ${message}\nAsistan:`;
-
-    // ⭐ DOĞRU MODEL BURADA
-    const modelUrl = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
-
-    const geminiRes = await fetch(modelUrl, {
+    const geminiRes = await fetch(geminiUrl, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        // DİKKAT: artık query string değil, Authorization header
+        Authorization: `Bearer ${apiKey}`,
+      },
       body: JSON.stringify({
-        contents: [{ parts: [{ text: promptText }] }],
+        model: "gemini-1.5-flash",
+        messages,
       }),
     });
 
@@ -55,22 +77,27 @@ export default async function handler(req, res) {
     if (!geminiRes.ok) {
       console.error("Gemini API error:", geminiRes.status, json);
       return res.status(500).json({
-        reply: `Modelden yanıt alınamadı. (Gemini hata kodu: ${geminiRes.status})`,
+        reply:
+          "Modelden yanıt alınamadı. (Gemini hata kodu: " +
+          geminiRes.status +
+          ")",
       });
     }
 
-    const reply =
-      json?.candidates?.[0]?.content?.parts
-        ?.map((p) => p.text || "")
-        .join(" ")
-        .trim() || "Model boş yanıt döndürdü.";
+    // content string veya array olabilir; en basit haliyle string bekleyelim
+    let reply =
+      json?.choices?.[0]?.message?.content ||
+      json?.choices?.[0]?.message?.parts?.map((p) => p.text || "").join(" ");
+
+    reply = (reply || "").toString().trim() || "Model boş yanıt döndürdü.";
 
     return res.status(200).json({ reply });
-
   } catch (err) {
     console.error("Handler error:", err);
     return res.status(500).json({
-      reply: "Sunucu tarafında bir hata oluştu: " + (err.message || "Bilinmeyen hata."),
+      reply:
+        "Sunucu tarafında bir hata oluştu: " +
+        (err?.message || "Bilinmeyen hata."),
     });
   }
 }
