@@ -1,74 +1,103 @@
-// api/chat.js — Gemini API Backend
+// api/chat.js - Gemini backend (Vercel Serverless Function)
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Only POST method allowed" });
+    return res.status(405).json({ reply: "Only POST method allowed" });
   }
 
   try {
-    let body = req.body;
-
-    // Bazı durumlarda Vercel body'yi string verir, parse edelim:
+    // Vercel bazen body'yi string, bazen obje verir; ikisini de destekleyelim
+    let body = req.body || {};
     if (typeof body === "string") {
       try {
         body = JSON.parse(body);
       } catch (e) {
-        return res.status(400).json({ error: "Invalid JSON format" });
+        console.error("JSON parse error:", e);
+        return res.status(400).json({ reply: "Invalid JSON format in request body." });
       }
     }
 
-    const { message, history } = body || {};
+    const { message, history = [] } = body;
+
+    if (!message) {
+      return res.status(400).json({ reply: "Mesaj içeriği bulunamadı." });
+    }
+
     const apiKey = process.env.GEMINI_API_KEY;
-
     if (!apiKey) {
-      return res.status(500).json({ error: "Missing GEMINI_API_KEY" });
+      console.error("GEMINI_API_KEY eksik");
+      return res.status(500).json({
+        reply: "Sunucu yapılandırma hatası: GEMINI_API_KEY tanımlı değil.",
+      });
     }
 
-    // Gemini formatına uygun içerik
-    const contents = [];
+    // Ebrar'ın asistanı için sistem prompt'u
+    const systemPrompt =
+      "Sen Ebrar Albayrak’ın kişisel yapay zekâ asistanısın. " +
+      "Ebrar, DevOps, backend development, Docker, Jenkins, CI/CD, FastAPI, SQLAlchemy, PostgreSQL ve bağımsız denetim (audit automation) " +
+      "konularında deneyimli bir bilgisayar mühendisidir. " +
+      "Cevaplarında sakin, profesyonel, net ve akıcı ol. Teknik sorulara ayrıntılı, gündelik sorulara doğal ve samimi ama kurumsal üslupta yanıt ver. " +
+      "Gerektiğinde kısa örnek kodlar, mimari özetler ve pratik öneriler sun.";
 
-    // Sistem prompt → Asistanın karakteri
-    contents.push({
-      role: "user",
-      parts: [
-        { text: `
-Sen Ebrar Albayrak’ın kişisel yapay zekâ asistanısın.
-Ebrar; DevOps, backend development, Docker, Jenkins, CI/CD, audit automation,
-FastAPI, SQLAlchemy ve PostgreSQL konularında deneyimli bir mühendistir.
+    // Gemini'ye tek text prompt olarak göndereceğimiz içerik
+    let promptText = systemPrompt + "\n\n";
 
-Sen sakin, profesyonel ve doğal bir tonla konuşursun.
-Teknik sorulara detaylı ve doğru yanıt verirsin.
-Gündelik sorulara ise insan gibi doğal cevaplar verirsin.
-` }
-      ]
-    });
-
-    // Kullanıcı mesajı
-    contents.push({
-      role: "user",
-      parts: [{ text: message }]
-    });
-
-    // API İsteği
-    const response = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + apiKey,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ contents })
+    // Tarihçe → basit metne çevir
+    for (const item of history) {
+      if (!item || !item.role || !item.content) continue;
+      if (item.role === "user") {
+        promptText += `Kullanıcı: ${item.content}\n`;
+      } else if (item.role === "assistant") {
+        promptText += `Asistan: ${item.content}\n`;
       }
-    );
+    }
 
-    const data = await response.json();
+    // Son kullanıcı mesajı
+    promptText += `Kullanıcı: ${message}\nAsistan:`;
+
+    const geminiUrl =
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" +
+      apiKey;
+
+    const geminiRes = await fetch(geminiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        contents: [
+          {
+            parts: [{ text: promptText }],
+          },
+        ],
+      }),
+    });
+
+    const json = await geminiRes.json();
+
+    if (!geminiRes.ok) {
+      console.error("Gemini API error:", geminiRes.status, json);
+      return res.status(500).json({
+        reply:
+          "Modelden yanıt alınamadı. (Gemini hata kodu: " +
+          geminiRes.status +
+          ")",
+      });
+    }
 
     const reply =
-      data.candidates?.[0]?.content?.parts?.[0]?.text ||
-      "Cevap alınamadı.";
+      json?.candidates?.[0]?.content?.parts
+        ?.map((p) => p.text || "")
+        .join(" ")
+        .trim() || "Model boş yanıt döndürdü.";
 
-    res.status(200).json({ reply });
-
+    return res.status(200).json({ reply });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Gemini API error" });
+    console.error("Handler error:", err);
+    return res.status(500).json({
+      reply:
+        "Sunucu tarafında bir hata oluştu: " +
+        (err.message || "Bilinmeyen hata."),
+    });
   }
 }
