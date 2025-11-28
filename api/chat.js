@@ -1,4 +1,4 @@
-// api/chat.js - Vercel Serverless Function (no external deps)
+// api/chat.js — Gemini API Backend
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -6,59 +6,84 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Vercel bazen body'yi string, bazen direkt obje verir
     let body = req.body;
+
+    // Bazı durumlarda Vercel body'yi string verir, parse edelim:
     if (typeof body === "string") {
       try {
         body = JSON.parse(body);
       } catch (e) {
-        console.error("Body parse error:", e);
-        return res.status(400).json({ error: "Invalid JSON body" });
+        return res.status(400).json({ error: "Invalid JSON format" });
       }
     }
 
     const { message, history } = body || {};
+    const apiKey = process.env.GEMINI_API_KEY;
 
-    const messages = [
-      {
-        role: "system",
-        content:
-          "Sen Ebrar Albayrak’ın kişisel yapay zekâ asistanısın. Ebrar, DevOps, backend development, Docker, Jenkins, CI/CD, audit automation, FastAPI, SQLAlchemy, PostgreSQL konularında deneyimli bir bilgisayar mühendisidir. Sakin, profesyonel ve akıcı bir şekilde cevap ver. Teknik sorulara detaylı, gündelik sorulara doğal cevaplar ver."
-      },
-      ...(history || []),
-      { role: "user", content: message || "" }
-    ];
-
-    const apiKey = process.env.OPENAI_API_KEY;
     if (!apiKey) {
-      console.error("OPENAI_API_KEY is missing");
-      return res.status(500).json({ error: "Missing API key" });
+      return res.status(500).json({ error: "Missing GEMINI_API_KEY" });
     }
 
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: "gpt-4.1", // sorun yaşarsan "gpt-4.1" yapabiliriz
-        messages,
-        temperature: 0.4,
-      }),
+    // Gemini formatına uygun içerik
+    const contents = [];
+
+    // Sistem prompt → Asistanın karakteri
+    contents.push({
+      role: "user",
+      parts: [
+        {
+          text: `
+Sen Ebrar Albayrak’ın kişisel yapay zekâ asistanısın.
+Ebrar, DevOps, backend development, Docker, Jenkins, CI/CD, audit automation,
+FastAPI, SQLAlchemy ve PostgreSQL alanlarında uzmanlaşmış bir mühendistir.
+Sorulara profesyonel, açıklayıcı ve samimi bir dille yanıt ver.
+          `,
+        },
+      ],
     });
+
+    // Geçmiş konuşmaları ekliyoruz
+    if (history?.length) {
+      history.forEach((msg) => {
+        contents.push({
+          role: msg.role === "assistant" ? "model" : "user",
+          parts: [{ text: msg.content }],
+        });
+      });
+    }
+
+    // Son kullanıcı mesajı
+    contents.push({
+      role: "user",
+      parts: [{ text: message }],
+    });
+
+    // G E M I N I   İ S T E Ğ İ
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ contents }),
+      }
+    );
 
     const data = await response.json();
 
     if (!response.ok) {
-      console.error("OpenAI error:", data);
-      return res.status(500).json({ error: "AI service error" });
+      console.error("Gemini API error:", data);
+      return res.status(500).json({ error: "Gemini API Error", detail: data });
     }
 
-    const reply = data.choices?.[0]?.message?.content || "";
+    const reply =
+      data?.candidates?.[0]?.content?.parts?.[0]?.text ||
+      "Cevap üretilemedi.";
+
     return res.status(200).json({ reply });
-  } catch (error) {
-    console.error("Handler error:", error);
-    return res.status(500).json({ error: "AI service error" });
+  } catch (err) {
+    console.error("Server error:", err);
+    return res.status(500).json({ error: "Internal server error" });
   }
 }
