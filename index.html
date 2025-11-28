@@ -437,7 +437,7 @@
         <button class="quick-btn" onclick="fillQuick('Docker ve container tecrübesi nedir?')">
           Docker tecrübesi nedir?
         </button>
-        <button class="quick-btn" onclick="fillQuick('Jenkins ve CI/CD süreçlerinde rolü neydi?')">
+        <button class="quick-btn" onclick="fillQuick('Jenkins ve CI/CD süreçlerinde nasıl bir rol aldı?')">
           Jenkins / CI/CD rolü?
         </button>
         <button class="quick-btn" onclick="fillQuick('Audit automation projesi nasıl çalışıyor?')">
@@ -498,45 +498,79 @@
 </div>
 
 <script>
-  const chatEl = document.getElementById("chat");
-  const inputEl = document.getElementById("userInput");
-
-  function appendMessage(text, type) {
-    const msg = document.createElement("div");
-    msg.className = "message " + type;
-    msg.textContent = text;
-    chatEl.appendChild(msg);
-    chatEl.scrollTop = chatEl.scrollHeight;
-  }
-
-  function sendMessage() {
-    const text = inputEl.value.trim();
-    if (!text) return;
-
-    appendMessage(text, "user");
-    inputEl.value = "";
-
-    setTimeout(() => {
-      const response =
-        "Bu arayüz şu an demo modunda çalışıyor. " +
-        "Gerçek zamanlı yapay zekâ cevapları için bu sayfa bir LLM API (örneğin OpenAI) ile entegre edilebilir. " +
-        "Özetle: Ebrar, DevOps & backend tarafında Docker, Jenkins, CI/CD, FastAPI, SQLAlchemy ve audit automation " +
-        "üzerine yoğunlaşmış; hem yazılım geliştirme hem de denetim süreçlerini birleştiren hibrit bir mühendistir.";
-      appendMessage(response, "bot");
-    }, 650);
-  }
-
-  function fillQuick(text) {
-    inputEl.value = text;
-    inputEl.focus();
-  }
-
-  inputEl.addEventListener("keydown", function (e) {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      sendMessage();
+    const chatEl = document.getElementById("chat");
+    const inputEl = document.getElementById("userInput");
+  
+    // Konuşma geçmişini tutuyoruz ki model bağlamı görsün
+    let history = [];
+  
+    function appendMessage(text, type) {
+      const msg = document.createElement("div");
+      msg.className = "message " + type;
+      msg.textContent = text;
+      chatEl.appendChild(msg);
+      chatEl.scrollTop = chatEl.scrollHeight;
     }
-  });
-</script>
+  
+    async function sendMessage() {
+      const text = inputEl.value.trim();
+      if (!text) return;
+  
+      // Kullanıcı mesajını göster
+      appendMessage(text, "user");
+      history.push({ role: "user", content: text });
+      inputEl.value = "";
+  
+      // Geçici "yazıyor..." balonu
+      const loading = document.createElement("div");
+      loading.className = "message bot";
+      loading.textContent = "Yazıyor...";
+      chatEl.appendChild(loading);
+      chatEl.scrollTop = chatEl.scrollHeight;
+  
+      try {
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            message: text,
+            history: history,
+          }),
+        });
+  
+        const data = await res.json();
+        chatEl.removeChild(loading);
+  
+        if (data.reply) {
+          appendMessage(data.reply, "bot");
+          history.push({ role: "assistant", content: data.reply });
+        } else {
+          appendMessage(
+            "Şu an beklenmeyen bir hata oluştu, lütfen daha sonra tekrar deneyin.",
+            "bot"
+          );
+        }
+      } catch (err) {
+        console.error(err);
+        chatEl.removeChild(loading);
+        appendMessage(
+          "Sunucuya bağlanırken bir hata oluştu. İnternet bağlantısını veya servisin durumunu kontrol etmek gerekebilir.",
+          "bot"
+        );
+      }
+    }
+  
+    function fillQuick(text) {
+      inputEl.value = text;
+      inputEl.focus();
+    }
+  
+    inputEl.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+  </script>
 </body>
 </html>
