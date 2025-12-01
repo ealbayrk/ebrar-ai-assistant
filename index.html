@@ -501,9 +501,103 @@
   const chatEl = document.getElementById("chat");
   const inputEl = document.getElementById("userInput");
 
-  // Konuşma geçmişi
-  let history = [];
+  // 1) Ebrar hakkında bilgi tabanı
+  const knowledgeBase = [
+    {
+      id: "docker_devops",
+      keywords: ["docker", "container", "compose", "devops", "kubernetes", "k8s"],
+      answer: `Ebrar, Docker ve container tabanlı mimarilerle aktif olarak çalışıyor. 
+CI/CD pipeline’larında her servisi ayrı image olarak paketleyip,
+ Docker Compose ile development ortamı, container registry + orchestration (örn. Kubernetes / bulut sağlayıcı) ile de staging/production ortamlarını yönetiyor.
+  
+Audit aracı projesinde de FastAPI backend'i ve PostgreSQL’i container’lar halinde koşturup hem lokal hem de sunucu ortamında reproducible bir kurulum sağlamış durumda.`
+    },
+    {
+      id: "ci_cd_jenkins",
+      keywords: ["jenkins", "ci/cd", "pipeline", "gitlab", "github actions", "deploy"],
+      answer: `Ebrar’ın CI/CD tecrübesi ağırlıklı olarak Jenkins ve Git tabanlı workflow’lar etrafında şekilleniyor.
+  
+Temel yaklaşımı:
+- PR açıldığında otomatik test, lint ve security scan’lerin çalışması,
+- main branch’e merge sonrası docker image build + registry push,
+- uygun ortama (örn. test/production) otomatik deployment.
+  
+Ayrıca, audit aracı projesinde de benzer mantıkla pipeline tasarlayarak hem backend hem de frontend için otomatik build & deploy süreçleri kurgulamış durumda.`
+    },
+    {
+      id: "backend_stack",
+      keywords: ["backend", "fastapi", "python", "sqlalchemy", "postgres", "api"],
+      answer: `Backend tarafında temel stack'i:
+- Python + FastAPI
+- SQLAlchemy ile ORM
+- PostgreSQL (tercih edilen veritabanı)
+- Docker ile containerize edilmiş servisler
+  
+Audit automation projesinde:
+- Excel, XML ve PDF gibi dokümanlardan veri okuyup,
+- pandas ile veri işleme,
+- istatistiksel örnekleme ve materiality hesapları,
+- sonuçları Word/Excel raporları ve grafiklerle kullanıcıya sunan bir FastAPI backend geliştirdi.`
+    },
+    {
+      id: "audit_tool",
+      keywords: ["audit", "örneklem", "sampling", "denetim", "materiality", "denetim aracı", "bds 530"],
+      answer: `Ebrar’ın audit automation projesi, bağımsız denetim süreçlerindeki örnekleme adımlarını otomatikleştirmeyi hedefliyor.
+  
+Başlıca özellikler:
+- Excel/XML muavin defter verilerinden kayıtları okuma
+- Farklı örnekleme yöntemleri (istatistiksel, sistematik, rastgele)
+- Materiality, hata oranı ve risk parametrelerini dikkate alarak örneklem sayısı önerme
+- Örneklem sonuçlarını Word ve Excel formatında, modern ve açıklayıcı denetim raporlarına dönüştürme
+- Tüm bunları FastAPI + Tailwind tabanlı bir web arayüzü üzerinden kullanıma açma
+  
+Kısaca: klasik “Excel’de manuel örneklem” süreçlerini, daha tutarlı ve tekrarlanabilir bir şekilde otomasyona taşıyor.`
+    },
+    {
+      id: "java_experience",
+      keywords: ["java", "spring", "oop", "ap computer science"],
+      answer: `Ebrar'ın Java tarafında nesne yönelimli programlama (OOP), veri yapıları ve algoritmalar konusunda güçlü bir temeli var. 
+Hem kendi projeleri hem de özel dersler (AP Computer Science hazırlığı dahil) üzerinden Java ile uygulamalar geliştirmiş durumda.
+  
+Spring odaklı kurumsal projelerden ziyade, şu anda backend tarafında ağırlığı Python/FastAPI ve DevOps araçlarına kaydırmış olsa da, Java temeli sayesinde JVM ekosistemine de hızlı adapte olabilecek bir yapıda.`
+    },
+    {
+      id: "profile_summary",
+      keywords: ["kimdir", "kimsin", "özgeçmiş", "cv", "özet", "kendini anlat"],
+      answer: `Ebrar Albayrak, bilgisayar mühendisliği altyapısını bağımsız denetim deneyimiyle birleştiren hibrit bir DevOps & backend geliştiricisi. 
+  
+Hem Docker, Jenkins, FastAPI, SQLAlchemy, PostgreSQL gibi teknolojilerle çalışan;
+hem de denetim süreçlerindeki örnekleme, materiality ve veri analizi adımlarını çok iyi bilen biri.
+  
+Hedefi, özellikle denetim ve finans odaklı iş akışlarını otomatikleştiren, güvenilir ve sürdürülebilir yazılım çözümleri üretmek.`
+    },
+    {
+      id: "availability_salary",
+      keywords: ["ücret", "maaş", "salary", "ücret beklentisi", "çalışma", "tam zamanlı", "full time", "part time"],
+      answer: `Ücret beklentisi ve çalışma modeli, pozisyonun kapsamına ve sorumluluklarına göre esnek şekilde değerlendirilebilir.
+  
+Genel olarak:
+- Teknik olarak zorlayıcı, öğrenme imkânı yüksek,
+- DevOps, backend veya denetim otomasyonu gibi alanlarda katma değer sağlayabileceği
+rolleri tercih ediyor.
+  
+Detaylı ücret beklentisi ve başlangıç tarihi için Ebrar ile doğrudan LinkedIn üzerinden iletişime geçmeniz en sağlıklısı olacaktır.`
+    },
+    {
+      id: "contact",
+      keywords: ["iletişim", "contact", "linkedin", "github", "mail", "bana ulaş"],
+      answer: `Ebrar ile iletişime geçmek için:
+- LinkedIn: https://www.linkedin.com/in/ebrar-albayrak-585222201
+- GitHub: https://github.com/ealbayrk
+  
+Teknik detay veya iş birliği için bu kanallar üzerinden rahatlıkla ulaşabilirsiniz.`
+    }
+  ];
 
+  const defaultAnswer =
+    "Bu soruyla ilgili hazır bir cevabım yok gibi görünüyor. Ebrar yine de muhtemelen bunu konuşmayı çok ister 🙂 LinkedIn üzerinden ulaşabilirsiniz: https://www.linkedin.com/in/ebrar-albayrak-585222201";
+
+  // 2) Mesaj balonu ekleme
   function appendMessage(text, type) {
     const msg = document.createElement("div");
     msg.className = "message " + type;
@@ -512,67 +606,67 @@
     chatEl.scrollTop = chatEl.scrollHeight;
   }
 
-  async function sendMessage() {
+  // 3) En iyi cevabı bulma (keyword skoru ile)
+  function findBestAnswer(userText) {
+    const lower = userText.toLowerCase();
+    let best = null;
+
+    for (const item of knowledgeBase) {
+      let score = 0;
+      for (const kw of item.keywords) {
+        if (lower.includes(kw.toLowerCase())) {
+          score++;
+        }
+      }
+      if (score > 0 && (!best || score > best.score)) {
+        best = { ...item, score };
+      }
+    }
+
+    return best ? best.answer : defaultAnswer;
+  }
+
+  // 4) Mesaj gönderme – ARTIK API YOK, TAMAMEN LOCAL
+  function sendMessage() {
     const text = inputEl.value.trim();
     if (!text) return;
 
-    // Kullanıcı mesajını arayüzde göster
+    // kullanıcı balonu
     appendMessage(text, "user");
     inputEl.value = "";
 
-    // "Yazıyor..." balonu
+    // küçük bir "yazıyor..." efekti
     const loading = document.createElement("div");
     loading.className = "message bot";
     loading.textContent = "Yazıyor...";
     chatEl.appendChild(loading);
     chatEl.scrollTop = chatEl.scrollHeight;
 
-    try {
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          message: text,       // son kullanıcı mesajı
-          history: history,    // önceki mesajlar
-        }),
-      });
-
-      const data = await res.json();
+    setTimeout(() => {
       chatEl.removeChild(loading);
 
-      if (data.reply) {
-        appendMessage(data.reply, "bot");
-
-        // Artık geçmişe hem user hem assistant ekleyelim
-        history.push({ role: "user", content: text });
-        history.push({ role: "assistant", content: data.reply });
-      } else {
-        appendMessage(
-          "Şu an beklenmeyen bir hata oluştu, lütfen daha sonra tekrar deneyin.",
-          "bot"
-        );
-      }
-    } catch (err) {
-      console.error(err);
-      chatEl.removeChild(loading);
-      appendMessage(
-        "Sunucuya bağlanırken bir hata oluştu. İnternet bağlantısını veya servisin durumunu kontrol etmek gerekebilir.",
-        "bot"
-      );
-    }
+      const answer = findBestAnswer(text);
+      appendMessage(answer, "bot");
+    }, 400); // küçük bir gecikme, daha doğal görünmesi için
   }
 
+  // Quick question butonları
   function fillQuick(text) {
     inputEl.value = text;
     inputEl.focus();
   }
 
+  // Enter ile gönderme
   inputEl.addEventListener("keydown", function (e) {
     if (e.key === "Enter") {
       e.preventDefault();
       sendMessage();
     }
   });
+
+  // Butonun erişebilmesi için global'e at
+  window.sendMessage = sendMessage;
+  window.fillQuick = fillQuick;
 </script>
 </body>
 </html>
