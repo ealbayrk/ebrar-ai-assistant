@@ -493,7 +493,8 @@
       <div class="bottom-menu" id="bottomMenu">
   <button class="bm-btn" onclick="goMainMenu()">Ana Menü</button>
   <button class="bm-btn" onclick="goInternshipChoice()">Stajlar</button>
-  <button class="bm-btn" onclick="onChoice(event,'MENU_DEVOPS')">DevOps</button>
+  <button class="bm-btn" onclick="onChoice(arguments[0],'MENU_DEVOPS')">DevOps</button>
+  <button class="bm-btn" onclick="onChoice(arguments[0],'MENU_AUDIT')">Audit</button>
   <button class="bm-btn" onclick="onChoice(event,'MENU_AUDIT')">Audit</button>
 </div>
 
@@ -676,18 +677,16 @@ function isGreeting(t){
 }
 
 function renderChoices(buttons){
-  const html = `
+  return `
     <div class="choice-wrap">
       ${buttons.map(b => `
-        <button 
-          class="choice-btn ${b.secondary ? "secondary" : ""}" 
-          onclick="onChoice(event, '${b.value}')">
+        <button class="choice-btn ${b.secondary ? "secondary" : ""}"
+                onclick="onChoice(arguments[0], '${b.value}')">
           ${b.label}
         </button>
       `).join("")}
     </div>
   `;
-  return html;
 }
 
 function botSay(text, choices=null){
