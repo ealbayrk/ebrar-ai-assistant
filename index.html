@@ -567,126 +567,85 @@
 <script>
   const chatEl = document.getElementById("chat");
   const inputEl = document.getElementById("userInput");
-
- const knowledgeBase = [
-    {
-      id: "docker_devops",
-      keywords: ["docker", "container", "compose", "devops", "kubernetes", "k8s"],
-      answer: `Ebrar, Docker ve container tabanlı mimarilerle aktif olarak çalışıyor. 
-CI/CD pipeline’larında her servisi ayrı image olarak paketleyip,
- Docker Compose ile development ortamı, container registry + orchestration (örn. Kubernetes / bulut sağlayıcı) ile de staging/production ortamlarını yönetiyor.
-  
-Audit aracı projesinde de FastAPI backend'i ve PostgreSQL’i container’lar halinde koşturup hem lokal hem de sunucu ortamında reproducible bir kurulum sağlamış durumda.`
-    },
-
-    {
-  id: "thesis_tradecenter",
-  keywords: ["bitirme", "tez", "thesis", "trade center", "tradecenter", "algoritmik", "trading", "bist", "bist100", "yahoo finance", "tradingview", "rsi", "moving average", "2fa", "asp.net", "mvc", "sql server", "bot worker"],
-  answer: `Bitirme projesi: <b>Trade Center</b> — BIST100 ve kripto piyasaları için algoritmik al-sat kararlarını otomatikleştiren bir platform.<br/><br/>
-  <b>Amaç:</b> Zaman baskısı ve duygusal kararların etkisini azaltıp, hızlı ve sistematik işlem kararları üretebilmek.<br/>
-  <b>Veri:</b> Yahoo Finance + TradingView üzerinden gerçek zamanlı akış.<br/>
-  <b>Karar Mekanizması:</b> RSI ve hareketli ortalamalar gibi teknik indikatörler ile kural tabanlı stratejiler.<br/>
-  <b>Risk Yönetimi:</b> Stop-loss / take-profit.<br/>
-  <b>Güvenlik:</b> 2FA entegrasyonu.<br/>
-  <b>Test:</b> Paper trading ile strateji doğrulama; sinyallerin DB’ye yazılması ve arayüzde gösterimi.<br/><br/>
-  <b>Mimari (3 bileşen):</b>
-  • Data Subsystem: SQL Server + EF Core + migration<br/>
-  • Web App: ASP.NET Core MVC (dashboard, order workflow, servis katmanı)<br/>
-  • Worker: Python tabanlı bot (hesaplama/sinyal üretimi)<br/><br/>
-  Not: Yüksek frekans hedefi veri sağlayıcı limitleri nedeniyle kısıtlı kalmış; ancak mimari genişletilebilir.`
-}
-    {
   {
-  id: "ci_cd_jenkins",
-  keywords: ["jenkins", "ci/cd", "pipeline", "gitlab", "github actions", "deploy", "openshift", "kubernetes"],
-  answer: `Ebrar’ın CI/CD tecrübesi, gerçek projelerde Jenkins tabanlı pipeline’lar kurma ve yönetme üzerine yoğunlaşmıştır.
+    id: "docker_devops",
+    keywords: ["docker", "container", "compose", "devops", "kubernetes", "k8s", "image", "registry"],
+    answer: `Ebrar’ın güçlü olduğu şey “çalışanı çalışır halde paketlemek”.<br/><br/>
+<b>Docker & container</b> tarafında servisleri ayrı image’lar halinde yönetir; Docker Compose ile lokal ortamı tek komutla ayağa kaldırır ve ekip içinde aynı ortamın herkes için tekrarlanabilir olmasını sağlar.<br/><br/>
+IK tarafında değer kattığı nokta: <b>hızlı onboarding</b>, <b>daha az “bende çalışıyordu” problemi</b> ve <b>daha öngörülebilir release</b>.`
+  },
 
-<b>Pia – DevOps Stajı:</b>
-- Jenkins ile frontend ve backend için CI/CD pipeline’ları oluşturdu
-- Docker image build & push süreçlerini yönetti (Harbor / Nexus)
-- Docker Compose ile servislerin otomatik ayağa kaldırılmasını sağladı
-- Amaç: manuel deploy ihtiyacını azaltmak ve teslimat sürelerini kısaltmak
+  {
+    id: "thesis_tradecenter",
+    keywords: ["bitirme", "tez", "thesis", "trade center", "tradecenter", "algoritmik", "trading", "bist", "bist100", "yahoo finance", "tradingview", "rsi", "moving average", "2fa", "asp.net", "mvc", "sql server", "worker", "python bot"],
+    answer: `Bitirme projesi: <b>Trade Center</b> — BIST100 ve kripto için algoritmik karar üretimi yapan platform.<br/><br/>
+<b>Öne çıkan yönü:</b> Sadece “kod yazmak” değil; sistemi uçtan uca düşünmek.<br/>
+• <b>Web:</b> ASP.NET Core MVC (dashboard + servis katmanı)<br/>
+• <b>DB:</b> SQL Server + EF Core + migration disiplini<br/>
+• <b>Worker:</b> Python bot (hesaplama/sinyal üretimi) → ağır işleri ayırma yaklaşımı<br/>
+• <b>Güvenlik:</b> 2FA<br/><br/>
+IK için net mesaj: Ebrar, <b>modüler mimari</b> kurup <b>ölçeklenebilir şekilde ayrıştırmayı</b> bilen bir profil.`
+  },
 
-<b>BKM – DevOps Stajı:</b>
-- Jenkins + Groovy ile pipeline yönetimi
-- Maven & Gradle build süreçleri
-- Bitbucket → Jenkins → OpenShift akışı
-- Kubernetes / OpenShift ortamında container deploy deneyimi
-- 12-Factor App prensipleriyle uyumlu pipeline’lar
+  {
+    id: "ci_cd_jenkins",
+    keywords: ["jenkins", "ci/cd", "pipeline", "gitlab", "github actions", "deploy", "openshift", "kubernetes", "groovy", "maven", "gradle"],
+    answer: `Ebrar’ın CI/CD tecrübesi “pipeline’ı çalıştırmak”tan çok, <b>teslimat süresini kısaltan</b> ve <b>hataları erkenden yakalayan</b> akışlar kurmaya odaklanır.<br/><br/>
+<b>Pia – DevOps Stajı:</b> Jenkins ile frontend/backend pipeline’ları, Docker build & push, registry süreçleri (Harbor/Nexus), otomatik ayağa kaldırma (Compose).<br/>
+<b>BKM – DevOps Stajı:</b> Jenkins + Groovy, Maven/Gradle build, Bitbucket → Jenkins → OpenShift akışı, container deploy pratiği.<br/><br/>
+IK açısından güçlü tarafı: “<b>PR → test/build/scan → image → deploy</b>” zincirini anlaşılır ve tekrarlanabilir hale getirmesi.`
+  },
 
-<b>Genel yaklaşımı:</b>
-PR → test / build / scan → image push → hedef ortama deploy  
-şeklinde uçtan uca otomatik, tekrarlanabilir ve izlenebilir süreçler kurmaktır.`
-},
-    {
-      id: "backend_stack",
-      keywords: ["backend", "fastapi", "python", "sqlalchemy", "postgres", "api"],
-      answer: `Backend tarafında temel stack'i:
-- Python + FastAPI
-- SQLAlchemy ile ORM
-- PostgreSQL (tercih edilen veritabanı)
-- Docker ile containerize edilmiş servisler
-  
-Audit automation projesinde:
-- Excel, XML ve PDF gibi dokümanlardan veri okuyup,
-- pandas ile veri işleme,
-- istatistiksel örnekleme ve materiality hesapları,
-- sonuçları Word/Excel raporları ve grafiklerle kullanıcıya sunan bir FastAPI backend geliştirdi.`
-    },
-    {
-      id: "audit_tool",
-      keywords: ["audit", "örneklem", "sampling", "denetim", "materiality", "denetim aracı", "bds 530"],
-      answer: `Ebrar’ın audit automation projesi, bağımsız denetim süreçlerindeki örnekleme adımlarını otomatikleştirmeyi hedefliyor.
-  
-Başlıca özellikler:
-- Excel/XML muavin defter verilerinden kayıtları okuma
-- Farklı örnekleme yöntemleri (istatistiksel, sistematik, rastgele)
-- Materiality, hata oranı ve risk parametrelerini dikkate alarak örneklem sayısı önerme
-- Örneklem sonuçlarını Word ve Excel formatında, modern ve açıklayıcı denetim raporlarına dönüştürme
-- Tüm bunları FastAPI + Tailwind tabanlı bir web arayüzü üzerinden kullanıma açma
-  
-Kısaca: klasik “Excel’de manuel örneklem” süreçlerini, daha tutarlı ve tekrarlanabilir bir şekilde otomasyona taşıyor.`
-    },
-    {
-      id: "java_experience",
-      keywords: ["java", "spring", "oop", "ap computer science"],
-      answer: `Ebrar'ın Java tarafında nesne yönelimli programlama (OOP), veri yapıları ve algoritmalar konusunda güçlü bir temeli var. 
-Hem kendi projeleri hem de özel dersler (AP Computer Science hazırlığı dahil) üzerinden Java ile uygulamalar geliştirmiş durumda.
-  
-Spring odaklı kurumsal projelerden ziyade, şu anda backend tarafında ağırlığı Python/FastAPI ve DevOps araçlarına kaydırmış olsa da, Java temeli sayesinde JVM ekosistemine de hızlı adapte olabilecek bir yapıda.`
-    },
-    {
-      id: "profile_summary",
-      keywords: ["kimdir", "kimsin", "özgeçmiş", "cv", "özet", "kendini anlat"],
-      answer: `Ebrar Albayrak, bilgisayar mühendisliği altyapısını bağımsız denetim deneyimiyle birleştiren hibrit bir DevOps & backend geliştiricisi. 
-  
-Hem Docker, Jenkins, FastAPI, SQLAlchemy, PostgreSQL gibi teknolojilerle çalışan;
-hem de denetim süreçlerindeki örnekleme, materiality ve veri analizi adımlarını çok iyi bilen biri.
-  
-Hedefi, özellikle denetim ve finans odaklı iş akışlarını otomatikleştiren, güvenilir ve sürdürülebilir yazılım çözümleri üretmek.`
-    },
-    {
-      id: "availability_salary",
-      keywords: ["ücret", "maaş", "salary", "ücret beklentisi", "çalışma", "tam zamanlı", "full time", "part time"],
-      answer: `Ücret beklentisi ve çalışma modeli, pozisyonun kapsamına ve sorumluluklarına göre esnek şekilde değerlendirilebilir.
-  
-Genel olarak:
-- Teknik olarak zorlayıcı, öğrenme imkânı yüksek,
-- DevOps, backend veya denetim otomasyonu gibi alanlarda katma değer sağlayabileceği
-rolleri tercih ediyor.
-  
-Detaylı ücret beklentisi ve başlangıç tarihi için Ebrar ile doğrudan LinkedIn üzerinden iletişime geçmeniz en sağlıklısı olacaktır.`
-    },
-    {
-      id: "contact",
-      keywords: ["iletişim", "contact", "linkedin", "github", "mail", "bana ulaş"],
-      answer: `Ebrar ile iletişime geçmek için:
-- LinkedIn: https://www.linkedin.com/in/ebrar-albayrak-585222201
-- GitHub: https://github.com/ealbayrk
-  
-Teknik detay veya iş birliği için bu kanallar üzerinden rahatlıkla ulaşabilirsiniz.`
-    }
-  ]; //daha beni anlatan şekilde cevaplar verebilir misin bir de audit projemin tam içeriğine girme sadece teknik olarak değin ik ları tavlayacak da brkaç cümle ekle . Bana bu ksımı silip daha çok beni anlatan şekilde yazar mısn? hiçbirini atlama hepsiin iyileştiir
+  {
+    id: "backend_stack",
+    keywords: ["backend", "fastapi", "python", "sqlalchemy", "postgres", "api", "rest"],
+    answer: `Backend tarafında Ebrar’ın çalışma tarzı: <b>temiz API</b>, <b>modüler yapı</b>, <b>veri odaklı düşünme</b>.<br/><br/>
+Teknik stack: <b>FastAPI + Python</b>, ORM olarak <b>SQLAlchemy</b>, veri tabanı olarak <b>PostgreSQL</b>, container tarafında <b>Docker</b>.<br/><br/>
+IK için mesaj: Ürüne dönüşen backend geliştirir; “endpoint yazıp bırakmak” yerine <b>bakımı kolay</b> ve <b>genişletilebilir</b> yapı kurar.`
+  },
+
+  {
+    id: "audit_tool",
+    keywords: ["audit", "örneklem", "sampling", "denetim", "materiality", "denetim aracı", "bds 530", "rapor", "excel", "word"],
+    answer: `Ebrar’ın audit otomasyonu projesi, denetimdeki “manuel ve zaman alan” işleri daha <b>standart</b> ve <b>tekrarlanabilir</b> hale getirmek üzerine kurulu.<br/><br/>
+Teknik olarak: doküman/veri işleme, örnekleme mantığı, rapor çıktıları ve web arayüz entegrasyonu gibi uçtan uca bir sistem yaklaşımı var.<br/><br/>
+IK açısından etkisi: <b>zaman tasarrufu</b>, <b>standart raporlama</b>, <b>daha az insan hatası</b>. (Detaya girmeden net değer önerisi.)`
+  },
+
+  {
+    id: "java_experience",
+    keywords: ["java", "oop", "data structures", "algorithms", "ap computer science"],
+    answer: `Ebrar’ın Java tarafında güçlü temeli var: <b>OOP</b>, <b>veri yapıları</b> ve <b>algoritmik düşünme</b>.<br/><br/>
+Bugün odağı DevOps/Backend olsa da, Java altyapısı sayesinde ekip içinde “developer gözüyle” konuşur; bu da DevOps tarafında iletişimi ve problem çözmeyi ciddi hızlandırır.`
+  },
+
+  {
+    id: "profile_summary",
+    keywords: ["kimdir", "kimsin", "özgeçmiş", "cv", "özet", "kendini anlat", "profil"],
+    answer: `Ebrar Albayrak; <b>DevOps + Backend</b> yaklaşımını, gerçek dünya süreçlerine (kurumsal stajlar + proje teslimi) taşıyabilen bir profildir.<br/><br/>
+Öne çıkan noktası: “tek alana sıkışmayan”, hem geliştirme ekipleriyle aynı dili konuşan hem de sistemin deployment/otomasyon tarafını sahiplenen <b>hibrit</b> yaklaşım.<br/><br/>
+IK için kısa özet: <b>hızlı öğrenir</b>, <b>çözüm odaklıdır</b>, işi “çalışır hale getirip” bırakmaz — sürdürülebilir kılar.`
+  },
+
+  {
+    id: "availability_salary",
+    keywords: ["ücret", "maaş", "salary", "ücret beklentisi", "çalışma", "tam zamanlı", "full time", "part time", "remote"],
+    answer: `Ebrar için öncelik: rolün kapsamı, öğrenme eğrisi ve ekip kültürü.<br/><br/>
+Çalışma modeli ve ücret beklentisi; sorumluluk, teknoloji seti ve pozisyon seviyesine göre esnek şekilde değerlendirilebilir.<br/>
+Detay için LinkedIn üzerinden iletişim en sağlıklısıdır.`
+  },
+
+  {
+    id: "contact",
+    keywords: ["iletişim", "contact", "linkedin", "github", "mail", "bana ulaş", "ulaş"],
+    answer: `Ebrar’a ulaşmak için:<br/>
+• LinkedIn: https://www.linkedin.com/in/ebrar-albayrak-585222201<br/>
+• GitHub: https://github.com/ealbayrk<br/><br/>
+İş birliği / pozisyon detayları için LinkedIn üzerinden mesaj bırakabilirsiniz.`
+  }
+];
+  const inputEl = document.getElementById("userInput");
+
 
   const defaultAnswer =
     "Bu soruyla ilgili hazır bir cevabım yok gibi görünüyor. Ebrar yine de muhtemelen bunu konuşmayı çok ister 🙂 LinkedIn üzerinden ulaşabilirsiniz: https://www.linkedin.com/in/ebrar-albayrak-585222201";
@@ -864,9 +823,13 @@ function onChoice(ev, value){
   if (wrap){
     wrap.querySelectorAll("button").forEach(b => b.disabled = true);
   }
+  if (value === "INT_PIA_DEVOPS"){ replyPiaDevops(); return; }
+  if (value === "INT_PIA_FS"){ replyPiaFullstack(); return; }
 
   // 2) Kullanıcı balonu label
   const mapLabel = {
+    INT_PIA_DEVOPS: "Pia – DevOps",
+    INT_PIA_FS: "Pia – Full Stack",
     NAME_YES: "Evet, ismimi paylaşayım",
     NAME_NO: "Hayır, isim vermeden devam",
     INTRO_YES: "Evet, önce Ebrar’dan bahset",
