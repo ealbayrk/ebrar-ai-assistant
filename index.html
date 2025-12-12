@@ -647,179 +647,17 @@ Detay için LinkedIn üzerinden iletişim en sağlıklısıdır.`
 ];
   
 
-
   const defaultAnswer =
     "Bu soruyla ilgili hazır bir cevabım yok gibi görünüyor. Ebrar yine de muhtemelen bunu konuşmayı çok ister 🙂 LinkedIn üzerinden ulaşabilirsiniz: https://www.linkedin.com/in/ebrar-albayrak-585222201";
-// =====================
-// FLOW (AKIŞ) MOTORU
-// =====================
-let state = "idle"; // idle | askName | awaitingName | introChoice | mainMenu | internshipChoice
-let userName = null;
 
-const greetingKeywords = ["merhaba","selam","slm","hey","hi","hello","iyi günler","iyi akşamlar","günaydın"];
+  // =====================
+  // FLOW (AKIŞ) MOTORU
+  // =====================
+  let state = "idle"; // idle | askName | awaitingName | introChoice | mainMenu | internshipChoice | devopsMenu
+  let userName = null;
 
-function isGreeting(t){
-  const s = (t||"").toLowerCase().trim();
-  return greetingKeywords.some(k => s === k || s.startsWith(k + " "));
-}
+  const greetingKeywords = ["merhaba","selam","slm","hey","hi","hello","iyi günler","iyi akşamlar","günaydın"];
 
-function renderChoices(buttons){
-  return `
-    <div class="choice-wrap">
-      ${buttons.map(b => `
-        <button class="choice-btn ${b.secondary ? "secondary" : ""}"
-                onclick="onChoice(arguments[0], '${b.value}')">
-          ${b.label}
-        </button>
-      `).join("")}
-    </div>
-  `;
-}
-
-function botSay(text, choices=null){
-  const msg = choices ? (text + renderChoices(choices)) : text;
-  appendMessage(msg, "bot");
-}
-
-function userSay(text){
-  appendMessage(text, "user");
-}
-
-// İlk akış mesajı
-function startFlow(){
-  state = "askName";
-  botSay(
-    `Merhaba 👋 Ben Ebrar’ın Yapay Zekâ Asistanıyım.<br/><br/>
-     Sizinle daha iyi iletişim kurabilmem için isminizi öğrenebilir miyim?`,
-    [
-      { label: "Evet, ismimi paylaşayım", value: "NAME_YES" },
-      { label: "Hayır, isim vermeden devam", value: "NAME_NO", secondary:true }
-    ]
-  );
-}
-
-// Tanışma mesajı (isimli/ isimsiz)
-function goIntroChoice(){
-  state = "introChoice";
-  const hitap = userName ? `Tanıştığıma memnun oldum <b>${userName}</b> ☺️<br/>` : "";
-  botSay(
-    `${hitap}İsterseniz önce Ebrar’dan kısaca bahsedebilirim, sonra seçimlerinize göre devam ederiz.`,
-    [
-      { label: "Evet, önce Ebrar’dan bahset", value: "INTRO_YES" },
-      { label: "Hayır, direkt başlıklara geçelim", value: "INTRO_NO", secondary:true }
-    ]
-  );
-}
-
-function goMainMenu(){
-  state = "mainMenu";
-  botSay(
-    `Harika. Aşağıdaki başlıklardan birini seçerek ilerleyebiliriz (isterseniz serbest soru da sorabilirsiniz).`,
-    [
-      { label: "Ebrar Kimdir?", value: "MENU_PROFILE" },
-      { label: "Stajlar", value: "MENU_INTERNSHIPS" },
-      { label: "DevOps & Backend", value: "MENU_DEVOPS" },
-      { label: "Audit Otomasyonu", value: "MENU_AUDIT" },
-      { label: "Bitirme Projesi", value: "MENU_THESIS" },
-      { label: "Mülakat Soruları", value: "MENU_INTERVIEW", secondary:true }
-    ]
-  );
-}
-
-function goInternshipChoice(){
-  state = "internshipChoice";
-  botSay(
-    `Ebrar’ın stajlarından hangisiyle devam edelim?`,
-    [
-      { label: "BKM – DevOps", value: "INT_BKM" },
-      { label: "Pia – DevOps", value: "INT_PIA_DEVOPS" },
-      { label: "Pia – Full Stack", value: "INT_PIA_FS" },
-      { label: "Geri (Menü)", value: "BACK_MENU", secondary:true }
-    ]
-  );
-}
-   function replyPiaDevops(){
-  botSay(
-    `Pia’daki DevOps stajında Ebrar, kurumsal bir projede (Vodafone Türkiye) CI/CD ve container süreçlerine odaklandı.<br/><br/>
-    <b>Yaptıkları:</b>
-    - Jenkins ile CI/CD pipeline kurulumu
-    - Docker & Docker Compose ile servis yönetimi
-    - Nginx üzerinden frontend–backend entegrasyonu
-    - Microservice mimarisinin Docker Compose ile modellenmesi
-    - Image build & registry süreçleri (Harbor / Nexus)<br/><br/>
-    Bu staj, Ebrar’ın DevOps tarafında üretim ortamlarına daha yakın düşünmesini sağladı.`,
-    [
-      { label: "Teknik kazanımları", value: "PIA_DEVOPS_GAIN" },
-      { label: "BKM ile farkı neydi?", value: "PIA_DEVOPS_DIFF" },
-      { label: "Geri (Stajlar)", value: "BACK_INTERNSHIPS", secondary:true }
-    ]
-  );
-}
-
-function replyPiaFullstack(){
-  botSay(
-    `Pia’daki Full Stack stajı, Ebrar’ın yazılımın uçtan uca nasıl çalıştığını kavradığı dönem oldu.<br/><br/>
-    <b>Odak noktaları:</b>
-    - Java & OOP temelleri
-    - Backend–frontend etkileşimi
-    - HTML, CSS, JavaScript
-    - Tasarım desenleri ve yazılım mimarisi üzerine araştırmalar<br/><br/>
-    Bu staj, Ebrar’ın daha sonra DevOps tarafında geliştirme ekipleriyle çok daha rahat iletişim kurabilmesini sağladı.`,
-    [
-      { label: "DevOps’a katkısı ne oldu?", value: "PIA_FS_TO_DEVOPS" },
-      { label: "Geri (Stajlar)", value: "BACK_INTERNSHIPS", secondary:true }
-    ]
-  );
-}
-
-function replyProfile(){
-  botSay(
-    `Ebrar Albayrak, DevOps + backend geliştirme + denetim otomasyonu alanlarını birleştiren hibrit bir profildir.<br/><br/>
-     Docker, Jenkins, FastAPI, SQLAlchemy, PostgreSQL gibi teknolojilerle çalışırken; denetim tarafındaki örneklem ve raporlama süreçlerini de otomasyona taşıyan projeler geliştiriyor.`,
-    [
-      { label: "Güçlü yönleri", value: "PROFILE_STRENGTHS" },
-      { label: "Kariyer hedefleri", value: "PROFILE_GOALS" },
-      { label: "Geri (Menü)", value: "BACK_MENU", secondary:true }
-    ]
-  );
-}
-
-function replyBkm(){
-  botSay(
-    `BKM stajında Ebrar, DevOps ekibiyle birlikte çalışarak CI/CD ve container ekosistemine daha yakından temas etti.<br/><br/>
-     Jenkins pipeline’ları, Docker imajlama, Kubernetes/OpenShift mantığı, microservice yapıları ve temel networking konularında pratik yaptı.`,
-    [
-      { label: "Teknik olarak neler yaptı?", value: "BKM_TECH" },
-      { label: "Ekip çalışması / iletişim", value: "BKM_TEAM" },
-      { label: "En büyük kazanımı", value: "BKM_GAIN" },
-      { label: "Geri (Stajlar)", value: "BACK_INTERNSHIPS", secondary:true }
-    ]
-  );
-}
-
-function replyPia(){
-  botSay(
-    `Pia tarafında Ebrar’ın deneyimi daha karma bir yapıdaydı: hem geliştirme (full-stack) hem de DevOps bakışıyla süreçlere dokundu.<br/><br/>
-     Proje ihtiyaçlarına göre geliştirme + otomasyon + deployment gibi başlıklarda pratik yaptı.`,
-    [
-      { label: "Teknik olarak neler yaptı?", value: "PIA_TECH" },
-      { label: "Ekip çalışması / iletişim", value: "PIA_TEAM" },
-      { label: "En büyük kazanımı", value: "PIA_GAIN" },
-      { label: "Geri (Stajlar)", value: "BACK_INTERNSHIPS", secondary:true }
-    ]
-  );
-}
-
-
-function onChoice(ev, value){
-  // 1) Sadece chat balonu içindeki seçeneklerde disable uygula
-  const btn  = ev?.target;
-  const wrap = btn?.closest?.(".choice-wrap");
-  if (wrap){
-    wrap.querySelectorAll("button").forEach(b => b.disabled = true);
-  }
-
-  // 2) Kullanıcı balonu label
   const mapLabel = {
     INT_PIA_DEVOPS: "Pia – DevOps",
     INT_PIA_FS: "Pia – Full Stack",
@@ -835,8 +673,7 @@ function onChoice(ev, value){
     MENU_THESIS: "Bitirme Projesi",
     MENU_INTERVIEW: "Mülakat Soruları",
 
-    INT_BKM: "BKM",
-    INT_PIA: "Pia",
+    INT_BKM: "BKM – DevOps",
     BACK_MENU: "Geri (Menü)",
     BACK_INTERNSHIPS: "Geri (Stajlar)",
 
@@ -848,177 +685,11 @@ function onChoice(ev, value){
     BACK_DEVOPS: "Geri (DevOps)"
   };
 
-  userSay(mapLabel[value] || value);
-
-  // Staj seçimleri
-  if (value === "INT_PIA_DEVOPS"){ replyPiaDevops(); return; }
-  if (value === "INT_PIA_FS"){ replyPiaFullstack(); return; }
-
-  // DevOps alt menü / cevaplar
-  if (value === "MENU_DEVOPS"){ goDevopsMenu(); return; }
-  if (value === "BACK_DEVOPS"){ goDevopsMenu(); return; }
-
-  if (value === "DEVOPS_DOCKER"){
-    botSay(
-      `Ebrar Docker tarafında servisleri image’layıp environment’ları reproducible hale getirmeye odaklanır.<br/><br/>
-      <b>Tipik akış:</b> Dockerfile → build → registry → compose/k8s run.`,
-      [
-        { label:"CI/CD’ye geç", value:"DEVOPS_CICD" },
-        { label:"FastAPI’ye geç", value:"DEVOPS_FASTAPI" },
-        { label:"⬅︎ DevOps Menüsü", value:"BACK_DEVOPS", secondary:true },
-        { label:"⬆︎ Üst Menü", value:"BACK_MENU", secondary:true }
-      ]
-    );
-    return;
+  function isGreeting(t){
+    const s = (t||"").toLowerCase().trim();
+    return greetingKeywords.some(k => s === k || s.startsWith(k + " "));
   }
 
-  if (value === "DEVOPS_CICD"){
-    botSay(
-      `CI/CD tarafında odak: build–test–deploy akışını otomatikleştirmek.<br/><br/>
-      Jenkins’te PR → test/lint/scan, merge → build/push → deploy.`,
-      [
-        { label:"Docker’a geç", value:"DEVOPS_DOCKER" },
-        { label:"DB tarafı", value:"DEVOPS_DB" },
-        { label:"⬅︎ DevOps Menüsü", value:"BACK_DEVOPS", secondary:true },
-        { label:"⬆︎ Üst Menü", value:"BACK_MENU", secondary:true }
-      ]
-    );
-    return;
-  }
-
-  if (value === "DEVOPS_FASTAPI"){
-    botSay(
-      `FastAPI ile modüler API tasarımı + veri işleme akışları.<br/><br/>
-      Audit tool’da Excel/XML/PDF → pandas → örneklem + Word/Excel rapor üretimi.`,
-      [
-        { label:"DB & ORM", value:"DEVOPS_DB" },
-        { label:"Observability", value:"DEVOPS_OBS" },
-        { label:"⬅︎ DevOps Menüsü", value:"BACK_DEVOPS", secondary:true },
-        { label:"⬆︎ Üst Menü", value:"BACK_MENU", secondary:true }
-      ]
-    );
-    return;
-  }
-
-  if (value === "DEVOPS_DB"){
-    botSay(
-      `PostgreSQL + SQLAlchemy yaklaşımı.<br/><br/>
-      Şema/ilişki netliği, doğru indeksleme ve migration disiplini önemli.`,
-      [
-        { label:"FastAPI", value:"DEVOPS_FASTAPI" },
-        { label:"CI/CD", value:"DEVOPS_CICD" },
-        { label:"⬅︎ DevOps Menüsü", value:"BACK_DEVOPS", secondary:true },
-        { label:"⬆︎ Üst Menü", value:"BACK_MENU", secondary:true }
-      ]
-    );
-    return;
-  }
-
-  if (value === "DEVOPS_OBS"){
-    botSay(
-      `Amaç: “bozulduysa nerede/niye bozuldu?”yu hızlı görmek.<br/><br/>
-      Log formatı + temel metrikler (latency/error rate) iyi pratiklerdir.`,
-      [
-        { label:"CI/CD", value:"DEVOPS_CICD" },
-        { label:"Docker", value:"DEVOPS_DOCKER" },
-        { label:"⬅︎ DevOps Menüsü", value:"BACK_DEVOPS", secondary:true },
-        { label:"⬆︎ Üst Menü", value:"BACK_MENU", secondary:true }
-      ]
-    );
-    return;
-  }
-
-  // Diğer mevcut akışlar
-  if (value === "NAME_YES"){ state="awaitingName"; botSay("Harika 😊 İsminizi yazabilir misiniz?"); return; }
-  if (value === "NAME_NO"){ userName=null; goIntroChoice(); return; }
-  if (value === "INTRO_YES"){ botSay("Kısaca özetleyeyim..."); goMainMenu(); return; }
-  if (value === "INTRO_NO"){ goMainMenu(); return; }
-
-  if (value === "MENU_PROFILE"){ replyProfile(); return; }
-  if (value === "MENU_INTERNSHIPS"){ goInternshipChoice(); return; }
-  if (value === "INT_BKM"){ replyBkm(); return; }
-  if (value === "INT_PIA"){ replyPia(); return; }
-  if (value === "BACK_MENU"){ goMainMenu(); return; }
-  if (value === "BACK_INTERNSHIPS"){ goInternshipChoice(); return; }
-
-  if (value === "MENU_AUDIT"){ botSay("Audit otomasyonu bölümünde..."); return; }
-
-  if (value === "MENU_THESIS"){
-    botSay(
-      `Bitirme projesi: <b>Trade Center</b> — BIST100 ve kripto için algoritmik trading platformu.<br/><br/>
-       • Veri: TradingView + Yahoo Finance<br/>
-       • Strateji: RSI / Moving Average gibi indikatörlerle kural tabanlı karar mekanizması<br/>
-       • Risk: Stop-loss / take-profit<br/>
-       • Güvenlik: 2FA<br/>
-       • Test: Paper trading (gerçek para olmadan)`,
-      [
-        { label: "Mimariyi anlat", value: "THESIS_ARCH" },
-        { label: "Backend/DB detay", value: "THESIS_BACKEND" },
-        { label: "Test & doğrulama", value: "THESIS_TEST" },
-        { label: "Geri (Menü)", value: "BACK_MENU", secondary:true }
-      ]
-    );
-    return;
-  }
-
-  if (value === "THESIS_ARCH"){
-    botSay(
-      `Sistem 3 parçalı kurgulandı:<br/>
-       1) <b>Data Subsystem</b> (SQL Server + EF Core + migration)<br/>
-       2) <b>ASP.NET Core MVC Web App</b> (dashboard, servis katmanı, iş akışları)<br/>
-       3) <b>Python Bot Worker</b> (hesaplama + sinyal üretimi)`,
-      [
-        { label: "Backend/DB detay", value: "THESIS_BACKEND" },
-        { label: "Test & doğrulama", value: "THESIS_TEST" },
-        { label: "Geri (Menü)", value: "BACK_MENU", secondary:true }
-      ]
-    );
-    return;
-  }
-
-  if (value === "THESIS_BACKEND"){
-    botSay(
-      `Backend tarafında öne çıkanlar:<br/>
-       • SQL Server üzerinde kullanıcı/işlem/sinyal verisi<br/>
-       • EF Core ile migration ve şema evrimi<br/>
-       • MVC tarafında Controller + Service katmanı (iş kuralları / risk kontrolleri)<br/>
-       • Python worker ile ağır işlerin ayrıştırılması (modülerlik + ölçeklenebilirlik)`,
-      [
-        { label: "Mimariyi anlat", value: "THESIS_ARCH" },
-        { label: "Test & doğrulama", value: "THESIS_TEST" },
-        { label: "Geri (Menü)", value: "BACK_MENU", secondary:true }
-      ]
-    );
-    return;
-  }
-
-  if (value === "THESIS_TEST"){
-    botSay(
-      `Doğrulama yaklaşımı:<br/>
-       • Unit + senaryo testleri<br/>
-       • Paper trading ile canlı veride RSI bazlı sinyal testi (RSI<30 BUY, RSI>70 SELL)<br/>
-       • Her aksiyonun DB’ye yazılması + arayüzde gösterimi`,
-      [
-        { label: "Backend/DB detay", value: "THESIS_BACKEND" },
-        { label: "Mimariyi anlat", value: "THESIS_ARCH" },
-        { label: "Geri (Menü)", value: "BACK_MENU", secondary:true }
-      ]
-    );
-    return;
-  }
-
-  if (value === "MENU_INTERVIEW"){ botSay("Mülakat simülasyonu için..."); return; }
-}
-
-
-
-
-
-
-// Global’e aç
-window.onChoice = onChoice;
-window.startFlow = startFlow;
-  // 2) Mesaj balonu ekleme
   function appendMessage(text, type) {
     const msg = document.createElement("div");
     msg.className = "message " + type;
@@ -1027,36 +698,152 @@ window.startFlow = startFlow;
     chatEl.scrollTop = chatEl.scrollHeight;
   }
 
-  // 3) En iyi cevabı bulma (keyword skoru ile)
+  function renderChoices(buttons){
+    return `
+      <div class="choice-wrap">
+        ${buttons.map(b => `
+          <button class="choice-btn ${b.secondary ? "secondary" : ""}"
+                  onclick="onChoice(arguments[0], '${b.value}')">
+            ${b.label}
+          </button>
+        `).join("")}
+      </div>
+    `;
+  }
+
+  function botSay(text, choices=null){
+    const msg = choices ? (text + renderChoices(choices)) : text;
+    appendMessage(msg, "bot");
+  }
+
+  function userSay(text){
+    appendMessage(text, "user");
+  }
+
+  function startFlow(){
+    state = "askName";
+    botSay(
+      `Merhaba 👋 Ben Ebrar’ın Yapay Zekâ Asistanıyım.<br/><br/>
+      Sizinle daha iyi iletişim kurabilmem için isminizi öğrenebilir miyim?`,
+      [
+        { label: "Evet, ismimi paylaşayım", value: "NAME_YES" },
+        { label: "Hayır, isim vermeden devam", value: "NAME_NO", secondary:true }
+      ]
+    );
+  }
+
+  function goIntroChoice(){
+    state = "introChoice";
+    const hitap = userName ? `Tanıştığıma memnun oldum <b>${userName}</b> ☺️<br/>` : "";
+    botSay(
+      `${hitap}İsterseniz önce Ebrar’dan kısaca bahsedebilirim, sonra seçimlerinize göre devam ederiz.`,
+      [
+        { label: "Evet, önce Ebrar’dan bahset", value: "INTRO_YES" },
+        { label: "Hayır, direkt başlıklara geçelim", value: "INTRO_NO", secondary:true }
+      ]
+    );
+  }
+
+  function goMainMenu(){
+    state = "mainMenu";
+    botSay(
+      `Harika. Aşağıdaki başlıklardan birini seçerek ilerleyebiliriz (isterseniz serbest soru da sorabilirsiniz).`,
+      [
+        { label: "Ebrar Kimdir?", value: "MENU_PROFILE" },
+        { label: "Stajlar", value: "MENU_INTERNSHIPS" },
+        { label: "DevOps & Backend", value: "MENU_DEVOPS" },
+        { label: "Audit Otomasyonu", value: "MENU_AUDIT" },
+        { label: "Bitirme Projesi", value: "MENU_THESIS" },
+        { label: "Mülakat Soruları", value: "MENU_INTERVIEW", secondary:true }
+      ]
+    );
+  }
+
+  function goInternshipChoice(){
+    state = "internshipChoice";
+    botSay(
+      `Ebrar’ın stajlarından hangisiyle devam edelim?`,
+      [
+        { label: "BKM – DevOps", value: "INT_BKM" },
+        { label: "Pia – DevOps", value: "INT_PIA_DEVOPS" },
+        { label: "Pia – Full Stack", value: "INT_PIA_FS" },
+        { label: "Geri (Menü)", value: "BACK_MENU", secondary:true }
+      ]
+    );
+  }
+
+  function goDevopsMenu(){
+    state = "devopsMenu";
+    botSay(
+      `DevOps & Backend tarafında hangi başlıkla başlayalım?`,
+      [
+        { label: "Docker & Container", value: "DEVOPS_DOCKER" },
+        { label: "CI/CD (Jenkins)", value: "DEVOPS_CICD" },
+        { label: "FastAPI & Backend", value: "DEVOPS_FASTAPI" },
+        { label: "DB & SQLAlchemy", value: "DEVOPS_DB" },
+        { label: "Observability", value: "DEVOPS_OBS", secondary:true },
+        { label: "⬅︎ Üst Menü", value: "BACK_MENU", secondary:true }
+      ]
+    );
+  }
+
+  // (Senin reply* fonksiyonların burada kalabilir)
+  function replyPiaDevops(){ /* ... */ }
+  function replyPiaFullstack(){ /* ... */ }
+  function replyProfile(){ /* ... */ }
+  function replyBkm(){ /* ... */ }
+  function replyPia(){ /* ... */ }
+
+  // ✅ TEK onChoice kalsın
+  function onChoice(ev, value){
+    const btn  = ev?.target;
+    const wrap = btn?.closest?.(".choice-wrap");
+    if (wrap) wrap.querySelectorAll("button").forEach(b => b.disabled = true);
+
+    userSay(mapLabel[value] || value);
+
+    if (value === "NAME_YES"){ state="awaitingName"; botSay("Harika 😊 İsminizi yazabilir misiniz?"); return; }
+    if (value === "NAME_NO"){ userName=null; goIntroChoice(); return; }
+    if (value === "INTRO_YES"){ botSay("Kısaca özetleyeyim..."); goMainMenu(); return; }
+    if (value === "INTRO_NO"){ goMainMenu(); return; }
+
+    if (value === "BACK_MENU"){ goMainMenu(); return; }
+    if (value === "MENU_DEVOPS"){ goDevopsMenu(); return; }
+    if (value === "BACK_DEVOPS"){ goDevopsMenu(); return; }
+
+    if (value === "MENU_INTERNSHIPS"){ goInternshipChoice(); return; }
+    if (value === "INT_PIA_DEVOPS"){ replyPiaDevops(); return; }
+    if (value === "INT_PIA_FS"){ replyPiaFullstack(); return; }
+    if (value === "INT_BKM"){ replyBkm(); return; }
+
+    // ... diğer menülerin if blokları aynı şekilde devam eder
+  }
+
+  window.onChoice = onChoice;
+  window.sendMessage = sendMessage;
+  window.fillQuick = fillQuick;
+  window.goMainMenu = goMainMenu;
+  window.goInternshipChoice = goInternshipChoice;
+
   function findBestAnswer(userText) {
     const lower = userText.toLowerCase();
     let best = null;
 
     for (const item of knowledgeBase) {
       let score = 0;
-      for (const kw of item.keywords) {
-        if (lower.includes(kw.toLowerCase())) {
-          score++;
-        }
-      }
-      if (score > 0 && (!best || score > best.score)) {
-        best = { ...item, score };
-      }
+      for (const kw of item.keywords) if (lower.includes(kw.toLowerCase())) score++;
+      if (score > 0 && (!best || score > best.score)) best = { ...item, score };
     }
-
     return best ? best.answer : defaultAnswer;
   }
 
-  // 4) Mesaj gönderme – ARTIK API YOK, TAMAMEN LOCAL
   function sendMessage() {
     const text = inputEl.value.trim();
     if (!text) return;
 
-    // kullanıcı balonu
     appendMessage(text, "user");
     inputEl.value = "";
 
-    // küçük bir "yazıyor..." efekti
     const loading = document.createElement("div");
     loading.className = "message bot";
     loading.textContent = "Yazıyor...";
@@ -1064,50 +851,25 @@ window.startFlow = startFlow;
     chatEl.scrollTop = chatEl.scrollHeight;
 
     setTimeout(() => {
-  chatEl.removeChild(loading);
+      chatEl.removeChild(loading);
 
-  // 1) İsim bekliyorsak isim olarak al
-  if (state === "awaitingName") {
-    userName = text.trim();
-    botSay(`Tanıştığıma memnun oldum <b>${userName}</b> ☺️`);
-    goIntroChoice();
-    return;
+      if (state === "awaitingName") {
+        userName = text.trim();
+        botSay(`Tanıştığıma memnun oldum <b>${userName}</b> ☺️`);
+        goIntroChoice();
+        return;
+      }
+
+      if (isGreeting(text) && state === "idle") {
+        startFlow();
+        return;
+      }
+
+      const answer = findBestAnswer(text);
+      appendMessage(answer, "bot");
+    }, 400);
   }
 
-  // 2) Selamlaşma geldiyse akışı başlat
- if (isGreeting(text) && state === "idle") {
-  startFlow();
-  return;
-}
-
-  // 3) Flow dışı serbest sorular -> knowledgeBase
-  const answer = findBestAnswer(text);
-  appendMessage(answer, "bot");
-}, 400);
-  }
-
-  // Quick question butonları
-  function fillQuick(text) {
-    inputEl.value = text;
-    inputEl.focus();
-  }
-
-  function goDevopsMenu(){
-  state = "devopsMenu";
-  botSay(
-    `DevOps & Backend tarafında hangi başlıkla başlayalım?`,
-    [
-      { label: "Docker & Container", value: "DEVOPS_DOCKER" },
-      { label: "CI/CD (Jenkins)", value: "DEVOPS_CICD" },
-      { label: "FastAPI & Backend", value: "DEVOPS_FASTAPI" },
-      { label: "DB & SQLAlchemy", value: "DEVOPS_DB" },
-      { label: "Observability", value: "DEVOPS_OBS", secondary:true },
-      { label: "⬅︎ Üst Menü", value: "BACK_MENU", secondary:true }
-    ]
-  );
-}
-
-  // Enter ile gönderme
   inputEl.addEventListener("keydown", function (e) {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -1115,13 +877,8 @@ window.startFlow = startFlow;
     }
   });
 
-  // Butonun erişebilmesi için global'e at
-  window.sendMessage = sendMessage;
-  window.fillQuick = fillQuick;
-  window.goMainMenu = goMainMenu;
-  window.goInternshipChoice = goInternshipChoice;
-  // Sayfa açılınca akış başlat
-startFlow();
+  // Sayfa açılınca tek sefer başlat
+  startFlow();
 </script>
 </body>
 </html>
