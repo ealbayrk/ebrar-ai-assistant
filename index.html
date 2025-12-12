@@ -579,18 +579,47 @@ CI/CD pipeline’larında her servisi ayrı image olarak paketleyip,
   
 Audit aracı projesinde de FastAPI backend'i ve PostgreSQL’i container’lar halinde koşturup hem lokal hem de sunucu ortamında reproducible bir kurulum sağlamış durumda.`
     },
+
     {
-      id: "ci_cd_jenkins",
-      keywords: ["jenkins", "ci/cd", "pipeline", "gitlab", "github actions", "deploy"],
-      answer: `Ebrar’ın CI/CD tecrübesi ağırlıklı olarak Jenkins ve Git tabanlı workflow’lar etrafında şekilleniyor.
-  
-Temel yaklaşımı:
-- PR açıldığında otomatik test, lint ve security scan’lerin çalışması,
+  id: "thesis_tradecenter",
+  keywords: ["bitirme", "tez", "thesis", "trade center", "tradecenter", "algoritmik", "trading", "bist", "bist100", "yahoo finance", "tradingview", "rsi", "moving average", "2fa", "asp.net", "mvc", "sql server", "bot worker"],
+  answer: `Bitirme projesi: <b>Trade Center</b> — BIST100 ve kripto piyasaları için algoritmik al-sat kararlarını otomatikleştiren bir platform.<br/><br/>
+  <b>Amaç:</b> Zaman baskısı ve duygusal kararların etkisini azaltıp, hızlı ve sistematik işlem kararları üretebilmek.<br/>
+  <b>Veri:</b> Yahoo Finance + TradingView üzerinden gerçek zamanlı akış.<br/>
+  <b>Karar Mekanizması:</b> RSI ve hareketli ortalamalar gibi teknik indikatörler ile kural tabanlı stratejiler.<br/>
+  <b>Risk Yönetimi:</b> Stop-loss / take-profit.<br/>
+  <b>Güvenlik:</b> 2FA entegrasyonu.<br/>
+  <b>Test:</b> Paper trading ile strateji doğrulama; sinyallerin DB’ye yazılması ve arayüzde gösterimi.<br/><br/>
+  <b>Mimari (3 bileşen):</b>
+  • Data Subsystem: SQL Server + EF Core + migration<br/>
+  • Web App: ASP.NET Core MVC (dashboard, order workflow, servis katmanı)<br/>
+  • Worker: Python tabanlı bot (hesaplama/sinyal üretimi)<br/><br/>
+  Not: Yüksek frekans hedefi veri sağlayıcı limitleri nedeniyle kısıtlı kalmış; ancak mimari genişletilebilir.`
+}
+    {
+  {
+  id: "ci_cd_jenkins",
+  keywords: ["jenkins", "ci/cd", "pipeline", "gitlab", "github actions", "deploy"],
+  answer: `Ebrar’ın CI/CD tecrübesi ağırlıklı olarak Jenkins ve Git tabanlı workflow’lar etrafında şekilleniyor.
+
+<b>BKM DevOps stajında:</b>
+- Jenkins üzerinde pipeline mantığını öğrenip denemeler yaptı,
+- Bitbucket ile entegre çalışan build süreçlerini inceledi,
+- Maven/Gradle tabanlı projelerde build çıktılarının alınması,
+- Dockerfile kullanarak uygulamaların image haline getirilmesi,
+- Oluşan image’ların container olarak çalıştırılması ve
+- Kubernetes / OpenShift ortamlarına deploy mantığını deneyimledi.
+
+<b>Genel CI/CD yaklaşımı:</b>
+- PR açıldığında otomatik test, lint ve temel kontrollerin çalışması,
 - main branch’e merge sonrası docker image build + registry push,
-- uygun ortama (örn. test/production) otomatik deployment.
-  
-Ayrıca, audit aracı projesinde de benzer mantıkla pipeline tasarlayarak hem backend hem de frontend için otomatik build & deploy süreçleri kurgulamış durumda.`
-    },
+- ortam bazlı (test / prod) deploy akışının otomatikleştirilmesi.
+
+<b>Ayrıca:</b>
+Audit automation projesinde de benzer bir mantıkla backend (FastAPI) ve frontend için
+otomatik build & deploy süreçlerini kurgulayarak,
+tekrarlanabilir ve izlenebilir bir pipeline yaklaşımı uyguladı.`
+},
     {
       id: "backend_stack",
       keywords: ["backend", "fastapi", "python", "sqlalchemy", "postgres", "api"],
@@ -660,6 +689,8 @@ Detaylı ücret beklentisi ve başlangıç tarihi için Ebrar ile doğrudan Link
 Teknik detay veya iş birliği için bu kanallar üzerinden rahatlıkla ulaşabilirsiniz.`
     }
   ];
+
+  
 
   const defaultAnswer =
     "Bu soruyla ilgili hazır bir cevabım yok gibi görünüyor. Ebrar yine de muhtemelen bunu konuşmayı çok ister 🙂 LinkedIn üzerinden ulaşabilirsiniz: https://www.linkedin.com/in/ebrar-albayrak-585222201";
@@ -911,7 +942,69 @@ function onChoice(ev, value){
   if (value === "BACK_INTERNSHIPS"){ goInternshipChoice(); return; }
 
   if (value === "MENU_AUDIT"){ botSay("Audit otomasyonu bölümünde..."); return; }
-  if (value === "MENU_THESIS"){ botSay("Bitirme projesi tarafında..."); return; }
+  if (value === "MENU_THESIS"){
+  botSay(
+    `Bitirme projesi: <b>Trade Center</b> — BIST100 ve kripto için algoritmik trading platformu.<br/><br/>
+     • Veri: TradingView + Yahoo Finance<br/>
+     • Strateji: RSI / Moving Average gibi indikatörlerle kural tabanlı karar mekanizması<br/>
+     • Risk: Stop-loss / take-profit<br/>
+     • Güvenlik: 2FA<br/>
+     • Test: Paper trading (gerçek para olmadan)`,
+    [
+      { label: "Mimariyi anlat", value: "THESIS_ARCH" },
+      { label: "Backend/DB detay", value: "THESIS_BACKEND" },
+      { label: "Test & doğrulama", value: "THESIS_TEST" },
+      { label: "Geri (Menü)", value: "BACK_MENU", secondary:true }
+    ]
+  );
+  return;
+}
+
+if (value === "THESIS_ARCH"){
+  botSay(
+    `Sistem 3 parçalı kurgulandı:<br/>
+     1) <b>Data Subsystem</b> (SQL Server + EF Core + migration)<br/>
+     2) <b>ASP.NET Core MVC Web App</b> (dashboard, servis katmanı, iş akışları)<br/>
+     3) <b>Python Bot Worker</b> (hesaplama + sinyal üretimi)`,
+    [
+      { label: "Backend/DB detay", value: "THESIS_BACKEND" },
+      { label: "Test & doğrulama", value: "THESIS_TEST" },
+      { label: "Geri (Menü)", value: "BACK_MENU", secondary:true }
+    ]
+  );
+  return;
+}
+
+if (value === "THESIS_BACKEND"){
+  botSay(
+    `Backend tarafında öne çıkanlar:<br/>
+     • SQL Server üzerinde kullanıcı/işlem/sinyal verisi<br/>
+     • EF Core ile migration ve şema evrimi<br/>
+     • MVC tarafında Controller + Service katmanı (iş kuralları / risk kontrolleri)<br/>
+     • Python worker ile ağır işlerin ayrıştırılması (modülerlik + ölçeklenebilirlik)`,
+    [
+      { label: "Mimariyi anlat", value: "THESIS_ARCH" },
+      { label: "Test & doğrulama", value: "THESIS_TEST" },
+      { label: "Geri (Menü)", value: "BACK_MENU", secondary:true }
+    ]
+  );
+  return;
+}
+
+if (value === "THESIS_TEST"){
+  botSay(
+    `Doğrulama yaklaşımı:<br/>
+     • Unit + senaryo testleri<br/>
+     • Paper trading ile canlı veride RSI bazlı sinyal testi (RSI<30 BUY, RSI>70 SELL)<br/>
+     • Her aksiyonun DB’ye yazılması + arayüzde gösterimi`,
+    [
+      { label: "Backend/DB detay", value: "THESIS_BACKEND" },
+      { label: "Mimariyi anlat", value: "THESIS_ARCH" },
+      { label: "Geri (Menü)", value: "BACK_MENU", secondary:true }
+    ]
+  );
+  return;
+}
   if (value === "MENU_INTERVIEW"){ botSay("Mülakat simülasyonu için..."); return; }
 }
 
