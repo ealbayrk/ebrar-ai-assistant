@@ -814,6 +814,10 @@ Detay için LinkedIn üzerinden iletişim en sağlıklısıdır.`
     if (value === "BACK_DEVOPS"){ goDevopsMenu(); return; }
 
     if (value === "MENU_INTERNSHIPS"){ goInternshipChoice(); return; }
+    if (value === "MENU_AUDIT"){ 
+  botSay("Audit otomasyonu menüsünü birazdan bağlayalım 🙂 Şimdilik serbest soru sorabilirsin."); 
+  return; 
+}
 
 
     if (value === "PROFILE_STRENGTHS"){
@@ -863,6 +867,11 @@ Detay için LinkedIn üzerinden iletişim en sağlıklısıdır.`
     }
     return best ? best.answer : defaultAnswer;
   }
+  
+  function fillQuick(text){
+  inputEl.value = text;
+  inputEl.focus();
+}
 
   function sendMessage() {
     const text = inputEl.value.trim();
