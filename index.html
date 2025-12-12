@@ -561,6 +561,8 @@
   </div>
 </div>
 
+  
+
 <script>
   const chatEl = document.getElementById("chat");
   const inputEl = document.getElementById("userInput");
@@ -794,6 +796,81 @@ function onChoice(value){
   const wrap = btn?.closest(".choice-wrap");
   if (wrap) {
     wrap.querySelectorAll("button").forEach(b => b.disabled = true);
+
+    if (value === "DEVOPS_DOCKER"){
+  botSay(
+    `Ebrar, Docker tarafında servisleri image’layıp environment’ları reproducible hale getirmeye odaklanır.<br/><br/>
+     <b>Tipik akış:</b> Dockerfile → image build → registry push → compose/k8s ile run.<br/>
+     Audit tool’da FastAPI + PostgreSQL’i container’lar halinde çalıştırarak yerelde ve sunucuda aynı davranışı hedefler.`,
+    [
+      { label: "CI/CD’ye geç", value: "DEVOPS_CICD" },
+      { label: "FastAPI’ye geç", value: "DEVOPS_FASTAPI" },
+      { label: "⬅︎ DevOps Menüsü", value: "BACK_DEVOPS", secondary:true },
+      { label: "⬆︎ Üst Menü", value: "BACK_MENU", secondary:true }
+    ]
+  );
+  return;
+}
+
+if (value === "DEVOPS_CICD"){
+  botSay(
+    `CI/CD tarafında odak: build–test–deploy akışını otomatikleştirmek.<br/><br/>
+     <b>Jenkins örneği:</b> PR’da test/lint + security scan → merge sonrası docker build/push → ortam bazlı deploy.<br/>
+     Amaç: her release’in izlenebilir ve tekrarlanabilir olması.`,
+    [
+      { label: "Docker’a geç", value: "DEVOPS_DOCKER" },
+      { label: "DB tarafı", value: "DEVOPS_DB" },
+      { label: "⬅︎ DevOps Menüsü", value: "BACK_DEVOPS", secondary:true },
+      { label: "⬆︎ Üst Menü", value: "BACK_MENU", secondary:true }
+    ]
+  );
+  return;
+}
+
+if (value === "DEVOPS_FASTAPI"){
+  botSay(
+    `Backend tarafında FastAPI ile modüler API tasarımı ve veri işleme akışları öne çıkıyor.<br/><br/>
+     Audit tool’da Excel/XML/PDF gibi kaynaklardan veri alıp pandas ile işleyip; örneklem + rapor çıktısını Word/Excel olarak üreten bir servis yapısı kurdu.`,
+    [
+      { label: "DB & ORM", value: "DEVOPS_DB" },
+      { label: "Observability", value: "DEVOPS_OBS" },
+      { label: "⬅︎ DevOps Menüsü", value: "BACK_DEVOPS", secondary:true },
+      { label: "⬆︎ Üst Menü", value: "BACK_MENU", secondary:true }
+    ]
+  );
+  return;
+}
+
+if (value === "DEVOPS_DB"){
+  botSay(
+    `Veritabanı tarafında PostgreSQL + SQLAlchemy yaklaşımı var.<br/><br/>
+     <b>Temel prensip:</b> şema/ilişki netliği + doğru indeksleme + migration disiplini.<br/>
+     API katmanında transaction yönetimi ve hata senaryolarında kontrollü rollback önemli.`,
+    [
+      { label: "FastAPI", value: "DEVOPS_FASTAPI" },
+      { label: "CI/CD", value: "DEVOPS_CICD" },
+      { label: "⬅︎ DevOps Menüsü", value: "BACK_DEVOPS", secondary:true },
+      { label: "⬆︎ Üst Menü", value: "BACK_MENU", secondary:true }
+    ]
+  );
+  return;
+}
+
+if (value === "DEVOPS_OBS"){
+  botSay(
+    `Observability tarafında amaç: “bir şey bozulduğunda nerede/niye bozulduğunu hızlı görmek”.<br/><br/>
+     Log’ların anlamlı formatta tutulması, temel metriklerin izlenmesi (latency, error rate) ve kritik endpoint’lerde izlenebilirlik iyi pratiklerdir.`,
+    [
+      { label: "CI/CD", value: "DEVOPS_CICD" },
+      { label: "Docker", value: "DEVOPS_DOCKER" },
+      { label: "⬅︎ DevOps Menüsü", value: "BACK_DEVOPS", secondary:true },
+      { label: "⬆︎ Üst Menü", value: "BACK_MENU", secondary:true }
+    ]
+  );
+  return;
+}
+
+if (value === "BACK_DEVOPS"){ goDevopsMenu(); return; }
   }
   // kullanıcı balonu gibi görünsün
   const mapLabel = {
@@ -882,7 +959,7 @@ function onChoice(value){
   }
 
   // Diğer menüler (şimdilik)
-  if (value === "MENU_DEVOPS"){ botSay("DevOps & Backend kısmını isterseniz Docker, CI/CD veya FastAPI üzerinden adım adım açabilirim. Serbest soru da sorabilirsiniz."); return; }
+  if (value === "MENU_DEVOPS"){ goDevopsMenu(); return; }
   if (value === "MENU_AUDIT"){ botSay("Audit otomasyonu bölümünde örneklem motoru, rapor üretimi (Word/Excel) ve materiality yaklaşımını anlatabilirim. Hangi taraftan başlayalım?"); return; }
   if (value === "MENU_THESIS"){ botSay("Bitirme projesi tarafında: amaç, roller, kullanılan teknolojiler ve sonuçlar şeklinde ilerleyebiliriz. Hangisini istersiniz?"); return; }
   if (value === "MENU_INTERVIEW"){ botSay("Mülakat simülasyonu için soft-skill mi teknik mi başlamak istersiniz?"); return; }
@@ -964,6 +1041,21 @@ window.startFlow = startFlow;
     inputEl.value = text;
     inputEl.focus();
   }
+
+  function goDevopsMenu(){
+  state = "devopsMenu";
+  botSay(
+    `DevOps & Backend tarafında hangi başlıkla başlayalım?`,
+    [
+      { label: "Docker & Container", value: "DEVOPS_DOCKER" },
+      { label: "CI/CD (Jenkins)", value: "DEVOPS_CICD" },
+      { label: "FastAPI & Backend", value: "DEVOPS_FASTAPI" },
+      { label: "DB & SQLAlchemy", value: "DEVOPS_DB" },
+      { label: "Observability", value: "DEVOPS_OBS", secondary:true },
+      { label: "⬅︎ Üst Menü", value: "BACK_MENU", secondary:true }
+    ]
+  );
+}
 
   // Enter ile gönderme
   inputEl.addEventListener("keydown", function (e) {
