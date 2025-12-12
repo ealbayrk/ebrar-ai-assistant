@@ -179,6 +179,12 @@
     cursor:pointer;
     transition: 0.15s ease;
   }
+    .choice-btn:disabled{
+  opacity: 0.45;
+  cursor: default;
+  transform: none !important;
+  box-shadow: none !important;
+}
   
   .choice-btn:hover{
     border-color: var(--accent);
@@ -441,13 +447,7 @@
         <div class="pill"><span class="pill-dot"></span> Audit Automation · Data Workflows</div>
       </div>
 
-      <div id="chat" class="chatbox">
-        <div class="message bot">
-          Merhaba 👋 Ben Ebrar’ın Yapay Zekâ Asistanıyım.<br /><br />
-          Ebrar’ın DevOps projeleri, backend deneyimi, kullandığı teknolojiler ya da
-          bağımsız denetim tarafındaki otomasyon çalışmaları hakkında sorular sorabilirsiniz.
-        </div>
-      </div>
+     
 
       <div class="input-area">
         <div class="input-wrapper">
@@ -755,6 +755,11 @@ function replyPia(){
 
 // Buton tıklanınca çalışır
 function onChoice(value){
+   const btn = event?.target;
+  const wrap = btn?.closest(".choice-wrap");
+  if (wrap) {
+    wrap.querySelectorAll("button").forEach(b => b.disabled = true);
+  }
   // kullanıcı balonu gibi görünsün
   const mapLabel = {
     NAME_YES: "Evet, ismimi paylaşayım",
@@ -908,10 +913,10 @@ window.startFlow = startFlow;
   }
 
   // 2) Selamlaşma geldiyse akışı başlat
-  if (isGreeting(text)) {
-    startFlow();
-    return;
-  }
+ if (isGreeting(text) && state === "idle") {
+  startFlow();
+  return;
+}
 
   // 3) Flow dışı serbest sorular -> knowledgeBase
   const answer = findBestAnswer(text);
