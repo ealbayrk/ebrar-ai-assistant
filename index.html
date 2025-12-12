@@ -160,6 +160,36 @@
       max-width: 78%;
       position: relative;
     }
+  
+      /* Chat balonu içinde seçenekler */
+  .choice-wrap{
+    margin-top:10px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  
+  .choice-btn{
+    border-radius:999px;
+    padding:8px 12px;
+    border:1px solid rgba(148, 163, 184, 0.55);
+    background: rgba(15, 23, 42, 0.85);
+    color: var(--text-main);
+    font-size: 12px;
+    cursor:pointer;
+    transition: 0.15s ease;
+  }
+  
+  .choice-btn:hover{
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(249,115,22,0.12);
+    transform: translateY(-1px);
+  }
+  
+  .choice-btn.secondary{
+    border-style:dashed;
+    color: var(--text-muted);
+  }
 
     .bot {
       align-self: flex-start;
@@ -596,12 +626,236 @@ Teknik detay veya iş birliği için bu kanallar üzerinden rahatlıkla ulaşabi
 
   const defaultAnswer =
     "Bu soruyla ilgili hazır bir cevabım yok gibi görünüyor. Ebrar yine de muhtemelen bunu konuşmayı çok ister 🙂 LinkedIn üzerinden ulaşabilirsiniz: https://www.linkedin.com/in/ebrar-albayrak-585222201";
+// =====================
+// FLOW (AKIŞ) MOTORU
+// =====================
+let state = "idle"; // idle | askName | awaitingName | introChoice | mainMenu | internshipChoice
+let userName = null;
 
+const greetingKeywords = ["merhaba","selam","slm","hey","hi","hello","iyi günler","iyi akşamlar","günaydın"];
+
+function isGreeting(t){
+  const s = (t||"").toLowerCase().trim();
+  return greetingKeywords.some(k => s === k || s.startsWith(k + " "));
+}
+
+function renderChoices(buttons){
+  // buttons: [{label, value, secondary}]
+  const html = `
+    <div class="choice-wrap">
+      ${buttons.map(b => `
+        <button class="choice-btn ${b.secondary ? "secondary" : ""}" onclick="onChoice('${b.value}')">
+          ${b.label}
+        </button>
+      `).join("")}
+    </div>
+  `;
+  return html;
+}
+
+function botSay(text, choices=null){
+  const msg = choices ? (text + renderChoices(choices)) : text;
+  appendMessage(msg, "bot");
+}
+
+function userSay(text){
+  appendMessage(text, "user");
+}
+
+// İlk akış mesajı
+function startFlow(){
+  state = "askName";
+  botSay(
+    `Merhaba 👋 Ben Ebrar’ın Yapay Zekâ Asistanıyım.<br/><br/>
+     Sizinle daha iyi iletişim kurabilmem için isminizi öğrenebilir miyim?`,
+    [
+      { label: "Evet, ismimi paylaşayım", value: "NAME_YES" },
+      { label: "Hayır, isim vermeden devam", value: "NAME_NO", secondary:true }
+    ]
+  );
+}
+
+// Tanışma mesajı (isimli/ isimsiz)
+function goIntroChoice(){
+  state = "introChoice";
+  const hitap = userName ? `Tanıştığıma memnun oldum <b>${userName}</b> ☺️<br/>` : "";
+  botSay(
+    `${hitap}İsterseniz önce Ebrar’dan kısaca bahsedebilirim, sonra seçimlerinize göre devam ederiz.`,
+    [
+      { label: "Evet, önce Ebrar’dan bahset", value: "INTRO_YES" },
+      { label: "Hayır, direkt başlıklara geçelim", value: "INTRO_NO", secondary:true }
+    ]
+  );
+}
+
+function goMainMenu(){
+  state = "mainMenu";
+  botSay(
+    `Harika. Aşağıdaki başlıklardan birini seçerek ilerleyebiliriz (isterseniz serbest soru da sorabilirsiniz).`,
+    [
+      { label: "Ebrar Kimdir?", value: "MENU_PROFILE" },
+      { label: "Stajlar", value: "MENU_INTERNSHIPS" },
+      { label: "DevOps & Backend", value: "MENU_DEVOPS" },
+      { label: "Audit Otomasyonu", value: "MENU_AUDIT" },
+      { label: "Bitirme Projesi", value: "MENU_THESIS" },
+      { label: "Mülakat Soruları", value: "MENU_INTERVIEW", secondary:true }
+    ]
+  );
+}
+
+function goInternshipChoice(){
+  state = "internshipChoice";
+  botSay(
+    `Ebrar’ın stajlarından hangisiyle devam edelim?`,
+    [
+      { label: "BKM", value: "INT_BKM" },
+      { label: "Pia", value: "INT_PIA" },
+      { label: "Geri (Menü)", value: "BACK_MENU", secondary:true }
+    ]
+  );
+}
+
+function replyProfile(){
+  botSay(
+    `Ebrar Albayrak, DevOps + backend geliştirme + denetim otomasyonu alanlarını birleştiren hibrit bir profildir.<br/><br/>
+     Docker, Jenkins, FastAPI, SQLAlchemy, PostgreSQL gibi teknolojilerle çalışırken; denetim tarafındaki örneklem ve raporlama süreçlerini de otomasyona taşıyan projeler geliştiriyor.`,
+    [
+      { label: "Güçlü yönleri", value: "PROFILE_STRENGTHS" },
+      { label: "Kariyer hedefleri", value: "PROFILE_GOALS" },
+      { label: "Geri (Menü)", value: "BACK_MENU", secondary:true }
+    ]
+  );
+}
+
+function replyBkm(){
+  botSay(
+    `BKM stajında Ebrar, DevOps ekibiyle birlikte çalışarak CI/CD ve container ekosistemine daha yakından temas etti.<br/><br/>
+     Jenkins pipeline’ları, Docker imajlama, Kubernetes/OpenShift mantığı, microservice yapıları ve temel networking konularında pratik yaptı.`,
+    [
+      { label: "Teknik olarak neler yaptı?", value: "BKM_TECH" },
+      { label: "Ekip çalışması / iletişim", value: "BKM_TEAM" },
+      { label: "En büyük kazanımı", value: "BKM_GAIN" },
+      { label: "Geri (Stajlar)", value: "BACK_INTERNSHIPS", secondary:true }
+    ]
+  );
+}
+
+function replyPia(){
+  botSay(
+    `Pia tarafında Ebrar’ın deneyimi daha karma bir yapıdaydı: hem geliştirme (full-stack) hem de DevOps bakışıyla süreçlere dokundu.<br/><br/>
+     Proje ihtiyaçlarına göre geliştirme + otomasyon + deployment gibi başlıklarda pratik yaptı.`,
+    [
+      { label: "Teknik olarak neler yaptı?", value: "PIA_TECH" },
+      { label: "Ekip çalışması / iletişim", value: "PIA_TEAM" },
+      { label: "En büyük kazanımı", value: "PIA_GAIN" },
+      { label: "Geri (Stajlar)", value: "BACK_INTERNSHIPS", secondary:true }
+    ]
+  );
+}
+
+// Buton tıklanınca çalışır
+function onChoice(value){
+  // kullanıcı balonu gibi görünsün
+  const mapLabel = {
+    NAME_YES: "Evet, ismimi paylaşayım",
+    NAME_NO: "Hayır, isim vermeden devam",
+    INTRO_YES: "Evet, önce Ebrar’dan bahset",
+    INTRO_NO: "Hayır, direkt başlıklara geçelim",
+    MENU_PROFILE: "Ebrar Kimdir?",
+    MENU_INTERNSHIPS: "Stajlar",
+    MENU_DEVOPS: "DevOps & Backend",
+    MENU_AUDIT: "Audit Otomasyonu",
+    MENU_THESIS: "Bitirme Projesi",
+    MENU_INTERVIEW: "Mülakat Soruları",
+    INT_BKM: "BKM",
+    INT_PIA: "Pia",
+    BACK_MENU: "Geri (Menü)",
+    BACK_INTERNSHIPS: "Geri (Stajlar)",
+    PROFILE_STRENGTHS: "Güçlü yönleri",
+    PROFILE_GOALS: "Kariyer hedefleri",
+    BKM_TECH: "Teknik olarak neler yaptı?",
+    BKM_TEAM: "Ekip çalışması / iletişim",
+    BKM_GAIN: "En büyük kazanımı",
+    PIA_TECH: "Teknik olarak neler yaptı?",
+    PIA_TEAM: "Ekip çalışması / iletişim",
+    PIA_GAIN: "En büyük kazanımı"
+  };
+
+  userSay(mapLabel[value] || value);
+
+  // yönlendirme
+  if (value === "NAME_YES"){
+    state = "awaitingName";
+    botSay("Harika 😊 İsminizi yazabilir misiniz?");
+    return;
+  }
+
+  if (value === "NAME_NO"){
+    userName = null;
+    goIntroChoice();
+    return;
+  }
+
+  if (value === "INTRO_YES"){
+    botSay(
+      `Kısaca özetleyeyim:<br/><br/>
+       Ebrar; DevOps, backend geliştirme ve denetim otomasyonu kesişiminde çalışan hibrit bir profildir. Özellikle süreçleri otomasyona taşıyıp tekrarlanabilir hale getirmeyi sever.`
+    );
+    goMainMenu();
+    return;
+  }
+
+  if (value === "INTRO_NO"){
+    goMainMenu();
+    return;
+  }
+
+  if (value === "MENU_PROFILE"){ replyProfile(); return; }
+  if (value === "MENU_INTERNSHIPS"){ goInternshipChoice(); return; }
+
+  if (value === "INT_BKM"){ replyBkm(); return; }
+  if (value === "INT_PIA"){ replyPia(); return; }
+
+  if (value === "BACK_MENU"){ goMainMenu(); return; }
+  if (value === "BACK_INTERNSHIPS"){ goInternshipChoice(); return; }
+
+  if (value === "PROFILE_STRENGTHS"){
+    botSay("Ebrar’ın güçlü yanları: hızlı öğrenme, sistematik çalışma, dokümantasyon alışkanlığı ve teknik konuyu iş ihtiyacıyla bağlayabilmesi. Ayrıca ekip içinde iletişimi net ve düzenlidir.");
+    return;
+  }
+  if (value === "PROFILE_GOALS"){
+    botSay("Kariyer hedefi: DevOps & backend tarafında üretim sistemlerinde sorumluluk alırken, denetim/finans süreçlerini otomatikleştiren ürünleşebilir çözümler geliştirmeye devam etmek.");
+    return;
+  }
+
+  if (value === "BKM_TECH"){
+    botSay("Teknik tarafta CI/CD mantığı, Docker imajlama, pipeline akışları, Kubernetes/OpenShift kavramları ve temel networking konularında pratik yaptı; araştırma + dokümantasyon tarafını da güçlü tuttu.");
+    return;
+  }
+  if (value === "BKM_TEAM"){
+    botSay("Ekip çalışmasında: toplantılara düzenli katılım, net soru sorma, yapılan işi dokümante etme ve geri bildirim alma/verme tarafı öne çıkıyor.");
+    return;
+  }
+  if (value === "BKM_GAIN"){
+    botSay("En büyük kazanımı: DevOps süreçlerinin uçtan uca mantığını (build→test→deploy) daha sistematik görmek ve container ekosisteminde daha güvenli/tekrarlanabilir kurulum alışkanlığı kazanmak.");
+    return;
+  }
+
+  // Diğer menüler (şimdilik)
+  if (value === "MENU_DEVOPS"){ botSay("DevOps & Backend kısmını isterseniz Docker, CI/CD veya FastAPI üzerinden adım adım açabilirim. Serbest soru da sorabilirsiniz."); return; }
+  if (value === "MENU_AUDIT"){ botSay("Audit otomasyonu bölümünde örneklem motoru, rapor üretimi (Word/Excel) ve materiality yaklaşımını anlatabilirim. Hangi taraftan başlayalım?"); return; }
+  if (value === "MENU_THESIS"){ botSay("Bitirme projesi tarafında: amaç, roller, kullanılan teknolojiler ve sonuçlar şeklinde ilerleyebiliriz. Hangisini istersiniz?"); return; }
+  if (value === "MENU_INTERVIEW"){ botSay("Mülakat simülasyonu için soft-skill mi teknik mi başlamak istersiniz?"); return; }
+}
+
+// Global’e aç
+window.onChoice = onChoice;
+window.startFlow = startFlow;
   // 2) Mesaj balonu ekleme
   function appendMessage(text, type) {
     const msg = document.createElement("div");
     msg.className = "message " + type;
-    msg.textContent = text;
+    msg.innerHTML = text;
     chatEl.appendChild(msg);
     chatEl.scrollTop = chatEl.scrollHeight;
   }
@@ -643,11 +897,26 @@ Teknik detay veya iş birliği için bu kanallar üzerinden rahatlıkla ulaşabi
     chatEl.scrollTop = chatEl.scrollHeight;
 
     setTimeout(() => {
-      chatEl.removeChild(loading);
+  chatEl.removeChild(loading);
 
-      const answer = findBestAnswer(text);
-      appendMessage(answer, "bot");
-    }, 400); // küçük bir gecikme, daha doğal görünmesi için
+  // 1) İsim bekliyorsak isim olarak al
+  if (state === "awaitingName") {
+    userName = text.trim();
+    botSay(`Tanıştığıma memnun oldum <b>${userName}</b> ☺️`);
+    goIntroChoice();
+    return;
+  }
+
+  // 2) Selamlaşma geldiyse akışı başlat
+  if (isGreeting(text)) {
+    startFlow();
+    return;
+  }
+
+  // 3) Flow dışı serbest sorular -> knowledgeBase
+  const answer = findBestAnswer(text);
+  appendMessage(answer, "bot");
+}, 400);
   }
 
   // Quick question butonları
@@ -667,6 +936,8 @@ Teknik detay veya iş birliği için bu kanallar üzerinden rahatlıkla ulaşabi
   // Butonun erişebilmesi için global'e at
   window.sendMessage = sendMessage;
   window.fillQuick = fillQuick;
+  // Sayfa açılınca akış başlat
+startFlow();
 </script>
 </body>
 </html>
