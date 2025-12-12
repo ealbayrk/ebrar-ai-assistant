@@ -645,7 +645,7 @@ Detay için LinkedIn üzerinden iletişim en sağlıklısıdır.`
 İş birliği / pozisyon detayları için LinkedIn üzerinden mesaj bırakabilirsiniz.`
   }
 ];
-  const inputEl = document.getElementById("userInput");
+  
 
 
   const defaultAnswer =
@@ -811,12 +811,6 @@ function replyPia(){
 }
 
 
-
-
-
-
-
- 
 function onChoice(ev, value){
   // 1) Sadece chat balonu içindeki seçeneklerde disable uygula
   const btn  = ev?.target;
@@ -824,10 +818,6 @@ function onChoice(ev, value){
   if (wrap){
     wrap.querySelectorAll("button").forEach(b => b.disabled = true);
   }
-userSay(mapLabel[value] || value);
-
-if (value === "INT_PIA_DEVOPS"){ replyPiaDevops(); return; }
-if (value === "INT_PIA_FS"){ replyPiaFullstack(); return; }
 
   // 2) Kullanıcı balonu label
   const mapLabel = {
@@ -860,71 +850,85 @@ if (value === "INT_PIA_FS"){ replyPiaFullstack(); return; }
 
   userSay(mapLabel[value] || value);
 
-  // 3) DevOps alt menü / cevaplar (WRAP DIŞINDA olmalı!)
+  // Staj seçimleri
+  if (value === "INT_PIA_DEVOPS"){ replyPiaDevops(); return; }
+  if (value === "INT_PIA_FS"){ replyPiaFullstack(); return; }
+
+  // DevOps alt menü / cevaplar
   if (value === "MENU_DEVOPS"){ goDevopsMenu(); return; }
   if (value === "BACK_DEVOPS"){ goDevopsMenu(); return; }
 
   if (value === "DEVOPS_DOCKER"){
-    botSay(`Ebrar Docker tarafında servisleri image’layıp environment’ları reproducible hale getirmeye odaklanır.<br/><br/>
-    <b>Tipik akış:</b> Dockerfile → build → registry → compose/k8s run.`,
-    [
-      { label:"CI/CD’ye geç", value:"DEVOPS_CICD" },
-      { label:"FastAPI’ye geç", value:"DEVOPS_FASTAPI" },
-      { label:"⬅︎ DevOps Menüsü", value:"BACK_DEVOPS", secondary:true },
-      { label:"⬆︎ Üst Menü", value:"BACK_MENU", secondary:true }
-    ]);
+    botSay(
+      `Ebrar Docker tarafında servisleri image’layıp environment’ları reproducible hale getirmeye odaklanır.<br/><br/>
+      <b>Tipik akış:</b> Dockerfile → build → registry → compose/k8s run.`,
+      [
+        { label:"CI/CD’ye geç", value:"DEVOPS_CICD" },
+        { label:"FastAPI’ye geç", value:"DEVOPS_FASTAPI" },
+        { label:"⬅︎ DevOps Menüsü", value:"BACK_DEVOPS", secondary:true },
+        { label:"⬆︎ Üst Menü", value:"BACK_MENU", secondary:true }
+      ]
+    );
     return;
   }
 
   if (value === "DEVOPS_CICD"){
-    botSay(`CI/CD tarafında odak: build–test–deploy akışını otomatikleştirmek.<br/><br/>
-    Jenkins’te PR → test/lint/scan, merge → build/push → deploy.`,
-    [
-      { label:"Docker’a geç", value:"DEVOPS_DOCKER" },
-      { label:"DB tarafı", value:"DEVOPS_DB" },
-      { label:"⬅︎ DevOps Menüsü", value:"BACK_DEVOPS", secondary:true },
-      { label:"⬆︎ Üst Menü", value:"BACK_MENU", secondary:true }
-    ]);
+    botSay(
+      `CI/CD tarafında odak: build–test–deploy akışını otomatikleştirmek.<br/><br/>
+      Jenkins’te PR → test/lint/scan, merge → build/push → deploy.`,
+      [
+        { label:"Docker’a geç", value:"DEVOPS_DOCKER" },
+        { label:"DB tarafı", value:"DEVOPS_DB" },
+        { label:"⬅︎ DevOps Menüsü", value:"BACK_DEVOPS", secondary:true },
+        { label:"⬆︎ Üst Menü", value:"BACK_MENU", secondary:true }
+      ]
+    );
     return;
   }
 
   if (value === "DEVOPS_FASTAPI"){
-    botSay(`FastAPI ile modüler API tasarımı + veri işleme akışları.<br/><br/>
-    Audit tool’da Excel/XML/PDF → pandas → örneklem + Word/Excel rapor üretimi.`,
-    [
-      { label:"DB & ORM", value:"DEVOPS_DB" },
-      { label:"Observability", value:"DEVOPS_OBS" },
-      { label:"⬅︎ DevOps Menüsü", value:"BACK_DEVOPS", secondary:true },
-      { label:"⬆︎ Üst Menü", value:"BACK_MENU", secondary:true }
-    ]);
+    botSay(
+      `FastAPI ile modüler API tasarımı + veri işleme akışları.<br/><br/>
+      Audit tool’da Excel/XML/PDF → pandas → örneklem + Word/Excel rapor üretimi.`,
+      [
+        { label:"DB & ORM", value:"DEVOPS_DB" },
+        { label:"Observability", value:"DEVOPS_OBS" },
+        { label:"⬅︎ DevOps Menüsü", value:"BACK_DEVOPS", secondary:true },
+        { label:"⬆︎ Üst Menü", value:"BACK_MENU", secondary:true }
+      ]
+    );
     return;
   }
 
   if (value === "DEVOPS_DB"){
-    botSay(`PostgreSQL + SQLAlchemy yaklaşımı.<br/><br/>
-    Şema/ilişki netliği, doğru indeksleme ve migration disiplini önemli.`,
-    [
-      { label:"FastAPI", value:"DEVOPS_FASTAPI" },
-      { label:"CI/CD", value:"DEVOPS_CICD" },
-      { label:"⬅︎ DevOps Menüsü", value:"BACK_DEVOPS", secondary:true },
-      { label:"⬆︎ Üst Menü", value:"BACK_MENU", secondary:true }
-    ]);
+    botSay(
+      `PostgreSQL + SQLAlchemy yaklaşımı.<br/><br/>
+      Şema/ilişki netliği, doğru indeksleme ve migration disiplini önemli.`,
+      [
+        { label:"FastAPI", value:"DEVOPS_FASTAPI" },
+        { label:"CI/CD", value:"DEVOPS_CICD" },
+        { label:"⬅︎ DevOps Menüsü", value:"BACK_DEVOPS", secondary:true },
+        { label:"⬆︎ Üst Menü", value:"BACK_MENU", secondary:true }
+      ]
+    );
     return;
   }
 
   if (value === "DEVOPS_OBS"){
-    botSay(`Amaç: “bozulduysa nerede/niye bozuldu?”yu hızlı görmek.<br/><br/>
-    Log formatı + temel metrikler (latency/error rate) iyi pratiklerdir.`,
-    [
-      { label:"CI/CD", value:"DEVOPS_CICD" },
-      { label:"Docker", value:"DEVOPS_DOCKER" },
-      { label:"⬅︎ DevOps Menüsü", value:"BACK_DEVOPS", secondary:true },
-      { label:"⬆︎ Üst Menü", value:"BACK_MENU", secondary:true }
-    ]);
+    botSay(
+      `Amaç: “bozulduysa nerede/niye bozuldu?”yu hızlı görmek.<br/><br/>
+      Log formatı + temel metrikler (latency/error rate) iyi pratiklerdir.`,
+      [
+        { label:"CI/CD", value:"DEVOPS_CICD" },
+        { label:"Docker", value:"DEVOPS_DOCKER" },
+        { label:"⬅︎ DevOps Menüsü", value:"BACK_DEVOPS", secondary:true },
+        { label:"⬆︎ Üst Menü", value:"BACK_MENU", secondary:true }
+      ]
+    );
     return;
   }
 
-  // 4) Diğer mevcut akışların
+  // Diğer mevcut akışlar
   if (value === "NAME_YES"){ state="awaitingName"; botSay("Harika 😊 İsminizi yazabilir misiniz?"); return; }
   if (value === "NAME_NO"){ userName=null; goIntroChoice(); return; }
   if (value === "INTRO_YES"){ botSay("Kısaca özetleyeyim..."); goMainMenu(); return; }
@@ -938,71 +942,78 @@ if (value === "INT_PIA_FS"){ replyPiaFullstack(); return; }
   if (value === "BACK_INTERNSHIPS"){ goInternshipChoice(); return; }
 
   if (value === "MENU_AUDIT"){ botSay("Audit otomasyonu bölümünde..."); return; }
+
   if (value === "MENU_THESIS"){
-  botSay(
-    `Bitirme projesi: <b>Trade Center</b> — BIST100 ve kripto için algoritmik trading platformu.<br/><br/>
-     • Veri: TradingView + Yahoo Finance<br/>
-     • Strateji: RSI / Moving Average gibi indikatörlerle kural tabanlı karar mekanizması<br/>
-     • Risk: Stop-loss / take-profit<br/>
-     • Güvenlik: 2FA<br/>
-     • Test: Paper trading (gerçek para olmadan)`,
-    [
-      { label: "Mimariyi anlat", value: "THESIS_ARCH" },
-      { label: "Backend/DB detay", value: "THESIS_BACKEND" },
-      { label: "Test & doğrulama", value: "THESIS_TEST" },
-      { label: "Geri (Menü)", value: "BACK_MENU", secondary:true }
-    ]
-  );
-  return;
-}
+    botSay(
+      `Bitirme projesi: <b>Trade Center</b> — BIST100 ve kripto için algoritmik trading platformu.<br/><br/>
+       • Veri: TradingView + Yahoo Finance<br/>
+       • Strateji: RSI / Moving Average gibi indikatörlerle kural tabanlı karar mekanizması<br/>
+       • Risk: Stop-loss / take-profit<br/>
+       • Güvenlik: 2FA<br/>
+       • Test: Paper trading (gerçek para olmadan)`,
+      [
+        { label: "Mimariyi anlat", value: "THESIS_ARCH" },
+        { label: "Backend/DB detay", value: "THESIS_BACKEND" },
+        { label: "Test & doğrulama", value: "THESIS_TEST" },
+        { label: "Geri (Menü)", value: "BACK_MENU", secondary:true }
+      ]
+    );
+    return;
+  }
 
-if (value === "THESIS_ARCH"){
-  botSay(
-    `Sistem 3 parçalı kurgulandı:<br/>
-     1) <b>Data Subsystem</b> (SQL Server + EF Core + migration)<br/>
-     2) <b>ASP.NET Core MVC Web App</b> (dashboard, servis katmanı, iş akışları)<br/>
-     3) <b>Python Bot Worker</b> (hesaplama + sinyal üretimi)`,
-    [
-      { label: "Backend/DB detay", value: "THESIS_BACKEND" },
-      { label: "Test & doğrulama", value: "THESIS_TEST" },
-      { label: "Geri (Menü)", value: "BACK_MENU", secondary:true }
-    ]
-  );
-  return;
-}
+  if (value === "THESIS_ARCH"){
+    botSay(
+      `Sistem 3 parçalı kurgulandı:<br/>
+       1) <b>Data Subsystem</b> (SQL Server + EF Core + migration)<br/>
+       2) <b>ASP.NET Core MVC Web App</b> (dashboard, servis katmanı, iş akışları)<br/>
+       3) <b>Python Bot Worker</b> (hesaplama + sinyal üretimi)`,
+      [
+        { label: "Backend/DB detay", value: "THESIS_BACKEND" },
+        { label: "Test & doğrulama", value: "THESIS_TEST" },
+        { label: "Geri (Menü)", value: "BACK_MENU", secondary:true }
+      ]
+    );
+    return;
+  }
 
-if (value === "THESIS_BACKEND"){
-  botSay(
-    `Backend tarafında öne çıkanlar:<br/>
-     • SQL Server üzerinde kullanıcı/işlem/sinyal verisi<br/>
-     • EF Core ile migration ve şema evrimi<br/>
-     • MVC tarafında Controller + Service katmanı (iş kuralları / risk kontrolleri)<br/>
-     • Python worker ile ağır işlerin ayrıştırılması (modülerlik + ölçeklenebilirlik)`,
-    [
-      { label: "Mimariyi anlat", value: "THESIS_ARCH" },
-      { label: "Test & doğrulama", value: "THESIS_TEST" },
-      { label: "Geri (Menü)", value: "BACK_MENU", secondary:true }
-    ]
-  );
-  return;
-}
+  if (value === "THESIS_BACKEND"){
+    botSay(
+      `Backend tarafında öne çıkanlar:<br/>
+       • SQL Server üzerinde kullanıcı/işlem/sinyal verisi<br/>
+       • EF Core ile migration ve şema evrimi<br/>
+       • MVC tarafında Controller + Service katmanı (iş kuralları / risk kontrolleri)<br/>
+       • Python worker ile ağır işlerin ayrıştırılması (modülerlik + ölçeklenebilirlik)`,
+      [
+        { label: "Mimariyi anlat", value: "THESIS_ARCH" },
+        { label: "Test & doğrulama", value: "THESIS_TEST" },
+        { label: "Geri (Menü)", value: "BACK_MENU", secondary:true }
+      ]
+    );
+    return;
+  }
 
-if (value === "THESIS_TEST"){
-  botSay(
-    `Doğrulama yaklaşımı:<br/>
-     • Unit + senaryo testleri<br/>
-     • Paper trading ile canlı veride RSI bazlı sinyal testi (RSI<30 BUY, RSI>70 SELL)<br/>
-     • Her aksiyonun DB’ye yazılması + arayüzde gösterimi`,
-    [
-      { label: "Backend/DB detay", value: "THESIS_BACKEND" },
-      { label: "Mimariyi anlat", value: "THESIS_ARCH" },
-      { label: "Geri (Menü)", value: "BACK_MENU", secondary:true }
-    ]
-  );
-  return;
-}
+  if (value === "THESIS_TEST"){
+    botSay(
+      `Doğrulama yaklaşımı:<br/>
+       • Unit + senaryo testleri<br/>
+       • Paper trading ile canlı veride RSI bazlı sinyal testi (RSI<30 BUY, RSI>70 SELL)<br/>
+       • Her aksiyonun DB’ye yazılması + arayüzde gösterimi`,
+      [
+        { label: "Backend/DB detay", value: "THESIS_BACKEND" },
+        { label: "Mimariyi anlat", value: "THESIS_ARCH" },
+        { label: "Geri (Menü)", value: "BACK_MENU", secondary:true }
+      ]
+    );
+    return;
+  }
+
   if (value === "MENU_INTERVIEW"){ botSay("Mülakat simülasyonu için..."); return; }
 }
+
+
+
+
+
 
 // Global’e aç
 window.onChoice = onChoice;
