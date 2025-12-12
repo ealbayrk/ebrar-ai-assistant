@@ -790,179 +790,130 @@ function replyPia(){
   );
 }
 
-// Buton tıklanınca çalışır
-function onChoice(value){
-   const btn = event?.target;
-  const wrap = btn?.closest(".choice-wrap");
-  if (wrap) {
+
+
+
+
+
+
+ 
+function onChoice(ev, value){
+  // 1) Sadece chat balonu içindeki seçeneklerde disable uygula
+  const btn  = ev?.target;
+  const wrap = btn?.closest?.(".choice-wrap");
+  if (wrap){
     wrap.querySelectorAll("button").forEach(b => b.disabled = true);
-
-    if (value === "DEVOPS_DOCKER"){
-  botSay(
-    `Ebrar, Docker tarafında servisleri image’layıp environment’ları reproducible hale getirmeye odaklanır.<br/><br/>
-     <b>Tipik akış:</b> Dockerfile → image build → registry push → compose/k8s ile run.<br/>
-     Audit tool’da FastAPI + PostgreSQL’i container’lar halinde çalıştırarak yerelde ve sunucuda aynı davranışı hedefler.`,
-    [
-      { label: "CI/CD’ye geç", value: "DEVOPS_CICD" },
-      { label: "FastAPI’ye geç", value: "DEVOPS_FASTAPI" },
-      { label: "⬅︎ DevOps Menüsü", value: "BACK_DEVOPS", secondary:true },
-      { label: "⬆︎ Üst Menü", value: "BACK_MENU", secondary:true }
-    ]
-  );
-  return;
-}
-
-if (value === "DEVOPS_CICD"){
-  botSay(
-    `CI/CD tarafında odak: build–test–deploy akışını otomatikleştirmek.<br/><br/>
-     <b>Jenkins örneği:</b> PR’da test/lint + security scan → merge sonrası docker build/push → ortam bazlı deploy.<br/>
-     Amaç: her release’in izlenebilir ve tekrarlanabilir olması.`,
-    [
-      { label: "Docker’a geç", value: "DEVOPS_DOCKER" },
-      { label: "DB tarafı", value: "DEVOPS_DB" },
-      { label: "⬅︎ DevOps Menüsü", value: "BACK_DEVOPS", secondary:true },
-      { label: "⬆︎ Üst Menü", value: "BACK_MENU", secondary:true }
-    ]
-  );
-  return;
-}
-
-if (value === "DEVOPS_FASTAPI"){
-  botSay(
-    `Backend tarafında FastAPI ile modüler API tasarımı ve veri işleme akışları öne çıkıyor.<br/><br/>
-     Audit tool’da Excel/XML/PDF gibi kaynaklardan veri alıp pandas ile işleyip; örneklem + rapor çıktısını Word/Excel olarak üreten bir servis yapısı kurdu.`,
-    [
-      { label: "DB & ORM", value: "DEVOPS_DB" },
-      { label: "Observability", value: "DEVOPS_OBS" },
-      { label: "⬅︎ DevOps Menüsü", value: "BACK_DEVOPS", secondary:true },
-      { label: "⬆︎ Üst Menü", value: "BACK_MENU", secondary:true }
-    ]
-  );
-  return;
-}
-
-if (value === "DEVOPS_DB"){
-  botSay(
-    `Veritabanı tarafında PostgreSQL + SQLAlchemy yaklaşımı var.<br/><br/>
-     <b>Temel prensip:</b> şema/ilişki netliği + doğru indeksleme + migration disiplini.<br/>
-     API katmanında transaction yönetimi ve hata senaryolarında kontrollü rollback önemli.`,
-    [
-      { label: "FastAPI", value: "DEVOPS_FASTAPI" },
-      { label: "CI/CD", value: "DEVOPS_CICD" },
-      { label: "⬅︎ DevOps Menüsü", value: "BACK_DEVOPS", secondary:true },
-      { label: "⬆︎ Üst Menü", value: "BACK_MENU", secondary:true }
-    ]
-  );
-  return;
-}
-
-if (value === "DEVOPS_OBS"){
-  botSay(
-    `Observability tarafında amaç: “bir şey bozulduğunda nerede/niye bozulduğunu hızlı görmek”.<br/><br/>
-     Log’ların anlamlı formatta tutulması, temel metriklerin izlenmesi (latency, error rate) ve kritik endpoint’lerde izlenebilirlik iyi pratiklerdir.`,
-    [
-      { label: "CI/CD", value: "DEVOPS_CICD" },
-      { label: "Docker", value: "DEVOPS_DOCKER" },
-      { label: "⬅︎ DevOps Menüsü", value: "BACK_DEVOPS", secondary:true },
-      { label: "⬆︎ Üst Menü", value: "BACK_MENU", secondary:true }
-    ]
-  );
-  return;
-}
-
-if (value === "BACK_DEVOPS"){ goDevopsMenu(); return; }
   }
-  // kullanıcı balonu gibi görünsün
+
+  // 2) Kullanıcı balonu label
   const mapLabel = {
     NAME_YES: "Evet, ismimi paylaşayım",
     NAME_NO: "Hayır, isim vermeden devam",
     INTRO_YES: "Evet, önce Ebrar’dan bahset",
     INTRO_NO: "Hayır, direkt başlıklara geçelim",
+
     MENU_PROFILE: "Ebrar Kimdir?",
     MENU_INTERNSHIPS: "Stajlar",
     MENU_DEVOPS: "DevOps & Backend",
     MENU_AUDIT: "Audit Otomasyonu",
     MENU_THESIS: "Bitirme Projesi",
     MENU_INTERVIEW: "Mülakat Soruları",
+
     INT_BKM: "BKM",
     INT_PIA: "Pia",
     BACK_MENU: "Geri (Menü)",
     BACK_INTERNSHIPS: "Geri (Stajlar)",
-    PROFILE_STRENGTHS: "Güçlü yönleri",
-    PROFILE_GOALS: "Kariyer hedefleri",
-    BKM_TECH: "Teknik olarak neler yaptı?",
-    BKM_TEAM: "Ekip çalışması / iletişim",
-    BKM_GAIN: "En büyük kazanımı",
-    PIA_TECH: "Teknik olarak neler yaptı?",
-    PIA_TEAM: "Ekip çalışması / iletişim",
-    PIA_GAIN: "En büyük kazanımı"
+
+    DEVOPS_DOCKER: "Docker & Container",
+    DEVOPS_CICD: "CI/CD (Jenkins)",
+    DEVOPS_FASTAPI: "FastAPI & Backend",
+    DEVOPS_DB: "DB & SQLAlchemy",
+    DEVOPS_OBS: "Observability",
+    BACK_DEVOPS: "Geri (DevOps)"
   };
 
   userSay(mapLabel[value] || value);
 
-  // yönlendirme
-  if (value === "NAME_YES"){
-    state = "awaitingName";
-    botSay("Harika 😊 İsminizi yazabilir misiniz?");
+  // 3) DevOps alt menü / cevaplar (WRAP DIŞINDA olmalı!)
+  if (value === "MENU_DEVOPS"){ goDevopsMenu(); return; }
+  if (value === "BACK_DEVOPS"){ goDevopsMenu(); return; }
+
+  if (value === "DEVOPS_DOCKER"){
+    botSay(`Ebrar Docker tarafında servisleri image’layıp environment’ları reproducible hale getirmeye odaklanır.<br/><br/>
+    <b>Tipik akış:</b> Dockerfile → build → registry → compose/k8s run.`,
+    [
+      { label:"CI/CD’ye geç", value:"DEVOPS_CICD" },
+      { label:"FastAPI’ye geç", value:"DEVOPS_FASTAPI" },
+      { label:"⬅︎ DevOps Menüsü", value:"BACK_DEVOPS", secondary:true },
+      { label:"⬆︎ Üst Menü", value:"BACK_MENU", secondary:true }
+    ]);
     return;
   }
 
-  if (value === "NAME_NO"){
-    userName = null;
-    goIntroChoice();
+  if (value === "DEVOPS_CICD"){
+    botSay(`CI/CD tarafında odak: build–test–deploy akışını otomatikleştirmek.<br/><br/>
+    Jenkins’te PR → test/lint/scan, merge → build/push → deploy.`,
+    [
+      { label:"Docker’a geç", value:"DEVOPS_DOCKER" },
+      { label:"DB tarafı", value:"DEVOPS_DB" },
+      { label:"⬅︎ DevOps Menüsü", value:"BACK_DEVOPS", secondary:true },
+      { label:"⬆︎ Üst Menü", value:"BACK_MENU", secondary:true }
+    ]);
     return;
   }
 
-  if (value === "INTRO_YES"){
-    botSay(
-      `Kısaca özetleyeyim:<br/><br/>
-       Ebrar; DevOps, backend geliştirme ve denetim otomasyonu kesişiminde çalışan hibrit bir profildir. Özellikle süreçleri otomasyona taşıyıp tekrarlanabilir hale getirmeyi sever.`
-    );
-    goMainMenu();
+  if (value === "DEVOPS_FASTAPI"){
+    botSay(`FastAPI ile modüler API tasarımı + veri işleme akışları.<br/><br/>
+    Audit tool’da Excel/XML/PDF → pandas → örneklem + Word/Excel rapor üretimi.`,
+    [
+      { label:"DB & ORM", value:"DEVOPS_DB" },
+      { label:"Observability", value:"DEVOPS_OBS" },
+      { label:"⬅︎ DevOps Menüsü", value:"BACK_DEVOPS", secondary:true },
+      { label:"⬆︎ Üst Menü", value:"BACK_MENU", secondary:true }
+    ]);
     return;
   }
 
-  if (value === "INTRO_NO"){
-    goMainMenu();
+  if (value === "DEVOPS_DB"){
+    botSay(`PostgreSQL + SQLAlchemy yaklaşımı.<br/><br/>
+    Şema/ilişki netliği, doğru indeksleme ve migration disiplini önemli.`,
+    [
+      { label:"FastAPI", value:"DEVOPS_FASTAPI" },
+      { label:"CI/CD", value:"DEVOPS_CICD" },
+      { label:"⬅︎ DevOps Menüsü", value:"BACK_DEVOPS", secondary:true },
+      { label:"⬆︎ Üst Menü", value:"BACK_MENU", secondary:true }
+    ]);
     return;
   }
+
+  if (value === "DEVOPS_OBS"){
+    botSay(`Amaç: “bozulduysa nerede/niye bozuldu?”yu hızlı görmek.<br/><br/>
+    Log formatı + temel metrikler (latency/error rate) iyi pratiklerdir.`,
+    [
+      { label:"CI/CD", value:"DEVOPS_CICD" },
+      { label:"Docker", value:"DEVOPS_DOCKER" },
+      { label:"⬅︎ DevOps Menüsü", value:"BACK_DEVOPS", secondary:true },
+      { label:"⬆︎ Üst Menü", value:"BACK_MENU", secondary:true }
+    ]);
+    return;
+  }
+
+  // 4) Diğer mevcut akışların
+  if (value === "NAME_YES"){ state="awaitingName"; botSay("Harika 😊 İsminizi yazabilir misiniz?"); return; }
+  if (value === "NAME_NO"){ userName=null; goIntroChoice(); return; }
+  if (value === "INTRO_YES"){ botSay("Kısaca özetleyeyim..."); goMainMenu(); return; }
+  if (value === "INTRO_NO"){ goMainMenu(); return; }
 
   if (value === "MENU_PROFILE"){ replyProfile(); return; }
   if (value === "MENU_INTERNSHIPS"){ goInternshipChoice(); return; }
-
   if (value === "INT_BKM"){ replyBkm(); return; }
   if (value === "INT_PIA"){ replyPia(); return; }
-
   if (value === "BACK_MENU"){ goMainMenu(); return; }
   if (value === "BACK_INTERNSHIPS"){ goInternshipChoice(); return; }
 
-  if (value === "PROFILE_STRENGTHS"){
-    botSay("Ebrar’ın güçlü yanları: hızlı öğrenme, sistematik çalışma, dokümantasyon alışkanlığı ve teknik konuyu iş ihtiyacıyla bağlayabilmesi. Ayrıca ekip içinde iletişimi net ve düzenlidir.");
-    return;
-  }
-  if (value === "PROFILE_GOALS"){
-    botSay("Kariyer hedefi: DevOps & backend tarafında üretim sistemlerinde sorumluluk alırken, denetim/finans süreçlerini otomatikleştiren ürünleşebilir çözümler geliştirmeye devam etmek.");
-    return;
-  }
-
-  if (value === "BKM_TECH"){
-    botSay("Teknik tarafta CI/CD mantığı, Docker imajlama, pipeline akışları, Kubernetes/OpenShift kavramları ve temel networking konularında pratik yaptı; araştırma + dokümantasyon tarafını da güçlü tuttu.");
-    return;
-  }
-  if (value === "BKM_TEAM"){
-    botSay("Ekip çalışmasında: toplantılara düzenli katılım, net soru sorma, yapılan işi dokümante etme ve geri bildirim alma/verme tarafı öne çıkıyor.");
-    return;
-  }
-  if (value === "BKM_GAIN"){
-    botSay("En büyük kazanımı: DevOps süreçlerinin uçtan uca mantığını (build→test→deploy) daha sistematik görmek ve container ekosisteminde daha güvenli/tekrarlanabilir kurulum alışkanlığı kazanmak.");
-    return;
-  }
-
-  // Diğer menüler (şimdilik)
-  if (value === "MENU_DEVOPS"){ goDevopsMenu(); return; }
-  if (value === "MENU_AUDIT"){ botSay("Audit otomasyonu bölümünde örneklem motoru, rapor üretimi (Word/Excel) ve materiality yaklaşımını anlatabilirim. Hangi taraftan başlayalım?"); return; }
-  if (value === "MENU_THESIS"){ botSay("Bitirme projesi tarafında: amaç, roller, kullanılan teknolojiler ve sonuçlar şeklinde ilerleyebiliriz. Hangisini istersiniz?"); return; }
-  if (value === "MENU_INTERVIEW"){ botSay("Mülakat simülasyonu için soft-skill mi teknik mi başlamak istersiniz?"); return; }
+  if (value === "MENU_AUDIT"){ botSay("Audit otomasyonu bölümünde..."); return; }
+  if (value === "MENU_THESIS"){ botSay("Bitirme projesi tarafında..."); return; }
+  if (value === "MENU_INTERVIEW"){ botSay("Mülakat simülasyonu için..."); return; }
 }
 
 // Global’e aç
@@ -1068,6 +1019,8 @@ window.startFlow = startFlow;
   // Butonun erişebilmesi için global'e at
   window.sendMessage = sendMessage;
   window.fillQuick = fillQuick;
+  window.goMainMenu = goMainMenu;
+  window.goInternshipChoice = goInternshipChoice;
   // Sayfa açılınca akış başlat
 startFlow();
 </script>
