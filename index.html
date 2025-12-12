@@ -598,26 +598,25 @@ Audit aracı projesinde de FastAPI backend'i ve PostgreSQL’i container’lar h
     {
   {
   id: "ci_cd_jenkins",
-  keywords: ["jenkins", "ci/cd", "pipeline", "gitlab", "github actions", "deploy"],
-  answer: `Ebrar’ın CI/CD tecrübesi ağırlıklı olarak Jenkins ve Git tabanlı workflow’lar etrafında şekilleniyor.
+  keywords: ["jenkins", "ci/cd", "pipeline", "gitlab", "github actions", "deploy", "openshift", "kubernetes"],
+  answer: `Ebrar’ın CI/CD tecrübesi, gerçek projelerde Jenkins tabanlı pipeline’lar kurma ve yönetme üzerine yoğunlaşmıştır.
 
-<b>BKM DevOps stajında:</b>
-- Jenkins üzerinde pipeline mantığını öğrenip denemeler yaptı,
-- Bitbucket ile entegre çalışan build süreçlerini inceledi,
-- Maven/Gradle tabanlı projelerde build çıktılarının alınması,
-- Dockerfile kullanarak uygulamaların image haline getirilmesi,
-- Oluşan image’ların container olarak çalıştırılması ve
-- Kubernetes / OpenShift ortamlarına deploy mantığını deneyimledi.
+<b>Pia – DevOps Stajı:</b>
+- Jenkins ile frontend ve backend için CI/CD pipeline’ları oluşturdu
+- Docker image build & push süreçlerini yönetti (Harbor / Nexus)
+- Docker Compose ile servislerin otomatik ayağa kaldırılmasını sağladı
+- Amaç: manuel deploy ihtiyacını azaltmak ve teslimat sürelerini kısaltmak
 
-<b>Genel CI/CD yaklaşımı:</b>
-- PR açıldığında otomatik test, lint ve temel kontrollerin çalışması,
-- main branch’e merge sonrası docker image build + registry push,
-- ortam bazlı (test / prod) deploy akışının otomatikleştirilmesi.
+<b>BKM – DevOps Stajı:</b>
+- Jenkins + Groovy ile pipeline yönetimi
+- Maven & Gradle build süreçleri
+- Bitbucket → Jenkins → OpenShift akışı
+- Kubernetes / OpenShift ortamında container deploy deneyimi
+- 12-Factor App prensipleriyle uyumlu pipeline’lar
 
-<b>Ayrıca:</b>
-Audit automation projesinde de benzer bir mantıkla backend (FastAPI) ve frontend için
-otomatik build & deploy süreçlerini kurgulayarak,
-tekrarlanabilir ve izlenebilir bir pipeline yaklaşımı uyguladı.`
+<b>Genel yaklaşımı:</b>
+PR → test / build / scan → image push → hedef ortama deploy  
+şeklinde uçtan uca otomatik, tekrarlanabilir ve izlenebilir süreçler kurmaktır.`
 },
     {
       id: "backend_stack",
@@ -772,9 +771,43 @@ function goInternshipChoice(){
   botSay(
     `Ebrar’ın stajlarından hangisiyle devam edelim?`,
     [
-      { label: "BKM", value: "INT_BKM" },
-      { label: "Pia", value: "INT_PIA" },
+      { label: "BKM – DevOps", value: "INT_BKM" },
+      { label: "Pia – DevOps", value: "INT_PIA_DEVOPS" },
+      { label: "Pia – Full Stack", value: "INT_PIA_FS" },
       { label: "Geri (Menü)", value: "BACK_MENU", secondary:true }
+    ]
+  );
+}
+   function replyPiaDevops(){
+  botSay(
+    `Pia’daki DevOps stajında Ebrar, kurumsal bir projede (Vodafone Türkiye) CI/CD ve container süreçlerine odaklandı.<br/><br/>
+    <b>Yaptıkları:</b>
+    - Jenkins ile CI/CD pipeline kurulumu
+    - Docker & Docker Compose ile servis yönetimi
+    - Nginx üzerinden frontend–backend entegrasyonu
+    - Microservice mimarisinin Docker Compose ile modellenmesi
+    - Image build & registry süreçleri (Harbor / Nexus)<br/><br/>
+    Bu staj, Ebrar’ın DevOps tarafında üretim ortamlarına daha yakın düşünmesini sağladı.`,
+    [
+      { label: "Teknik kazanımları", value: "PIA_DEVOPS_GAIN" },
+      { label: "BKM ile farkı neydi?", value: "PIA_DEVOPS_DIFF" },
+      { label: "Geri (Stajlar)", value: "BACK_INTERNSHIPS", secondary:true }
+    ]
+  );
+}
+
+function replyPiaFullstack(){
+  botSay(
+    `Pia’daki Full Stack stajı, Ebrar’ın yazılımın uçtan uca nasıl çalıştığını kavradığı dönem oldu.<br/><br/>
+    <b>Odak noktaları:</b>
+    - Java & OOP temelleri
+    - Backend–frontend etkileşimi
+    - HTML, CSS, JavaScript
+    - Tasarım desenleri ve yazılım mimarisi üzerine araştırmalar<br/><br/>
+    Bu staj, Ebrar’ın daha sonra DevOps tarafında geliştirme ekipleriyle çok daha rahat iletişim kurabilmesini sağladı.`,
+    [
+      { label: "DevOps’a katkısı ne oldu?", value: "PIA_FS_TO_DEVOPS" },
+      { label: "Geri (Stajlar)", value: "BACK_INTERNSHIPS", secondary:true }
     ]
   );
 }
