@@ -564,8 +564,10 @@
   
 
 <script>
- const chatEl = document.getElementById("chat");
+ document.addEventListener("DOMContentLoaded", () => {
+  const chatEl = document.getElementById("chat");
   const inputEl = document.getElementById("userInput");
+
 
   const knowledgeBase = [
   {
