@@ -490,11 +490,10 @@
           Gönder <span>➜</span>
         </button>
       </div>
-      <div class="bottom-menu" id="bottomMenu">
+     <div class="bottom-menu" id="bottomMenu">
   <button class="bm-btn" onclick="goMainMenu()">Ana Menü</button>
   <button class="bm-btn" onclick="goInternshipChoice()">Stajlar</button>
-  <button class="bm-btn" onclick="onChoice(arguments[0],'MENU_DEVOPS')">DevOps</button>
-  <button class="bm-btn" onclick="onChoice(arguments[0],'MENU_AUDIT')">Audit</button>
+  <button class="bm-btn" onclick="onChoice(event,'MENU_DEVOPS')">DevOps</button>
   <button class="bm-btn" onclick="onChoice(event,'MENU_AUDIT')">Audit</button>
 </div>
 
@@ -565,8 +564,10 @@
   
 
 <script>
-  const chatEl = document.getElementById("chat");
+ const chatEl = document.getElementById("chat");
   const inputEl = document.getElementById("userInput");
+
+  const knowledgeBase = [
   {
     id: "docker_devops",
     keywords: ["docker", "container", "compose", "devops", "kubernetes", "k8s", "image", "registry"],
@@ -823,8 +824,10 @@ function onChoice(ev, value){
   if (wrap){
     wrap.querySelectorAll("button").forEach(b => b.disabled = true);
   }
-  if (value === "INT_PIA_DEVOPS"){ replyPiaDevops(); return; }
-  if (value === "INT_PIA_FS"){ replyPiaFullstack(); return; }
+userSay(mapLabel[value] || value);
+
+if (value === "INT_PIA_DEVOPS"){ replyPiaDevops(); return; }
+if (value === "INT_PIA_FS"){ replyPiaFullstack(); return; }
 
   // 2) Kullanıcı balonu label
   const mapLabel = {
