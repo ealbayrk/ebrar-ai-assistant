@@ -814,6 +814,28 @@ Detay için LinkedIn üzerinden iletişim en sağlıklısıdır.`
     if (value === "BACK_DEVOPS"){ goDevopsMenu(); return; }
 
     if (value === "MENU_INTERNSHIPS"){ goInternshipChoice(); return; }
+
+
+    if (value === "PROFILE_STRENGTHS"){
+  botSay(
+    `Ebrar’ın güçlü yönü, yalnızca “işi yapmak” değil; işi <b>ölçeklenebilir</b>, <b>tekrarlanabilir</b> ve <b>ekip için sürdürülebilir</b> hale getirmesidir.<br/><br/>
+
+    <b>Öne çıkan güçlü yönler:</b><br/>
+    • <b>Delivery odaklı DevOps:</b> CI/CD zincirini (build→test→image→deploy) netleştirir, release süreçlerini öngörülebilir kılar.<br/>
+    • <b>Reproducible ortamlar:</b> Docker/Compose ile “bende çalışıyordu” problemini azaltır, onboarding’i hızlandırır.<br/>
+    • <b>Backend + sistem bakışı:</b> FastAPI + veri akışları + ORM mantığıyla yalnız endpoint değil, ürünleşen servis geliştirir.<br/>
+    • <b>Otomasyon refleksi:</b> Tekrarlayan işleri fark eder; standardize eder, dokümante eder ve otomasyona taşır.<br/>
+    • <b>Net iletişim:</b> Teknik konuları sade anlatır, ekip içi koordinasyonu hızlandırır.<br/><br/>
+
+    <b>IK için kısa özet:</b><br/>
+    Ebrar; <b>hızlı adapte olan</b>, <b>uçtan uca sahiplenen</b> ve ekibe “sistem kurma” kası kazandıran hibrit bir profildir.`,
+    [
+      { label: "Kariyer hedefleri", value: "PROFILE_GOALS" },
+      { label: "Geri (Menü)", value: "BACK_MENU", secondary:true }
+    ]
+  );
+  return;
+}
     if (value === "INT_PIA_DEVOPS"){ replyPiaDevops(); return; }
     if (value === "INT_PIA_FS"){ replyPiaFullstack(); return; }
     if (value === "INT_BKM"){ replyBkm(); return; }
