@@ -414,6 +414,34 @@
     .link-box a:hover {
       text-decoration: underline;
     }
+
+    .bottom-menu{
+  position: sticky;          /* kart içinde yapışık kalsın */
+  bottom: 0;
+  padding-top: 10px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  background: linear-gradient(180deg, rgba(2,6,23,0) 0%, rgba(2,6,23,0.75) 35%, rgba(2,6,23,0.95) 100%);
+  backdrop-filter: blur(10px);
+  z-index: 5;
+}
+
+.bm-btn{
+  border-radius: 999px;
+  padding: 8px 12px;
+  border: 1px solid rgba(148,163,184,0.55);
+  background: rgba(15,23,42,0.85);
+  color: var(--text-main);
+  font-size: 12px;
+  cursor: pointer;
+  transition: .15s ease;
+}
+.bm-btn:hover{
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(249,115,22,0.12);
+  transform: translateY(-1px);
+}
   </style>
 </head>
 <body>
@@ -462,6 +490,12 @@
           Gönder <span>➜</span>
         </button>
       </div>
+      <div class="bottom-menu" id="bottomMenu">
+  <button class="bm-btn" onclick="goMainMenu()">Ana Menü</button>
+  <button class="bm-btn" onclick="goInternshipChoice()">Stajlar</button>
+  <button class="bm-btn" onclick="onChoice(event,'MENU_DEVOPS')">DevOps</button>
+  <button class="bm-btn" onclick="onChoice(event,'MENU_AUDIT')">Audit</button>
+</div>
 
       <div class="quick-questions">
         <button class="quick-btn" onclick="fillQuick('Docker ve container tecrübesi nedir?')">
@@ -640,11 +674,12 @@ function isGreeting(t){
 }
 
 function renderChoices(buttons){
-  // buttons: [{label, value, secondary}]
   const html = `
     <div class="choice-wrap">
       ${buttons.map(b => `
-        <button class="choice-btn ${b.secondary ? "secondary" : ""}" onclick="onChoice('${b.value}')">
+        <button 
+          class="choice-btn ${b.secondary ? "secondary" : ""}" 
+          onclick="onChoice(event, '${b.value}')">
           ${b.label}
         </button>
       `).join("")}
