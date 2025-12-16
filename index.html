@@ -480,29 +480,37 @@ document.addEventListener("DOMContentLoaded", () => {
         Eğer istersen burada: logging stratejisi, healthcheck, basic metrics gibi bir yol haritası da çıkarabilirim.
       `
     },
-    audit: {
-      overview: `
-        <b>Denetim Otomasyonu Projesi</b><br/>
-        Amaç: denetimde manuel ve zaman alan işleri <b>standart</b> ve <b>tekrarlanabilir</b> hale getirmek.<br/><br/>
-        <b>Teknik yapı:</b> FastAPI backend + web arayüz + Excel/Word rapor çıktıları<br/>
-        <b>İş mantığı:</b> BDS 530 çerçevesinde örnekleme (istatistiksel/sistematik/rastgele), materyalite ve sonuç raporlama
-      `,
-      features: `
-        <b>Öne çıkan özellikler</b><br/>
-        • Excel/XML’den veri alma, filtreleme<br/>
-        • 3 örnekleme yöntemi (istatistiksel / sistematik / rastgele)<br/>
-        • Materyaliteyi aşan kayıtların ayrıştırılması<br/>
-        • Word + Excel (2 sayfa) modern rapor çıktısı<br/>
-        • Frontend’de tablo + grafik + indirme akışı
-      `,
-      value: `
-        <b>Değer önerisi</b><br/>
-        • Zaman tasarrufu<br/>
-        • Standart raporlama<br/>
-        • Daha az insan hatası<br/>
-        • Denetim kanıtının daha izlenebilir olması
-      `
-    },
+audit: {
+  overview: `
+    <b>Denetim Otomasyonu Projesi</b><br/>
+    Denetim süreçlerinde tekrarlayan ve manuel adımları daha <b>düzenli</b>, <b>tutarlı</b> ve <b>izlenebilir</b> hale getirmeyi amaçlayan bir ürün çalışmasıdır.<br/><br/>
+    Odak noktası; denetim ekiplerinin günlük operasyonlarını sadeleştirmek ve çıktıları tek bir standart altında toplamaktır.
+  `,
+  features: `
+    <b>Öne çıkan özellikler</b><br/>
+    • Denetim süreçleri için kullanıcıyı yönlendiren <b>kontrollü iş akışları</b><br/>
+    • Süreç boyunca tutarlılığı destekleyen <b>standart raporlama yaklaşımı</b><br/>
+    • Veriye dayalı kararları destekleyen <b>okunabilir çıktı formatları</b><br/>
+    • Kullanımı kolay, denetim ekiplerinin alışık olduğu yapıya yakın arayüz
+  `,
+  technologies: `
+    <b>Kullanılan teknolojiler</b><br/>
+    • <b>Backend:</b> Python, FastAPI<br/>
+    • <b>Veritabanı:</b> SQL tabanlı ilişkisel veritabanı<br/>
+    • <b>Veri işleme:</b> pandas ile veri okuma ve düzenleme<br/>
+    • <b>Raporlama:</b> Word & Excel çıktıları<br/>
+    • <b>Container & Deployment:</b> Docker ile containerize edilmiş yapı<br/>
+    • <b>Genel yaklaşım:</b> Modüler, genişletilebilir ve bakım odaklı sistem tasarımı
+  `,
+  value: `
+    <b>Değer önerisi</b><br/>
+    • Denetim ekipleri için <b>zaman tasarrufu</b><br/>
+    • Ekipler arasında <b>aynı standartta ilerleme</b><br/>
+    • Manuel hataların azalmasına yardımcı olan yapı<br/>
+    • Docker tabanlı kurulum sayesinde <b>kolay kurulum ve ortam tutarlılığı</b><br/>
+    • Denetim sürecinin daha <b>şeffaf ve takip edilebilir</b> hale gelmesi
+  `
+},
     thesis: `
       <b>Bitirme Projesi: Trade Center</b> — BIST100 ve kripto için algoritmik karar üretimi yapan platform.<br/><br/>
       • <b>Web:</b> ASP.NET Core MVC (dashboard + servis katmanı)<br/>
