@@ -603,7 +603,8 @@ audit: {
     AUDIT_OVERVIEW: "Proje Özeti",
     AUDIT_FEATURES: "Özellikler",
     AUDIT_VALUE: "Katma Değer",
-    AUDIT_TEKNOLOJI: "Katma Değer",
+    AUDIT_TECH: "Teknolojiler",
+   
 
     BACK_MENU: "Ana Menü"
   };
@@ -675,7 +676,7 @@ audit: {
         {label:"Proje Özeti", value:"AUDIT_OVERVIEW"},
         {label:"Özellikler", value:"AUDIT_FEATURES"},
         {label:"Katma Değer", value:"AUDIT_VALUE"},
-        {label:"Teknolojiler", value:"AUDIT_TEKNOLOJI"},
+        {label:"Teknolojiler", value:"AUDIT_TECH"},
         {label:"Ana Menü", value:"BACK_MENU", secondary:true}
       ]
     );
@@ -766,6 +767,13 @@ audit: {
     if (value === "AUDIT_OVERVIEW"){ botSay(KB.audit.overview, [{label:"Audit Menüsü", value:"MENU_AUDIT"},{label:"Ana Menü", value:"BACK_MENU", secondary:true}]); return; }
     if (value === "AUDIT_FEATURES"){ botSay(KB.audit.features, [{label:"Audit Menüsü", value:"MENU_AUDIT"},{label:"Ana Menü", value:"BACK_MENU", secondary:true}]); return; }
     if (value === "AUDIT_VALUE"){ botSay(KB.audit.value, [{label:"Audit Menüsü", value:"MENU_AUDIT"},{label:"Ana Menü", value:"BACK_MENU", secondary:true}]); return; }
+    if (value === "AUDIT_TECH"){
+  botSay(KB.audit.technologies, [
+    {label:"Audit Menüsü", value:"MENU_AUDIT"},
+    {label:"Ana Menü", value:"BACK_MENU", secondary:true}
+  ]);
+  return;
+}
 
     // fallback
     botSay(`Bu başlık henüz bağlı değil. İstersen <b>Ana Menü</b>den ilerleyelim 🙂`, [
