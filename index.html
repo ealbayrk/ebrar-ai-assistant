@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
@@ -20,11 +20,7 @@
       --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.55);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       min-height: 100vh;
@@ -37,10 +33,7 @@
       color: var(--text-main);
     }
 
-    .shell {
-      max-width: 960px;
-      width: 100%;
-    }
+    .shell { max-width: 960px; width: 100%; }
 
     .card {
       background: linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(17, 24, 39, 0.94));
@@ -55,55 +48,30 @@
     }
 
     @media (max-width: 800px) {
-      .card {
-        grid-template-columns: minmax(0, 1fr);
-      }
+      .card { grid-template-columns: minmax(0, 1fr); }
     }
 
     /* SOL TARAF – CHAT */
-    .chat-section {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
+    .chat-section { display: flex; flex-direction: column; gap: 16px; }
 
     .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 4px 12px;
-      border-radius: var(--radius-full);
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 4px 12px; border-radius: var(--radius-full);
       background: rgba(148, 163, 184, 0.08);
       border: 1px solid rgba(148, 163, 184, 0.35);
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+      font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
       color: var(--text-muted);
     }
 
     .badge-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
+      width: 8px; height: 8px; border-radius: 50%;
       background: #22c55e;
       box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.2);
     }
 
-    .title-row {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .title-row h1 {
-      font-size: 24px;
-      letter-spacing: 0.04em;
-    }
-
-    .title-row span {
-      font-size: 13px;
-      color: var(--text-muted);
-    }
+    .title-row { display: flex; flex-direction: column; gap: 6px; }
+    .title-row h1 { font-size: 24px; letter-spacing: 0.04em; }
+    .title-row span { font-size: 13px; color: var(--text-muted); }
 
     .intro {
       font-size: 13px;
@@ -112,31 +80,18 @@
       margin-top: 8px;
     }
 
-    .pill-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 10px;
-    }
+    .pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
 
     .pill {
-      font-size: 11px;
-      padding: 5px 10px;
+      font-size: 11px; padding: 5px 10px;
       border-radius: var(--radius-full);
       background: rgba(15, 23, 42, 0.9);
       border: 1px solid rgba(148, 163, 184, 0.45);
       color: var(--text-muted);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+      display: inline-flex; align-items: center; gap: 6px;
     }
 
-    .pill-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--accent);
-    }
+    .pill-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
 
     .chatbox {
       margin-top: 14px;
@@ -157,45 +112,10 @@
       border-radius: 12px;
       font-size: 13px;
       line-height: 1.5;
-      max-width: 78%;
+      max-width: 82%;
       position: relative;
+      word-break: break-word;
     }
-  
-      /* Chat balonu içinde seçenekler */
-  .choice-wrap{
-    margin-top:10px;
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-  }
-  
-  .choice-btn{
-    border-radius:999px;
-    padding:8px 12px;
-    border:1px solid rgba(148, 163, 184, 0.55);
-    background: rgba(15, 23, 42, 0.85);
-    color: var(--text-main);
-    font-size: 12px;
-    cursor:pointer;
-    transition: 0.15s ease;
-  }
-    .choice-btn:disabled{
-  opacity: 0.45;
-  cursor: default;
-  transform: none !important;
-  box-shadow: none !important;
-}
-  
-  .choice-btn:hover{
-    border-color: var(--accent);
-    box-shadow: 0 0 0 4px rgba(249,115,22,0.12);
-    transform: translateY(-1px);
-  }
-  
-  .choice-btn.secondary{
-    border-style:dashed;
-    color: var(--text-muted);
-  }
 
     .bot {
       align-self: flex-start;
@@ -220,17 +140,28 @@
       border: 1px solid rgba(249, 115, 22, 0.6);
     }
 
-    .input-area {
-      margin-top: 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+    .choice-wrap { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 8px; }
 
-    .input-wrapper {
-      position: relative;
-      flex: 1;
+    .choice-btn {
+      border-radius: 999px;
+      padding: 8px 12px;
+      border: 1px solid rgba(148, 163, 184, 0.55);
+      background: rgba(15, 23, 42, 0.85);
+      color: var(--text-main);
+      font-size: 12px;
+      cursor: pointer;
+      transition: 0.15s ease;
     }
+    .choice-btn.secondary { border-style: dashed; color: var(--text-muted); }
+    .choice-btn:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(249,115,22,0.12);
+      transform: translateY(-1px);
+    }
+    .choice-btn:disabled { opacity: .45; cursor: default; transform: none; box-shadow: none; }
+
+    .input-area { margin-top: 12px; display: flex; align-items: center; gap: 8px; }
+    .input-wrapper { position: relative; flex: 1; }
 
     .input-wrapper input {
       width: 100%;
@@ -242,18 +173,12 @@
       font-size: 13px;
       outline: none;
     }
-
-    .input-wrapper input::placeholder {
-      color: #6b7280;
-    }
+    .input-wrapper input::placeholder { color: #6b7280; }
 
     .shortcut-hint {
-      position: absolute;
-      right: 10px;
-      top: 50%;
+      position: absolute; right: 10px; top: 50%;
       transform: translateY(-50%);
-      font-size: 10px;
-      color: #6b7280;
+      font-size: 10px; color: #6b7280;
       border-radius: 999px;
       border: 1px solid rgba(75, 85, 99, 0.7);
       padding: 2px 6px;
@@ -273,30 +198,40 @@
       gap: 6px;
       box-shadow: 0 10px 25px rgba(249, 115, 22, 0.4);
       white-space: nowrap;
+      transition: .15s ease;
     }
+    .send-btn:hover { filter: brightness(1.05); transform: translateY(-1px); }
+    .send-btn:active { transform: translateY(0); box-shadow: 0 6px 18px rgba(249, 115, 22, 0.35); }
+    .send-btn span { font-size: 16px; transform: translateY(1px); }
 
-    .send-btn span {
-      font-size: 16px;
-      transform: translateY(1px);
+    .bottom-menu{
+      position: sticky;
+      bottom: 0;
+      padding-top: 10px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      background: linear-gradient(180deg, rgba(2,6,23,0) 0%, rgba(2,6,23,0.75) 35%, rgba(2,6,23,0.95) 100%);
+      backdrop-filter: blur(10px);
+      z-index: 5;
     }
-
-    .send-btn:hover {
-      filter: brightness(1.05);
+    .bm-btn{
+      border-radius: 999px;
+      padding: 8px 12px;
+      border: 1px solid rgba(148,163,184,0.55);
+      background: rgba(15,23,42,0.85);
+      color: var(--text-main);
+      font-size: 12px;
+      cursor: pointer;
+      transition: .15s ease;
+    }
+    .bm-btn:hover{
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(249,115,22,0.12);
       transform: translateY(-1px);
     }
 
-    .send-btn:active {
-      transform: translateY(0);
-      box-shadow: 0 6px 18px rgba(249, 115, 22, 0.35);
-    }
-
-    .quick-questions {
-      margin-top: 10px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
+    .quick-questions { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; }
     .quick-btn {
       font-size: 11px;
       padding: 5px 9px;
@@ -306,13 +241,9 @@
       color: var(--text-muted);
       cursor: pointer;
     }
+    .quick-btn:hover { border-style: solid; color: var(--accent); }
 
-    .quick-btn:hover {
-      border-style: solid;
-      color: var(--accent);
-    }
-
-    /* SAĞ TARAF – PROFİL / ÖZET */
+    /* SAĞ TARAF – PROFİL */
     .side-section {
       border-left: 1px solid rgba(148, 163, 184, 0.38);
       padding-left: 20px;
@@ -320,7 +251,6 @@
       flex-direction: column;
       gap: 16px;
     }
-
     @media (max-width: 800px) {
       .side-section {
         border-left: none;
@@ -331,41 +261,18 @@
       }
     }
 
-    .profile-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
+    .profile-row { display: flex; align-items: center; gap: 12px; }
     .avatar {
-      width: 58px;
-      height: 58px;
-      border-radius: 50%;
+      width: 58px; height: 58px; border-radius: 50%;
       border: 2px solid rgba(249, 115, 22, 0.8);
       background-size: cover;
       background-position: center;
       background-image: url("https://avatars.githubusercontent.com/u/00000000?v=4");
-      /* İstersen buraya kendi fotoğraf URL’ini koyabilirsin */
     }
+    .profile-text h2 { font-size: 16px; letter-spacing: 0.06em; text-transform: uppercase; }
+    .profile-text p { font-size: 12px; color: var(--text-muted); }
 
-    .profile-text h2 {
-      font-size: 16px;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
-
-    .profile-text p {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    .tag-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 8px;
-    }
-
+    .tag-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
     .tag {
       font-size: 11px;
       padding: 4px 8px;
@@ -382,18 +289,8 @@
       letter-spacing: 0.12em;
       color: var(--text-muted);
     }
-
-    .section-body {
-      margin-top: 4px;
-      font-size: 12px;
-      color: var(--text-main);
-      line-height: 1.6;
-    }
-
-    .section-body span {
-      color: var(--accent);
-      font-weight: 500;
-    }
+    .section-body { margin-top: 4px; font-size: 12px; color: var(--text-main); line-height: 1.6; }
+    .section-body span { color: var(--accent); font-weight: 500; }
 
     .link-box {
       margin-top: 10px;
@@ -404,69 +301,28 @@
       font-size: 11px;
       color: var(--text-muted);
     }
-
-    .link-box a {
-      color: var(--accent);
-      text-decoration: none;
-      font-weight: 500;
-    }
-
-    .link-box a:hover {
-      text-decoration: underline;
-    }
-
-    .bottom-menu{
-  position: sticky;          /* kart içinde yapışık kalsın */
-  bottom: 0;
-  padding-top: 10px;
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  background: linear-gradient(180deg, rgba(2,6,23,0) 0%, rgba(2,6,23,0.75) 35%, rgba(2,6,23,0.95) 100%);
-  backdrop-filter: blur(10px);
-  z-index: 5;
-}
-
-.bm-btn{
-  border-radius: 999px;
-  padding: 8px 12px;
-  border: 1px solid rgba(148,163,184,0.55);
-  background: rgba(15,23,42,0.85);
-  color: var(--text-main);
-  font-size: 12px;
-  cursor: pointer;
-  transition: .15s ease;
-}
-.bm-btn:hover{
-  border-color: var(--accent);
-  box-shadow: 0 0 0 4px rgba(249,115,22,0.12);
-  transform: translateY(-1px);
-}
+    .link-box a { color: var(--accent); text-decoration: none; font-weight: 500; }
+    .link-box a:hover { text-decoration: underline; }
   </style>
 </head>
+
 <body>
 <div class="shell">
   <div class="card">
-    <!-- SOL: Chat / Asistan -->
+    <!-- SOL -->
     <section class="chat-section">
-      <div class="badge">
-        <span class="badge-dot"></span>
-        EBRAR AI ASSISTANT · LIVE
-      </div>
+      <div class="badge"><span class="badge-dot"></span> EBRAR AI ASSISTANT · LIVE</div>
 
       <div class="title-row">
         <h1>Ebrar'ın Yapay Zekâ Asistanı</h1>
-        <span>
-          Ebrar Albayrak hakkında daha fazla şey öğrenmek için
-          teknik ekiplerin kullanabileceği etkileşimli tanıtım asistanı.
-        </span>
+        <span>Ebrar Albayrak hakkında daha fazla şey öğrenmek için teknik ekiplerin kullanabileceği etkileşimli tanıtım asistanı.</span>
       </div>
 
       <p class="intro">
-        Ebrar’ın <span style="color:#f97316;">DevOps</span>, 
-        <span style="color:#f97316;">backend geliştirme</span> ve 
+        Ebrar’ın <span style="color:#f97316;">DevOps</span>,
+        <span style="color:#f97316;">backend geliştirme</span> ve
         <span style="color:#f97316;">denetim otomasyonu</span> alanlarındaki deneyimleriyle ilgili
-        aklınıza gelen soruları buradan yöneltebilirsiniz.
+        soruları buradan yöneltebilirsiniz.
       </p>
 
       <div class="pill-row">
@@ -474,46 +330,33 @@
         <div class="pill"><span class="pill-dot"></span> FastAPI · Python · SQLAlchemy</div>
         <div class="pill"><span class="pill-dot"></span> Audit Automation · Data Workflows</div>
       </div>
-<div id="chat" class="chatbox"></div>
-     
+
+      <div id="chat" class="chatbox"></div>
 
       <div class="input-area">
         <div class="input-wrapper">
-          <input
-            type="text"
-            id="userInput"
-            placeholder="Bir soru yazın... Örn: 'Jenkins pipeline tecrübesi nasıl?'"
-          />
+          <input type="text" id="userInput" placeholder="Bir soru yazın... Örn: 'Jenkins pipeline tecrübesi nasıl?'" />
           <div class="shortcut-hint">Enter ↵</div>
         </div>
-        <button class="send-btn" onclick="sendMessage()">
-          Gönder <span>➜</span>
-        </button>
+        <button class="send-btn" id="sendBtn">Gönder <span>➜</span></button>
       </div>
-     <div class="bottom-menu" id="bottomMenu">
-  <button class="bm-btn" onclick="goMainMenu()">Ana Menü</button>
-  <button class="bm-btn" onclick="goInternshipChoice()">Stajlar</button>
-  <button class="bm-btn" onclick="onChoice(event,'MENU_DEVOPS')">DevOps</button>
-  <button class="bm-btn" onclick="onChoice(event,'MENU_AUDIT')">Audit</button>
-</div>
+
+      <div class="bottom-menu">
+        <button class="bm-btn" data-bm="MENU_MAIN">Ana Menü</button>
+        <button class="bm-btn" data-bm="MENU_INTERNSHIPS">Stajlar</button>
+        <button class="bm-btn" data-bm="MENU_DEVOPS">DevOps</button>
+        <button class="bm-btn" data-bm="MENU_AUDIT">Audit</button>
+      </div>
 
       <div class="quick-questions">
-        <button class="quick-btn" onclick="fillQuick('Docker ve container tecrübesi nedir?')">
-          Docker tecrübesi nedir?
-        </button>
-        <button class="quick-btn" onclick="fillQuick('Jenkins ve CI/CD süreçlerinde nasıl bir rol aldı?')">
-          Jenkins / CI/CD rolü?
-        </button>
-        <button class="quick-btn" onclick="fillQuick('Audit automation projesi nasıl çalışıyor?')">
-          Audit automation projesi?
-        </button>
-        <button class="quick-btn" onclick="fillQuick('Hangi backend teknolojileriyle çalıştı?')">
-          Backend stack'i nedir?
-        </button>
+        <button class="quick-btn" data-q="Docker ve container tecrübesi nedir?">Docker tecrübesi nedir?</button>
+        <button class="quick-btn" data-q="Jenkins ve CI/CD süreçlerinde nasıl bir rol aldı?">Jenkins / CI/CD rolü?</button>
+        <button class="quick-btn" data-q="Audit automation projesi nasıl çalışıyor?">Audit automation projesi?</button>
+        <button class="quick-btn" data-q="Hangi backend teknolojileriyle çalıştı?">Backend stack'i nedir?</button>
       </div>
     </section>
 
-    <!-- SAĞ: Profil / Özet -->
+    <!-- SAĞ -->
     <aside class="side-section">
       <div class="profile-row">
         <div class="avatar"></div>
@@ -532,216 +375,240 @@
       <div>
         <div class="section-title">Öne çıkan alanlar</div>
         <div class="section-body">
-          Ebrar; <span>Docker, Jenkins, FastAPI, SQLAlchemy, PostgreSQL</span> ve
-          konteyner tabanlı mimariler üzerinde çalışan; aynı zamanda
-          <span>bağımsız denetim süreçlerini</span> otomatikleştiren
-          hibrit bir DevOps & backend mühendisidir.
+          Ebrar; <span>Docker, Jenkins, FastAPI, SQLAlchemy, PostgreSQL</span> ve konteyner tabanlı mimariler üzerinde çalışan;
+          aynı zamanda <span>bağımsız denetim süreçlerini</span> otomatikleştiren hibrit bir DevOps & backend mühendisidir.
         </div>
       </div>
 
       <div>
         <div class="section-title">Neleri sorabilirsiniz?</div>
         <div class="section-body">
-          ▸ Gerçekleştirdiği CI/CD pipeline’ları<br />
-          ▸ Audit veri işleme ve örnekleme otomasyonu<br />
-          ▸ Kullanılan mimari desenler ve tercihler<br />
+          ▸ CI/CD pipeline örnekleri<br />
+          ▸ Audit veri işleme ve örnekleme otomasyonu (BDS 530)<br />
+          ▸ Mimari tercihler (modüler yapı, servis ayrımı)<br />
           ▸ Java / Python backend deneyimleri<br />
-          ▸ Docker & Compose ile deployment yaklaşımları
+          ▸ Docker & Compose deployment yaklaşımı
         </div>
       </div>
 
       <div class="link-box">
         Daha kapsamlı bilgi için Ebrar’ın
-        <a href="https://www.linkedin.com/in/ebrar-albayrak-585222201" target="_blank">LinkedIn profiline</a>
+        <a href="https://www.linkedin.com/in/ebrar-albayrak-585222201" target="_blank" rel="noreferrer">LinkedIn profiline</a>
         ve
-        <a href="https://github.com/ealbayrk" target="_blank">GitHub hesabına</a>
+        <a href="https://github.com/ealbayrk" target="_blank" rel="noreferrer">GitHub hesabına</a>
         göz atabilirsiniz.
       </div>
     </aside>
   </div>
 </div>
 
-  
-
 <script>
- document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
   const chatEl = document.getElementById("chat");
   const inputEl = document.getElementById("userInput");
+  const sendBtn = document.getElementById("sendBtn");
 
-
-  const knowledgeBase = [
-  {
-    id: "docker_devops",
-    keywords: ["docker", "container", "compose", "devops", "kubernetes", "k8s", "image", "registry"],
-    answer: `Ebrar’ın güçlü olduğu şey “çalışanı çalışır halde paketlemek”.<br/><br/>
-<b>Docker & container</b> tarafında servisleri ayrı image’lar halinde yönetir; Docker Compose ile lokal ortamı tek komutla ayağa kaldırır ve ekip içinde aynı ortamın herkes için tekrarlanabilir olmasını sağlar.<br/><br/>
-IK tarafında değer kattığı nokta: <b>hızlı onboarding</b>, <b>daha az “bende çalışıyordu” problemi</b> ve <b>daha öngörülebilir release</b>.`
-  },
-
-  {
-    id: "thesis_tradecenter",
-    keywords: ["bitirme", "tez", "thesis", "trade center", "tradecenter", "algoritmik", "trading", "bist", "bist100", "yahoo finance", "tradingview", "rsi", "moving average", "2fa", "asp.net", "mvc", "sql server", "worker", "python bot"],
-    answer: `Bitirme projesi: <b>Trade Center</b> — BIST100 ve kripto için algoritmik karar üretimi yapan platform.<br/><br/>
-<b>Öne çıkan yönü:</b> Sadece “kod yazmak” değil; sistemi uçtan uca düşünmek.<br/>
-• <b>Web:</b> ASP.NET Core MVC (dashboard + servis katmanı)<br/>
-• <b>DB:</b> SQL Server + EF Core + migration disiplini<br/>
-• <b>Worker:</b> Python bot (hesaplama/sinyal üretimi) → ağır işleri ayırma yaklaşımı<br/>
-• <b>Güvenlik:</b> 2FA<br/><br/>
-IK için net mesaj: Ebrar, <b>modüler mimari</b> kurup <b>ölçeklenebilir şekilde ayrıştırmayı</b> bilen bir profil.`
-  },
-
-  {
-    id: "ci_cd_jenkins",
-    keywords: ["jenkins", "ci/cd", "pipeline", "gitlab", "github actions", "deploy", "openshift", "kubernetes", "groovy", "maven", "gradle"],
-    answer: `Ebrar’ın CI/CD tecrübesi “pipeline’ı çalıştırmak”tan çok, <b>teslimat süresini kısaltan</b> ve <b>hataları erkenden yakalayan</b> akışlar kurmaya odaklanır.<br/><br/>
-<b>Pia – DevOps Stajı:</b> Jenkins ile frontend/backend pipeline’ları, Docker build & push, registry süreçleri (Harbor/Nexus), otomatik ayağa kaldırma (Compose).<br/>
-<b>BKM – DevOps Stajı:</b> Jenkins + Groovy, Maven/Gradle build, Bitbucket → Jenkins → OpenShift akışı, container deploy pratiği.<br/><br/>
-IK açısından güçlü tarafı: “<b>PR → test/build/scan → image → deploy</b>” zincirini anlaşılır ve tekrarlanabilir hale getirmesi.`
-  },
-
-  {
-    id: "backend_stack",
-    keywords: ["backend", "fastapi", "python", "sqlalchemy", "postgres", "api", "rest"],
-    answer: `Backend tarafında Ebrar’ın çalışma tarzı: <b>temiz API</b>, <b>modüler yapı</b>, <b>veri odaklı düşünme</b>.<br/><br/>
-Teknik stack: <b>FastAPI + Python</b>, ORM olarak <b>SQLAlchemy</b>, veri tabanı olarak <b>PostgreSQL</b>, container tarafında <b>Docker</b>.<br/><br/>
-IK için mesaj: Ürüne dönüşen backend geliştirir; “endpoint yazıp bırakmak” yerine <b>bakımı kolay</b> ve <b>genişletilebilir</b> yapı kurar.`
-  },
-
-  {
-    id: "audit_tool",
-    keywords: ["audit", "örneklem", "sampling", "denetim", "materiality", "denetim aracı", "bds 530", "rapor", "excel", "word"],
-    answer: `Ebrar’ın audit otomasyonu projesi, denetimdeki “manuel ve zaman alan” işleri daha <b>standart</b> ve <b>tekrarlanabilir</b> hale getirmek üzerine kurulu.<br/><br/>
-Teknik olarak: doküman/veri işleme, örnekleme mantığı, rapor çıktıları ve web arayüz entegrasyonu gibi uçtan uca bir sistem yaklaşımı var.<br/><br/>
-IK açısından etkisi: <b>zaman tasarrufu</b>, <b>standart raporlama</b>, <b>daha az insan hatası</b>. (Detaya girmeden net değer önerisi.)`
-  },
-
-  {
-    id: "java_experience",
-    keywords: ["java", "oop", "data structures", "algorithms", "ap computer science"],
-    answer: `Ebrar’ın Java tarafında güçlü temeli var: <b>OOP</b>, <b>veri yapıları</b> ve <b>algoritmik düşünme</b>.<br/><br/>
-Bugün odağı DevOps/Backend olsa da, Java altyapısı sayesinde ekip içinde “developer gözüyle” konuşur; bu da DevOps tarafında iletişimi ve problem çözmeyi ciddi hızlandırır.`
-  },
-
-  {
-    id: "profile_summary",
-    keywords: ["kimdir", "kimsin", "özgeçmiş", "cv", "özet", "kendini anlat", "profil"],
-    answer: `Ebrar Albayrak; <b>DevOps + Backend</b> yaklaşımını, gerçek dünya süreçlerine (kurumsal stajlar + proje teslimi) taşıyabilen bir profildir.<br/><br/>
-Öne çıkan noktası: “tek alana sıkışmayan”, hem geliştirme ekipleriyle aynı dili konuşan hem de sistemin deployment/otomasyon tarafını sahiplenen <b>hibrit</b> yaklaşım.<br/><br/>
-IK için kısa özet: <b>hızlı öğrenir</b>, <b>çözüm odaklıdır</b>, işi “çalışır hale getirip” bırakmaz — sürdürülebilir kılar.`
-  },
-
-  {
-    id: "availability_salary",
-    keywords: ["ücret", "maaş", "salary", "ücret beklentisi", "çalışma", "tam zamanlı", "full time", "part time", "remote"],
-    answer: `Ebrar için öncelik: rolün kapsamı, öğrenme eğrisi ve ekip kültürü.<br/><br/>
-Çalışma modeli ve ücret beklentisi; sorumluluk, teknoloji seti ve pozisyon seviyesine göre esnek şekilde değerlendirilebilir.<br/>
-Detay için LinkedIn üzerinden iletişim en sağlıklısıdır.`
-  },
-
-  {
-    id: "contact",
-    keywords: ["iletişim", "contact", "linkedin", "github", "mail", "bana ulaş", "ulaş"],
-    answer: `Ebrar’a ulaşmak için:<br/>
-• LinkedIn: https://www.linkedin.com/in/ebrar-albayrak-585222201<br/>
-• GitHub: https://github.com/ealbayrk<br/><br/>
-İş birliği / pozisyon detayları için LinkedIn üzerinden mesaj bırakabilirsiniz.`
-  }
-];
-  
-
-  const defaultAnswer =
-    "Bu soruyla ilgili hazır bir cevabım yok gibi görünüyor. Ebrar yine de muhtemelen bunu konuşmayı çok ister 🙂 LinkedIn üzerinden ulaşabilirsiniz: https://www.linkedin.com/in/ebrar-albayrak-585222201";
-
-  // =====================
-  // FLOW (AKIŞ) MOTORU
-  // =====================
-  let state = "idle"; // idle | askName | awaitingName | introChoice | mainMenu | internshipChoice | devopsMenu
-  let userName = null;
-
-  const greetingKeywords = ["merhaba","selam","slm","hey","hi","hello","iyi günler","iyi akşamlar","günaydın"];
-
-  const mapLabel = {
-    INT_PIA_DEVOPS: "Pia – DevOps",
-    INT_PIA_FS: "Pia – Full Stack",
-    NAME_YES: "Evet, ismimi paylaşayım",
-    NAME_NO: "Hayır, isim vermeden devam",
-    INTRO_YES: "Evet, önce Ebrar’dan bahset",
-    INTRO_NO: "Hayır, direkt başlıklara geçelim",
-
-    MENU_PROFILE: "Ebrar Kimdir?",
-    MENU_INTERNSHIPS: "Stajlar",
-    MENU_DEVOPS: "DevOps & Backend",
-    MENU_AUDIT: "Audit Otomasyonu",
-    MENU_THESIS: "Bitirme Projesi",
-    MENU_INTERVIEW: "Mülakat Soruları",
-
-    INT_BKM: "BKM – DevOps",
-    BACK_MENU: "Geri (Menü)",
-    BACK_INTERNSHIPS: "Geri (Stajlar)",
-
-    DEVOPS_DOCKER: "Docker & Container",
-    DEVOPS_CICD: "CI/CD (Jenkins)",
-    DEVOPS_FASTAPI: "FastAPI & Backend",
-    DEVOPS_DB: "DB & SQLAlchemy",
-    DEVOPS_OBS: "Observability",
-    BACK_DEVOPS: "Geri (DevOps)"
+  // ==========
+  // DATA (CV)
+  // ==========
+  const KB = {
+    profile: `
+      <b>Ebrar Albayrak</b>, DevOps & Backend odağında; aynı zamanda <b>denetim otomasyonu</b> gibi gerçek iş süreçlerini ürünleştiren projeler geliştiren hibrit bir profildir.<br/><br/>
+      <b>Öne çıkanlar:</b><br/>
+      • Docker/Compose ile tekrarlanabilir ortamlar<br/>
+      • Jenkins tabanlı CI/CD akışları (build → test → image → deploy)<br/>
+      • FastAPI + SQLAlchemy + PostgreSQL ile ürünleşen backend servisleri<br/>
+      • BDS 530 çerçevesinde örnekleme mantığı ve Word/Excel rapor üretimi<br/>
+    `,
+    strengths: `
+      Ebrar’ın güçlü yönü “işi yapmak” değil; işi <b>ölçeklenebilir</b>, <b>tekrarlanabilir</b> ve <b>sürdürülebilir</b> hale getirmesidir.<br/><br/>
+      • <b>Delivery odaklı DevOps:</b> pipeline’ı sadeleştirir, release’i öngörülebilir kılar<br/>
+      • <b>Reproducible ortam:</b> Docker/Compose ile “bende çalışıyordu” problemini azaltır<br/>
+      • <b>Backend + sistem bakışı:</b> sadece endpoint değil, bakım/extend edilebilir servis geliştirir<br/>
+      • <b>Otomasyon refleksi:</b> tekrarlayan işi standardize eder, raporlar ve otomasyona taşır
+    `,
+    internships: {
+      pia_devops: `
+        <b>Pia – DevOps Stajı</b><br/>
+        • Jenkins ile frontend/backend pipeline kurulumu<br/>
+        • Docker image build & push, registry süreçleri (Harbor/Nexus vb.)<br/>
+        • Docker Compose ile lokal ortamın tek komutla ayağa kalkması<br/>
+        <br/>
+        <span style="color:#9ca3af">Değer:</span> onboarding hızlanır, ortam tutarlılığı artar, release daha öngörülebilir olur.
+      `,
+      pia_fs: `
+        <b>Pia – Full Stack Stajı</b><br/>
+        • Uygulama geliştirme akışlarını uçtan uca görme (frontend + backend etkileşimi)<br/>
+        • Veri/iş akışı mantığı ve ihtiyaç analizi yaklaşımı<br/>
+        <br/>
+        <span style="color:#9ca3af">Değer:</span> DevOps tarafında “developer gözüyle” konuşabilme ve daha doğru otomasyon kurgusu.
+      `,
+      bkm: `
+        <b>BKM – DevOps Stajı</b><br/>
+        • Jenkins + Groovy pipeline senaryoları<br/>
+        • Maven/Gradle build süreçleri<br/>
+        • Bitbucket → Jenkins → OpenShift deploy akışı<br/>
+        • Container deploy pratiği ve CI/CD standardizasyonu
+      `
+    },
+    devops: {
+      docker: `
+        Ebrar’ın güçlü olduğu şey “çalışanı çalışır halde paketlemek”.<br/><br/>
+        <b>Docker & Container</b> tarafında servisleri ayrı image’lar halinde yönetir; <b>Docker Compose</b> ile lokal ortamı tek komutla ayağa kaldırır.<br/><br/>
+        <b>Etki:</b> hızlı onboarding, daha az “bende çalışıyordu” problemi, daha öngörülebilir release.
+      `,
+      cicd: `
+        Ebrar’ın CI/CD yaklaşımı: “pipeline çalışsın” değil, <b>hata erken yakalansın</b> ve <b>teslimat hızlansın</b>.<br/><br/>
+        • PR sonrası otomatik build/test<br/>
+        • Docker image üretimi ve registry’ye push<br/>
+        • Ortama deploy akışı (Compose/OpenShift)<br/><br/>
+        İstersen “örnek Jenkinsfile akışı” şeklinde de anlatabilir.
+      `,
+      backend: `
+        <b>Backend stack:</b> FastAPI + Python, ORM: SQLAlchemy, DB: PostgreSQL, container: Docker.<br/><br/>
+        Çalışma tarzı: <b>modüler yapı</b>, <b>temiz endpoint</b>, <b>bakımı kolay servis</b>.<br/>
+        “Endpoint yazıp bırakmak” yerine genişletilebilir ürün mantığı kurar.
+      `,
+      db: `
+        <b>DB & SQLAlchemy</b><br/>
+        • SQLAlchemy ile model/ilişki kurguları<br/>
+        • PostgreSQL üzerinde veri akışı ve raporlama ihtiyaçlarına uygun tasarım<br/>
+        • (Projelerde) rapor çıktıları için veri hazırlama + özetleme mantığı
+      `,
+      obs: `
+        <b>Observability</b> tarafında (log/metric/trace) hedef: prod’da “neden bozuldu?” sorusunu hızlı cevaplamak.<br/><br/>
+        Eğer istersen burada: logging stratejisi, healthcheck, basic metrics gibi bir yol haritası da çıkarabilirim.
+      `
+    },
+    audit: {
+      overview: `
+        <b>Denetim Otomasyonu Projesi</b><br/>
+        Amaç: denetimde manuel ve zaman alan işleri <b>standart</b> ve <b>tekrarlanabilir</b> hale getirmek.<br/><br/>
+        <b>Teknik yapı:</b> FastAPI backend + web arayüz + Excel/Word rapor çıktıları<br/>
+        <b>İş mantığı:</b> BDS 530 çerçevesinde örnekleme (istatistiksel/sistematik/rastgele), materyalite ve sonuç raporlama
+      `,
+      features: `
+        <b>Öne çıkan özellikler</b><br/>
+        • Excel/XML’den veri alma, filtreleme<br/>
+        • 3 örnekleme yöntemi (istatistiksel / sistematik / rastgele)<br/>
+        • Materyaliteyi aşan kayıtların ayrıştırılması<br/>
+        • Word + Excel (2 sayfa) modern rapor çıktısı<br/>
+        • Frontend’de tablo + grafik + indirme akışı
+      `,
+      value: `
+        <b>Değer önerisi</b><br/>
+        • Zaman tasarrufu<br/>
+        • Standart raporlama<br/>
+        • Daha az insan hatası<br/>
+        • Denetim kanıtının daha izlenebilir olması
+      `
+    },
+    thesis: `
+      <b>Bitirme Projesi: Trade Center</b> — BIST100 ve kripto için algoritmik karar üretimi yapan platform.<br/><br/>
+      • <b>Web:</b> ASP.NET Core MVC (dashboard + servis katmanı)<br/>
+      • <b>DB:</b> SQL Server + EF Core + migration disiplini<br/>
+      • <b>Worker:</b> Python bot (hesaplama/sinyal üretimi) – ağır işi ayırma yaklaşımı<br/>
+      • <b>Güvenlik:</b> 2FA<br/><br/>
+      <span style="color:#9ca3af">Mesaj:</span> modüler mimari kurar, bileşenleri ayrıştırır, ölçeklenebilir düşünür.
+    `,
+    interview: `
+      <b>Mülakat Modu (Hızlı)</b><br/>
+      Aşağıdakilerden seç, 30 saniyelik net cevap üretelim:<br/>
+      • “Kendini anlat”<br/>
+      • “CI/CD örneğin?”<br/>
+      • “Docker/Compose ile nasıl deploy edersin?”<br/>
+      • “Audit automation projesinde en zor kısım neydi?”<br/>
+    `,
+    contact: `
+      Ebrar’a ulaşmak için:<br/>
+      • LinkedIn: <a href="https://www.linkedin.com/in/ebrar-albayrak-585222201" target="_blank" rel="noreferrer">profil</a><br/>
+      • GitHub: <a href="https://github.com/ealbayrk" target="_blank" rel="noreferrer">repo</a>
+    `
   };
 
-  function isGreeting(t){
-    const s = (t||"").toLowerCase().trim();
-    return greetingKeywords.some(k => s === k || s.startsWith(k + " "));
-  }
-
-  function appendMessage(text, type) {
+  // ==========
+  // UI HELPERS
+  // ==========
+  function appendMessage(html, who) {
     const msg = document.createElement("div");
-    msg.className = "message " + type;
-    msg.innerHTML = text;
+    msg.className = "message " + who;
+    msg.innerHTML = html;
     chatEl.appendChild(msg);
     chatEl.scrollTop = chatEl.scrollHeight;
   }
 
-  function renderChoices(buttons){
-    return `
-      <div class="choice-wrap">
-        ${buttons.map(b => `
-          <button class="choice-btn ${b.secondary ? "secondary" : ""}"
-                  onclick="onChoice(arguments[0], '${b.value}')">
-            ${b.label}
+  function botSay(text, choices) {
+    let html = text;
+    if (choices && choices.length) {
+      html += `<div class="choice-wrap">
+        ${choices.map(c => `
+          <button class="choice-btn ${c.secondary ? "secondary" : ""}" data-choice="${c.value}">
+            ${c.label}
           </button>
         `).join("")}
-      </div>
-    `;
+      </div>`;
+    }
+    appendMessage(html, "bot");
   }
 
-  function botSay(text, choices=null){
-    const msg = choices ? (text + renderChoices(choices)) : text;
-    appendMessage(msg, "bot");
+  function userSay(text) { appendMessage(text, "user"); }
+
+  function typing(ms=350){
+    const t = document.createElement("div");
+    t.className = "message bot";
+    t.textContent = "Yazıyor...";
+    chatEl.appendChild(t);
+    chatEl.scrollTop = chatEl.scrollHeight;
+    return new Promise(res => setTimeout(() => { t.remove(); res(); }, ms));
   }
 
-  function userSay(text){
-    appendMessage(text, "user");
-  }
+  // ==========
+  // FLOW STATE
+  // ==========
+  let state = "askName";      // askName | awaitingName | mainMenu | internships | devopsMenu | auditMenu
+  let userName = null;
 
+  const mapLabel = {
+    NAME_YES: "Evet, ismimi paylaşayım",
+    NAME_NO: "Hayır, isim vermeden devam",
+    INTRO_YES: "Evet, önce Ebrar’dan bahset",
+    INTRO_NO: "Hayır, direkt başlıklara geçelim",
+    MENU_PROFILE: "Ebrar Kimdir?",
+    MENU_STRENGTHS: "Güçlü yönler",
+    MENU_INTERNSHIPS: "Stajlar",
+    MENU_DEVOPS: "DevOps & Backend",
+    MENU_AUDIT: "Audit Otomasyonu",
+    MENU_THESIS: "Bitirme Projesi",
+    MENU_INTERVIEW: "Mülakat Modu",
+    MENU_CONTACT: "İletişim",
+
+    INT_BKM: "BKM – DevOps",
+    INT_PIA_DEVOPS: "Pia – DevOps",
+    INT_PIA_FS: "Pia – Full Stack",
+
+    DEVOPS_DOCKER: "Docker & Container",
+    DEVOPS_CICD: "CI/CD (Jenkins)",
+    DEVOPS_BACKEND: "FastAPI & Backend",
+    DEVOPS_DB: "DB & SQLAlchemy",
+    DEVOPS_OBS: "Observability",
+
+    AUDIT_OVERVIEW: "Proje Özeti",
+    AUDIT_FEATURES: "Özellikler",
+    AUDIT_VALUE: "Katma Değer",
+
+    BACK_MENU: "Ana Menü"
+  };
+
+  // ==========
+  // MENUS
+  // ==========
   function startFlow(){
     state = "askName";
     botSay(
-      `Merhaba 👋 Ben Ebrar’ın Yapay Zekâ Asistanıyım.<br/><br/>
-      Sizinle daha iyi iletişim kurabilmem için isminizi öğrenebilir miyim?`,
+      `Merhaba 👋 Ben Ebrar’ın Yapay Zekâ Asistanıyım.<br/><br/>Sizinle daha iyi iletişim kurabilmem için isminizi öğrenebilir miyim?`,
       [
-        { label: "Evet, ismimi paylaşayım", value: "NAME_YES" },
-        { label: "Hayır, isim vermeden devam", value: "NAME_NO", secondary:true }
-      ]
-    );
-  }
-
-  function goIntroChoice(){
-    state = "introChoice";
-    const hitap = userName ? `Tanıştığıma memnun oldum <b>${userName}</b> ☺️<br/>` : "";
-    botSay(
-      `${hitap}İsterseniz önce Ebrar’dan kısaca bahsedebilirim, sonra seçimlerinize göre devam ederiz.`,
-      [
-        { label: "Evet, önce Ebrar’dan bahset", value: "INTRO_YES" },
-        { label: "Hayır, direkt başlıklara geçelim", value: "INTRO_NO", secondary:true }
+        {label:"Evet, ismimi paylaşayım", value:"NAME_YES"},
+        {label:"Hayır, isim vermeden devam", value:"NAME_NO", secondary:true}
       ]
     );
   }
@@ -749,27 +616,29 @@ Detay için LinkedIn üzerinden iletişim en sağlıklısıdır.`
   function goMainMenu(){
     state = "mainMenu";
     botSay(
-      `Harika. Aşağıdaki başlıklardan birini seçerek ilerleyebiliriz (isterseniz serbest soru da sorabilirsiniz).`,
+      `Harika${userName ? ` <b>${userName}</b>` : ""}. Aşağıdaki başlıklardan seçebilir veya serbest soru sorabilirsin:`,
       [
-        { label: "Ebrar Kimdir?", value: "MENU_PROFILE" },
-        { label: "Stajlar", value: "MENU_INTERNSHIPS" },
-        { label: "DevOps & Backend", value: "MENU_DEVOPS" },
-        { label: "Audit Otomasyonu", value: "MENU_AUDIT" },
-        { label: "Bitirme Projesi", value: "MENU_THESIS" },
-        { label: "Mülakat Soruları", value: "MENU_INTERVIEW", secondary:true }
+        {label:"Ebrar Kimdir?", value:"MENU_PROFILE"},
+        {label:"Güçlü yönler", value:"MENU_STRENGTHS"},
+        {label:"Stajlar", value:"MENU_INTERNSHIPS"},
+        {label:"DevOps & Backend", value:"MENU_DEVOPS"},
+        {label:"Audit Otomasyonu", value:"MENU_AUDIT"},
+        {label:"Bitirme Projesi", value:"MENU_THESIS"},
+        {label:"Mülakat Modu", value:"MENU_INTERVIEW", secondary:true},
+        {label:"İletişim", value:"MENU_CONTACT", secondary:true},
       ]
     );
   }
 
-  function goInternshipChoice(){
-    state = "internshipChoice";
+  function goInternships(){
+    state = "internships";
     botSay(
       `Ebrar’ın stajlarından hangisiyle devam edelim?`,
       [
-        { label: "BKM – DevOps", value: "INT_BKM" },
-        { label: "Pia – DevOps", value: "INT_PIA_DEVOPS" },
-        { label: "Pia – Full Stack", value: "INT_PIA_FS" },
-        { label: "Geri (Menü)", value: "BACK_MENU", secondary:true }
+        {label:"BKM – DevOps", value:"INT_BKM"},
+        {label:"Pia – DevOps", value:"INT_PIA_DEVOPS"},
+        {label:"Pia – Full Stack", value:"INT_PIA_FS"},
+        {label:"Ana Menü", value:"BACK_MENU", secondary:true}
       ]
     );
   }
@@ -779,144 +648,209 @@ Detay için LinkedIn üzerinden iletişim en sağlıklısıdır.`
     botSay(
       `DevOps & Backend tarafında hangi başlıkla başlayalım?`,
       [
-        { label: "Docker & Container", value: "DEVOPS_DOCKER" },
-        { label: "CI/CD (Jenkins)", value: "DEVOPS_CICD" },
-        { label: "FastAPI & Backend", value: "DEVOPS_FASTAPI" },
-        { label: "DB & SQLAlchemy", value: "DEVOPS_DB" },
-        { label: "Observability", value: "DEVOPS_OBS", secondary:true },
-        { label: "⬅︎ Üst Menü", value: "BACK_MENU", secondary:true }
+        {label:"Docker & Container", value:"DEVOPS_DOCKER"},
+        {label:"CI/CD (Jenkins)", value:"DEVOPS_CICD"},
+        {label:"FastAPI & Backend", value:"DEVOPS_BACKEND"},
+        {label:"DB & SQLAlchemy", value:"DEVOPS_DB"},
+        {label:"Observability", value:"DEVOPS_OBS", secondary:true},
+        {label:"Ana Menü", value:"BACK_MENU", secondary:true}
       ]
     );
   }
 
-  // (Senin reply* fonksiyonların burada kalabilir)
-  function replyPiaDevops(){ /* ... */ }
-  function replyPiaFullstack(){ /* ... */ }
-  function replyProfile(){ /* ... */ }
-  function replyBkm(){ /* ... */ }
-  function replyPia(){ /* ... */ }
+  function goAuditMenu(){
+    state = "auditMenu";
+    botSay(
+      `Audit otomasyonu tarafında neyi görmek istersin?`,
+      [
+        {label:"Proje Özeti", value:"AUDIT_OVERVIEW"},
+        {label:"Özellikler", value:"AUDIT_FEATURES"},
+        {label:"Katma Değer", value:"AUDIT_VALUE"},
+        {label:"Ana Menü", value:"BACK_MENU", secondary:true}
+      ]
+    );
+  }
 
-  // ✅ TEK onChoice kalsın
-  function onChoice(ev, value){
-    const btn  = ev?.target;
-    const wrap = btn?.closest?.(".choice-wrap");
+  // ==========
+  // CHOICE HANDLER
+  // ==========
+  async function handleChoice(value, clickedButton){
+    // disable same bubble buttons once clicked
+    const wrap = clickedButton?.closest?.(".choice-wrap");
     if (wrap) wrap.querySelectorAll("button").forEach(b => b.disabled = true);
 
     userSay(mapLabel[value] || value);
+    await typing(250);
 
-    if (value === "NAME_YES"){ state="awaitingName"; botSay("Harika 😊 İsminizi yazabilir misiniz?"); return; }
-    if (value === "NAME_NO"){ userName=null; goIntroChoice(); return; }
-    if (value === "INTRO_YES"){ botSay("Kısaca özetleyeyim..."); goMainMenu(); return; }
-    if (value === "INTRO_NO"){ goMainMenu(); return; }
-
-    if (value === "BACK_MENU"){ goMainMenu(); return; }
-
-    
-    if (value === "MENU_DEVOPS"){ goDevopsMenu(); return; }
-    if (value === "BACK_DEVOPS"){ goDevopsMenu(); return; }
-
-    if (value === "MENU_INTERNSHIPS"){ goInternshipChoice(); return; }
-    if (value === "MENU_AUDIT"){ 
-  botSay("Audit otomasyonu menüsünü birazdan bağlayalım 🙂 Şimdilik serbest soru sorabilirsin."); 
-  return; 
-}
-
-
-    if (value === "PROFILE_STRENGTHS"){
-  botSay(
-    `Ebrar’ın güçlü yönü, yalnızca “işi yapmak” değil; işi <b>ölçeklenebilir</b>, <b>tekrarlanabilir</b> ve <b>ekip için sürdürülebilir</b> hale getirmesidir.<br/><br/>
-
-    <b>Öne çıkan güçlü yönler:</b><br/>
-    • <b>Delivery odaklı DevOps:</b> CI/CD zincirini (build→test→image→deploy) netleştirir, release süreçlerini öngörülebilir kılar.<br/>
-    • <b>Reproducible ortamlar:</b> Docker/Compose ile “bende çalışıyordu” problemini azaltır, onboarding’i hızlandırır.<br/>
-    • <b>Backend + sistem bakışı:</b> FastAPI + veri akışları + ORM mantığıyla yalnız endpoint değil, ürünleşen servis geliştirir.<br/>
-    • <b>Otomasyon refleksi:</b> Tekrarlayan işleri fark eder; standardize eder, dokümante eder ve otomasyona taşır.<br/>
-    • <b>Net iletişim:</b> Teknik konuları sade anlatır, ekip içi koordinasyonu hızlandırır.<br/><br/>
-
-    <b>IK için kısa özet:</b><br/>
-    Ebrar; <b>hızlı adapte olan</b>, <b>uçtan uca sahiplenen</b> ve ekibe “sistem kurma” kası kazandıran hibrit bir profildir.`,
-    [
-      { label: "Kariyer hedefleri", value: "PROFILE_GOALS" },
-      { label: "Geri (Menü)", value: "BACK_MENU", secondary:true }
-    ]
-  );
-  return;
-}
-    if (value === "INT_PIA_DEVOPS"){ replyPiaDevops(); return; }
-    if (value === "INT_PIA_FS"){ replyPiaFullstack(); return; }
-    if (value === "INT_BKM"){ replyBkm(); return; }
-
- 
-    
-
-    // ... diğer menülerin if blokları aynı şekilde devam eder
-  }
-
-  window.onChoice = onChoice;
-  window.sendMessage = sendMessage;
-  window.fillQuick = fillQuick;
-  window.goMainMenu = goMainMenu;
-  window.goInternshipChoice = goInternshipChoice;
-
-  function findBestAnswer(userText) {
-    const lower = userText.toLowerCase();
-    let best = null;
-
-    for (const item of knowledgeBase) {
-      let score = 0;
-      for (const kw of item.keywords) if (lower.includes(kw.toLowerCase())) score++;
-      if (score > 0 && (!best || score > best.score)) best = { ...item, score };
+    // name flow
+    if (value === "NAME_YES"){
+      state = "awaitingName";
+      botSay("Harika 😊 İsminizi yazabilir misiniz?");
+      return;
     }
-    return best ? best.answer : defaultAnswer;
-  }
-  
-  function fillQuick(text){
-  inputEl.value = text;
-  inputEl.focus();
-}
+    if (value === "NAME_NO"){
+      userName = null;
+      goMainMenu();
+      return;
+    }
 
-  function sendMessage() {
+    // menus
+    if (value === "BACK_MENU"){ goMainMenu(); return; }
+    if (value === "MENU_INTERNSHIPS"){ goInternships(); return; }
+    if (value === "MENU_DEVOPS"){ goDevopsMenu(); return; }
+    if (value === "MENU_AUDIT"){ goAuditMenu(); return; }
+
+    // profile / strengths / thesis / interview / contact
+    if (value === "MENU_PROFILE"){
+      botSay(KB.profile, [{label:"Ana Menü", value:"BACK_MENU", secondary:true}]);
+      return;
+    }
+    if (value === "MENU_STRENGTHS"){
+      botSay(KB.strengths, [{label:"Ana Menü", value:"BACK_MENU", secondary:true}]);
+      return;
+    }
+    if (value === "MENU_THESIS"){
+      botSay(KB.thesis, [{label:"Ana Menü", value:"BACK_MENU", secondary:true}]);
+      return;
+    }
+    if (value === "MENU_INTERVIEW"){
+      botSay(KB.interview, [{label:"Ana Menü", value:"BACK_MENU", secondary:true}]);
+      return;
+    }
+    if (value === "MENU_CONTACT"){
+      botSay(KB.contact, [{label:"Ana Menü", value:"BACK_MENU", secondary:true}]);
+      return;
+    }
+
+    // internships
+    if (value === "INT_BKM"){
+      botSay(KB.internships.bkm, [
+        {label:"Diğer stajlar", value:"MENU_INTERNSHIPS"},
+        {label:"Ana Menü", value:"BACK_MENU", secondary:true}
+      ]);
+      return;
+    }
+    if (value === "INT_PIA_DEVOPS"){
+      botSay(KB.internships.pia_devops, [
+        {label:"Diğer stajlar", value:"MENU_INTERNSHIPS"},
+        {label:"Ana Menü", value:"BACK_MENU", secondary:true}
+      ]);
+      return;
+    }
+    if (value === "INT_PIA_FS"){
+      botSay(KB.internships.pia_fs, [
+        {label:"Diğer stajlar", value:"MENU_INTERNSHIPS"},
+        {label:"Ana Menü", value:"BACK_MENU", secondary:true}
+      ]);
+      return;
+    }
+
+    // devops topics
+    if (value === "DEVOPS_DOCKER"){ botSay(KB.devops.docker, [{label:"DevOps Menüsü", value:"MENU_DEVOPS"},{label:"Ana Menü", value:"BACK_MENU", secondary:true}]); return; }
+    if (value === "DEVOPS_CICD"){ botSay(KB.devops.cicd, [{label:"DevOps Menüsü", value:"MENU_DEVOPS"},{label:"Ana Menü", value:"BACK_MENU", secondary:true}]); return; }
+    if (value === "DEVOPS_BACKEND"){ botSay(KB.devops.backend, [{label:"DevOps Menüsü", value:"MENU_DEVOPS"},{label:"Ana Menü", value:"BACK_MENU", secondary:true}]); return; }
+    if (value === "DEVOPS_DB"){ botSay(KB.devops.db, [{label:"DevOps Menüsü", value:"MENU_DEVOPS"},{label:"Ana Menü", value:"BACK_MENU", secondary:true}]); return; }
+    if (value === "DEVOPS_OBS"){ botSay(KB.devops.obs, [{label:"DevOps Menüsü", value:"MENU_DEVOPS"},{label:"Ana Menü", value:"BACK_MENU", secondary:true}]); return; }
+
+    // audit topics
+    if (value === "AUDIT_OVERVIEW"){ botSay(KB.audit.overview, [{label:"Audit Menüsü", value:"MENU_AUDIT"},{label:"Ana Menü", value:"BACK_MENU", secondary:true}]); return; }
+    if (value === "AUDIT_FEATURES"){ botSay(KB.audit.features, [{label:"Audit Menüsü", value:"MENU_AUDIT"},{label:"Ana Menü", value:"BACK_MENU", secondary:true}]); return; }
+    if (value === "AUDIT_VALUE"){ botSay(KB.audit.value, [{label:"Audit Menüsü", value:"MENU_AUDIT"},{label:"Ana Menü", value:"BACK_MENU", secondary:true}]); return; }
+
+    // fallback
+    botSay(`Bu başlık henüz bağlı değil. İstersen <b>Ana Menü</b>den ilerleyelim 🙂`, [
+      {label:"Ana Menü", value:"BACK_MENU"}
+    ]);
+  }
+
+  // ==========
+  // FREE TEXT ANSWERS (light keyword match)
+  // ==========
+  const knowledgeBase = [
+    { keywords: ["docker","compose","container","image","registry"], answer: KB.devops.docker },
+    { keywords: ["jenkins","ci/cd","pipeline","groovy","deploy"], answer: KB.devops.cicd },
+    { keywords: ["fastapi","python","backend","api","rest"], answer: KB.devops.backend },
+    { keywords: ["sqlalchemy","postgres","postgresql","db","veritabanı"], answer: KB.devops.db },
+    { keywords: ["audit","denetim","örneklem","sampling","bds 530","materiality","materyalite","rapor","excel","word"], answer: KB.audit.overview + "<br/><br/>" + KB.audit.features },
+    { keywords: ["trade center","bitirme","tez","thesis","bist","kripto","asp.net","sql server","2fa"], answer: KB.thesis },
+    { keywords: ["iletişim","linkedin","github","mail","ulaş"], answer: KB.contact },
+  ];
+
+  function findBestAnswer(text){
+    const lower = (text||"").toLowerCase();
+    let best = null, bestScore = 0;
+    for (const item of knowledgeBase){
+      let score = 0;
+      for (const kw of item.keywords){
+        if (lower.includes(kw)) score++;
+      }
+      if (score > bestScore){
+        bestScore = score;
+        best = item.answer;
+      }
+    }
+    return bestScore > 0 ? best : `Bu soruya hazır bir cevap bulamadım ama istersen <b>Ana Menü</b>den başlık seçebiliriz.<br/><br/>${KB.contact}`;
+  }
+
+  async function sendMessage(){
     const text = inputEl.value.trim();
     if (!text) return;
 
-    appendMessage(text, "user");
+    userSay(text);
     inputEl.value = "";
 
-    const loading = document.createElement("div");
-    loading.className = "message bot";
-    loading.textContent = "Yazıyor...";
-    chatEl.appendChild(loading);
-    chatEl.scrollTop = chatEl.scrollHeight;
+    await typing(320);
 
-    setTimeout(() => {
-      chatEl.removeChild(loading);
+    if (state === "awaitingName"){
+      userName = text;
+      botSay(`Tanıştığıma memnun oldum <b>${userName}</b> ☺️`);
+      await typing(200);
+      goMainMenu();
+      return;
+    }
 
-      if (state === "awaitingName") {
-        userName = text.trim();
-        botSay(`Tanıştığıma memnun oldum <b>${userName}</b> ☺️`);
-        goIntroChoice();
-        return;
-      }
-
-      if (isGreeting(text) && state === "idle") {
-        startFlow();
-        return;
-      }
-
-      const answer = findBestAnswer(text);
-      appendMessage(answer, "bot");
-    }, 400);
+    // serbest soru: keyword-based
+    botSay(findBestAnswer(text));
   }
 
-  inputEl.addEventListener("keydown", function (e) {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      sendMessage();
-    }
+  // ==========
+  // EVENTS
+  // ==========
+  // choice buttons (event delegation)
+  chatEl.addEventListener("click", (e) => {
+    const btn = e.target.closest(".choice-btn");
+    if (!btn) return;
+    const value = btn.getAttribute("data-choice");
+    handleChoice(value, btn);
   });
 
-  // Sayfa açılınca tek sefer başlat
+  // bottom menu buttons
+  document.addEventListener("click", (e) => {
+    const bm = e.target.closest(".bm-btn");
+    if (!bm) return;
+    const v = bm.getAttribute("data-bm");
+    // make it look like a choice
+    handleChoice(v, bm);
+  });
+
+  // quick questions
+  document.addEventListener("click", (e) => {
+    const qb = e.target.closest(".quick-btn");
+    if (!qb) return;
+    inputEl.value = qb.getAttribute("data-q");
+    inputEl.focus();
+  });
+
+  sendBtn.addEventListener("click", sendMessage);
+  inputEl.addEventListener("keydown", (e) => {
+    if (e.key === "Enter"){ e.preventDefault(); sendMessage(); }
+  });
+
+  // ==========
+  // INIT
+  // ==========
   startFlow();
+});
 </script>
 </body>
 </html>
