@@ -511,14 +511,49 @@ audit: {
     • Denetim sürecinin daha <b>şeffaf ve takip edilebilir</b> hale gelmesi
   `
 },
-    thesis: `
-      <b>Bitirme Projesi: Trade Center</b> — BIST100 ve kripto için algoritmik karar üretimi yapan platform.<br/><br/>
-      • <b>Web:</b> ASP.NET Core MVC (dashboard + servis katmanı)<br/>
-      • <b>DB:</b> SQL Server + EF Core + migration disiplini<br/>
-      • <b>Worker:</b> Python bot (hesaplama/sinyal üretimi) – ağır işi ayırma yaklaşımı<br/>
-      • <b>Güvenlik:</b> 2FA<br/><br/>
-      <span style="color:#9ca3af">Mesaj:</span> modüler mimari kurar, bileşenleri ayrıştırır, ölçeklenebilir düşünür.
-    `,
+ thesis: {
+  overview: `
+    <b>Trade Center (Bitirme Projesi)</b><br/>
+    BIST100 ve kripto piyasaları için, teknik göstergelere dayalı <b>kural tabanlı</b> al-sat kararları üreten algoritmik trading platformu.
+  `,
+  problem: `
+    <b>Problem / ihtiyaç</b><br/>
+    Manuel işlem: zaman baskısı + duygusal karar riski + yerel pazar (BIST100) için erişilebilir çözüm eksikliği.  [oai_citation:8‡20COMP1038_20SOFT1012_20SOFT102 (1).pdf](sediment://file_0000000068507246bee6d92204c89b2a)
+  `,
+  architecture: `
+    <b>Mimari (3 alt sistem)</b><br/>
+    • <b>Data Subsystem:</b> SQL Server + EF Core + JSON config<br/>
+    • <b>ASP.NET Core MVC Web:</b> UI + servis katmanı + orchestrator<br/>
+    • <b>Python Bot Worker:</b> indikatör hesapları + sinyal üretimi<br/>
+    Bu ayrım bağımsız geliştirme/test ve ölçeklemeyi kolaylaştırır.  [oai_citation:9‡20COMP1038_20SOFT1012_20SOFT102 (1).pdf](sediment://file_0000000068507246bee6d92204c89b2a)
+  `,
+  features: `
+    <b>Özellikler</b><br/>
+    • Bot sinyali dinleme / işleme<br/>
+    • Wallet yönetimi + işlem geçmişi<br/>
+    • Price alert + in-app/email bildirim<br/>
+    • Dashboard ile performans takibi (paper trading dahil)
+  `,
+  technologies: `
+    <b>Teknolojiler</b><br/>
+    ASP.NET Core MVC, EF Core, Identity, MSSQL, Python, Yahoo Finance API, TradingView Widgets, SendGrid, Postman, VS2022.  [oai_citation:10‡20COMP1038_20SOFT1012_20SOFT102 (1).pdf](sediment://file_0000000068507246bee6d92204c89b2a)
+  `,
+  security: `
+    <b>Güvenlik</b><br/>
+    • 2FA<br/>
+    • Token expiry (20 dk)<br/>
+    • API key şifreleme + UI input kısıtları  [oai_citation:11‡20COMP1038_20SOFT1012_20SOFT102 (1).pdf](sediment://file_0000000068507246bee6d92204c89b2a)
+  `,
+  tests: `
+    <b>Testler</b><br/>
+    Unit + acceptance + performans + security testleri; paper trading senaryoları.  [oai_citation:12‡20COMP1038_20SOFT1012_20SOFT102 (1).pdf](sediment://file_0000000068507246bee6d92204c89b2a)
+  `,
+  results: `
+    <b>Sonuç & gelecek</b><br/>
+    Dakika seviyesinde veriyle stratejiler çalıştı; saniye-altı veri eksikliği HFT’yi sınırladı.
+    Gelecekte daha yüksek çözünürlüklü veri sağlayıcı entegrasyonları hedeflenebilir.
+  `
+}  ,
     interview: `
       <b>Mülakat Modu (Hızlı)</b><br/>
       Aşağıdakilerden seç, 30 saniyelik net cevap üretelim:<br/>
@@ -604,6 +639,16 @@ audit: {
     AUDIT_FEATURES: "Özellikler",
     AUDIT_VALUE: "Katma Değer",
     AUDIT_TECH: "Teknolojiler",
+
+  
+    THESIS_OVERVIEW: "Proje Özeti",
+    THESIS_PROBLEM: "Problem & Motivasyon",
+    THESIS_ARCH: "Mimari",
+    THESIS_FEATURES: "Özellikler",
+    THESIS_TECH: "Teknolojiler",
+    THESIS_SECURITY: "Güvenlik",
+    THESIS_TESTS: "Testler",
+    THESIS_RESULTS: "Sonuç & Gelecek",
    
 
     BACK_MENU: "Ana Menü"
@@ -623,6 +668,8 @@ audit: {
     );
   }
 
+  
+
   function goMainMenu(){
     state = "mainMenu";
     botSay(
@@ -639,6 +686,24 @@ audit: {
       ]
     );
   }
+
+  function goThesisMenu(){
+  state = "thesisMenu";
+  botSay(
+    `Bitirme projesinde hangi kısmı görmek istersin?`,
+    [
+      {label:"Proje Özeti", value:"THESIS_OVERVIEW"},
+      {label:"Problem & Motivasyon", value:"THESIS_PROBLEM"},
+      {label:"Mimari", value:"THESIS_ARCH"},
+      {label:"Özellikler", value:"THESIS_FEATURES"},
+      {label:"Teknolojiler", value:"THESIS_TECH"},
+      {label:"Güvenlik", value:"THESIS_SECURITY"},
+      {label:"Testler", value:"THESIS_TESTS"},
+      {label:"Sonuç & Gelecek", value:"THESIS_RESULTS"},
+      {label:"Ana Menü", value:"BACK_MENU", secondary:true},
+    ]
+  );
+}
 
   function goInternships(){
     state = "internships";
@@ -755,6 +820,18 @@ function goAuditMenu(){
       ]);
       return;
     }
+
+    if (value === "MENU_THESIS"){ goThesisMenu(); return; }
+
+if (value === "THESIS_OVERVIEW"){ botSay(KB.thesis.overview, [{label:"Bitirme Projesi Menüsü", value:"MENU_THESIS"},{label:"Ana Menü", value:"BACK_MENU", secondary:true}]); return; }
+if (value === "THESIS_PROBLEM"){ botSay(KB.thesis.problem,  [{label:"Bitirme Projesi Menüsü", value:"MENU_THESIS"},{label:"Ana Menü", value:"BACK_MENU", secondary:true}]); return; }
+if (value === "THESIS_ARCH"){ botSay(KB.thesis.architecture,[{label:"Bitirme Projesi Menüsü", value:"MENU_THESIS"},{label:"Ana Menü", value:"BACK_MENU", secondary:true}]); return; }
+if (value === "THESIS_FEATURES"){ botSay(KB.thesis.features,[{label:"Bitirme Projesi Menüsü", value:"MENU_THESIS"},{label:"Ana Menü", value:"BACK_MENU", secondary:true}]); return; }
+if (value === "THESIS_TECH"){ botSay(KB.thesis.technologies,[{label:"Bitirme Projesi Menüsü", value:"MENU_THESIS"},{label:"Ana Menü", value:"BACK_MENU", secondary:true}]); return; }
+if (value === "THESIS_SECURITY"){ botSay(KB.thesis.security,[{label:"Bitirme Projesi Menüsü", value:"MENU_THESIS"},{label:"Ana Menü", value:"BACK_MENU", secondary:true}]); return; }
+if (value === "THESIS_TESTS"){ botSay(KB.thesis.tests,[{label:"Bitirme Projesi Menüsü", value:"MENU_THESIS"},{label:"Ana Menü", value:"BACK_MENU", secondary:true}]); return; }
+if (value === "THESIS_RESULTS"){ botSay(KB.thesis.results,[{label:"Bitirme Projesi Menüsü", value:"MENU_THESIS"},{label:"Ana Menü", value:"BACK_MENU", secondary:true}]); return; }
+    
 
     // devops topics
     if (value === "DEVOPS_DOCKER"){ botSay(KB.devops.docker, [{label:"DevOps Menüsü", value:"MENU_DEVOPS"},{label:"Ana Menü", value:"BACK_MENU", secondary:true}]); return; }
