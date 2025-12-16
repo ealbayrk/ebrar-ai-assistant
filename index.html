@@ -668,19 +668,19 @@ audit: {
     );
   }
 
-  function goAuditMenu(){
-    state = "auditMenu";
-    botSay(
-      `Audit otomasyonu tarafında neyi görmek istersin?`,
-      [
-        {label:"Proje Özeti", value:"AUDIT_OVERVIEW"},
-        {label:"Özellikler", value:"AUDIT_FEATURES"},
-        {label:"Katma Değer", value:"AUDIT_VALUE"},
-        {label:"Teknolojiler", value:"AUDIT_TECH"},
-        {label:"Ana Menü", value:"BACK_MENU", secondary:true}
-      ]
-    );
-  }
+function goAuditMenu(){
+  state = "auditMenu";
+  botSay(
+    `Audit otomasyonu tarafında neyi görmek istersin?`,
+    [
+      {label:"Proje Özeti", value:"AUDIT_OVERVIEW"},
+      {label:"Özellikler", value:"AUDIT_FEATURES"},
+      {label:"Katma Değer", value:"AUDIT_VALUE"},
+      {label:"Teknolojiler", value:"AUDIT_TECH"},
+      {label:"Ana Menü", value:"BACK_MENU", secondary:true}
+    ]
+  );
+}
 
   // ==========
   // CHOICE HANDLER
@@ -767,7 +767,7 @@ audit: {
     if (value === "AUDIT_OVERVIEW"){ botSay(KB.audit.overview, [{label:"Audit Menüsü", value:"MENU_AUDIT"},{label:"Ana Menü", value:"BACK_MENU", secondary:true}]); return; }
     if (value === "AUDIT_FEATURES"){ botSay(KB.audit.features, [{label:"Audit Menüsü", value:"MENU_AUDIT"},{label:"Ana Menü", value:"BACK_MENU", secondary:true}]); return; }
     if (value === "AUDIT_VALUE"){ botSay(KB.audit.value, [{label:"Audit Menüsü", value:"MENU_AUDIT"},{label:"Ana Menü", value:"BACK_MENU", secondary:true}]); return; }
-    if (value === "AUDIT_TECH"){
+ if (value === "AUDIT_TECH"){
   botSay(KB.audit.technologies, [
     {label:"Audit Menüsü", value:"MENU_AUDIT"},
     {label:"Ana Menü", value:"BACK_MENU", secondary:true}
