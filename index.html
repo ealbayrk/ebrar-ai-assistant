@@ -565,28 +565,37 @@ tekrarlanabilir ve okunabilir pipeline’lar kurgular<br/>
 • <b>Otomasyon refleksi:</b> tekrarlayan işleri standartlaştırır, manuel hataları azaltacak yapılar kurar
 `,
     internships: {
-      pia_devops: `
-        <b>Pia – DevOps Stajı</b><br/>
-        • Jenkins ile frontend/backend pipeline kurulumu<br/>
-        • Docker image build & push, registry süreçleri (Harbor/Nexus vb.)<br/>
-        • Docker Compose ile lokal ortamın tek komutla ayağa kalkması<br/>
-        <br/>
-        <span style="color:#9ca3af">Değer:</span> onboarding hızlanır, ortam tutarlılığı artar, release daha öngörülebilir olur.
-      `,
-      pia_fs: `
-        <b>Pia – Full Stack Stajı</b><br/>
-        • Uygulama geliştirme akışlarını uçtan uca görme (frontend + backend etkileşimi)<br/>
-        • Veri/iş akışı mantığı ve ihtiyaç analizi yaklaşımı<br/>
-        <br/>
-        <span style="color:#9ca3af">Değer:</span> DevOps tarafında “developer gözüyle” konuşabilme ve daha doğru otomasyon kurgusu.
-      `,
-      bkm: `
-        <b>BKM – DevOps Stajı</b><br/>
-        • Jenkins + Groovy pipeline senaryoları<br/>
-        • Maven/Gradle build süreçleri<br/>
-        • Bitbucket → Jenkins → OpenShift deploy akışı<br/>
-        • Container deploy pratiği ve CI/CD standardizasyonu
-      `
+    pia_devops: `
+  <b>Pia Bilişim – DevOps Stajyeri</b><br/>
+  • Jenkins üzerinde frontend ve backend uygulamalar için uçtan uca CI/CD pipeline’ları kuruldu ve yönetildi<br/>
+  • Maven / Docker entegrasyonu ile otomatik build, test ve image oluşturma süreçleri geliştirildi<br/>
+  • Oluşturulan Docker image’lar private registry (Harbor / Nexus) ortamlarına push edilerek versiyonlandı<br/>
+  • Docker Compose kullanılarak frontend, backend ve bağımlı servislerin tek komutla ayağa kalktığı lokal geliştirme ortamı oluşturuldu<br/>
+  • Ortam değişkenleri ve yapılandırmalar `.env` dosyaları üzerinden yönetilerek ortam bağımlılıkları minimize edildi<br/>
+  • CI/CD sürecinde manuel müdahale ihtiyacı azaltılarak deployment süreçleri daha öngörülebilir hale getirildi<br/>
+  <br/>
+  <span style="color:#9ca3af">Değer:</span> yeni geliştiricilerin projeye adaptasyon süresi kısaldı, ortam tutarlılığı sağlandı ve release süreçleri standartlaştırıldı.
+`,
+     pia_fs: `
+  <b>Pia Bilişim – Full Stack Developer Stajyeri (Vodafone Türkiye Projesi)</b><br/>
+  • Vodafone Türkiye kurumsal projesinde frontend ve backend geliştirme süreçlerinde stajyer larak görev alındı<br/>
+  • Uygulamanın uçtan uca çalışma mantığı (frontend–backend–veri akışı) analiz edilerek geliştirme sürecine entegre olundu<br/>
+  • İş ihtiyaçları doğrultusunda fonksiyonel gereksinimlerin anlaşılması ve teknik çözümlere dönüştürülmesi sürecine katkı sağlandı<br/>
+  • Backend ve frontend bileşenleri arasındaki bağımlılıklar gözlemlenerek sistem bütünlüğü hakkında deneyim kazanıldı<br/>
+  • Kurumsal projelerde kodlama standartları, ekip içi iş bölümü ve geliştirme disiplinleri yakından incelendi<br/>
+  <br/>
+  <span style="color:#9ca3af">Değer:</span> DevOps süreçlerinde geliştirici bakış açısıyla daha doğru otomasyon senaryoları kurgulanmasını sağlayan full stack perspektifi kazanıldı.
+`,
+bkm: `
+  <b>Bankalararası Kart Merkezi (BKM) – DevOps Stajyeri</b><br/>
+  • Jenkins üzerinde Groovy tabanlı CI/CD pipeline senaryoları oluşturuldu ve yönetildi<br/>
+  • Maven ve Gradle kullanılarak Java projeleri için otomatik build süreçleri kurgulandı<br/>
+  • Bitbucket üzerinden alınan kodların Jenkins pipeline’ları aracılığıyla container haline getirilip OpenShift ortamına deploy edilmesi sağlandı<br/>
+  • Docker tabanlı container deploy süreçleri ile uygulamaların farklı ortamlarda tutarlı şekilde çalışması sağlandı<br/>
+  • CI/CD süreçlerinde standartların uygulanması ve tekrar kullanılabilir pipeline yapılarına katkı sağlandı<br/>
+  <br/>
+  <span style="color:#9ca3af">Değer:</span> kurumsal ölçekte CI/CD süreçleri deneyimlenerek otomasyon, güvenilirlik ve sürdürülebilir deployment pratiği kazanıldı.
+`
     },
     devops: {
       docker: `
