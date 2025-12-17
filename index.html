@@ -943,18 +943,97 @@ if (value === "THESIS_RESULTS"){ botSay(KB.thesis.results,[{label:"Bitirme Proje
   // ==========
   // FREE TEXT ANSWERS (light keyword match)
   // ==========
-  const knowledgeBase = [
-    { keywords: ["docker","compose","container","image","registry"], answer: KB.devops.docker },
-    { keywords: ["jenkins","ci/cd","pipeline","groovy","deploy"], answer: KB.devops.cicd },
-    { keywords: ["fastapi","python","backend","api","rest"], answer: KB.devops.backend },
-    { keywords: ["sqlalchemy","postgres","postgresql","db","veritabanı"], answer: KB.devops.db },
-    { keywords: ["audit","denetim","örneklem","sampling","bds 530","materiality","materyalite","rapor","excel","word"], answer: KB.audit.overview + "<br/><br/>" + KB.audit.features },
-   { keywords: ["trade center","bitirme","tez","thesis","bist","kripto","asp.net","sql server","2fa"], answer: "__OPEN_THESIS_MENU__"},
-    { keywords: ["iletişim","linkedin","github","mail","ulaş"], answer: KB.contact },
-  ];
+const knowledgeBase = [
 
-  
+  // ===== DEVOPS – DOCKER =====
+  {
+    keywords: [
+      "docker", "container", "containerization", "compose", "docker compose",
+      "image", "docker image", "registry", "harbor", "nexus",
+      "konteyner", "paketleme", "deploy container"
+    ],
+    answer: KB.devops.docker
+  },
 
+  // ===== CI/CD – JENKINS =====
+  {
+    keywords: [
+      "jenkins", "ci", "cd", "ci cd", "ci/cd", "pipeline", "build pipeline",
+      "deploy pipeline", "groovy", "automation", "otomasyon",
+      "build", "test", "deploy", "release", "devops pipeline"
+    ],
+    answer: KB.devops.cicd
+  },
+
+  // ===== BACKEND =====
+  {
+    keywords: [
+      "backend", "back end", "api", "rest", "rest api",
+      "fastapi", "python backend", "service", "endpoint",
+      "microservice", "servis", "web servis"
+    ],
+    answer: KB.devops.backend
+  },
+
+  // ===== DATABASE =====
+  {
+    keywords: [
+      "sql", "database", "veritabani", "veri tabani",
+      "postgres", "postgresql", "sqlalchemy",
+      "orm", "db", "schema", "migration"
+    ],
+    answer: KB.devops.db
+  },
+
+  // ===== AUDIT / DENETİM =====
+  {
+    keywords: [
+      "audit", "denetim", "örneklem", "orneklem",
+      "sampling", "bds 530", "materiality", "materyalite",
+      "rapor", "report", "excel", "word",
+      "denetim otomasyonu", "audit automation"
+    ],
+    answer: KB.audit.overview + "<br/><br/>" + KB.audit.features
+  },
+
+  // ===== THESIS / BITIRME =====
+  {
+    keywords: [
+      "tez", "thesis", "bitirme", "bitirme projesi",
+      "trade center", "bist", "kripto", "crypto",
+      "algoritmik trading", "trading bot",
+      "asp.net", "sql server", "2fa", "security"
+    ],
+    answer: "__OPEN_THESIS_MENU__"
+  },
+
+  // ===== İLETİŞİM =====
+  {
+    keywords: [
+      "iletisim", "iletişim", "contact", "ulaş", "ulas",
+      "mail", "email", "e posta", "e-posta",
+      "linkedin", "github", "profil", "hesap"
+    ],
+    answer: KB.contact
+  }
+];
+
+  function normalizeText(text) {
+  return (text || "")
+    .toLowerCase()
+    .replace(/ı/g, "i")
+    .replace(/İ/g, "i")
+    .replace(/I/g, "i")
+    .replace(/ş/g, "s")
+    .replace(/ğ/g, "g")
+    .replace(/ü/g, "u")
+    .replace(/ö/g, "o")
+    .replace(/ç/g, "c")
+    .replace(/â|î|û/g, "")
+    .trim();
+}
+
+    // serbest soru: keyword-based
     // serbest soru: keyword-based
     // serbest soru: keyword-based
 function findBestAnswer(text){
@@ -988,8 +1067,7 @@ Konuyla ilgili iletişime geçmek istersen LinkedIn veya e-posta üzerinden ula�
   ealbayrk0@gmail.com
 </a>
       `;
-} // ✅ BU KAPANIŞ EKSİKTİ
-
+} 
 
 async function sendMessage(){
   const text = inputEl.value.trim();
