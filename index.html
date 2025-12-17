@@ -1196,6 +1196,9 @@ function findBestAnswer(text){
 }
   
 async function sendMessage(){
+  if (!userName && state !== "awaitingName" && state !== "askName") {
+  state = "askName";
+}
   const text = inputEl.value.trim();
   if (!text) return;
 
@@ -1252,7 +1255,7 @@ async function sendMessage(){
 
   botSay(ans);
 }
-  /
+  
   chatEl.addEventListener("click", (e) => {
     const btn = e.target.closest(".choice-btn");
     if (!btn) return;
