@@ -453,6 +453,11 @@ body { min-height: 100dvh; }
     pointer-events: auto;
   }
 }
+    #openProfile { display: none; }
+
+@media (max-width: 800px){
+  #openProfile { display: inline-flex; }
+}
   </style>
 </head>
 
@@ -1268,13 +1273,18 @@ async function sendMessage(){
   });
 
   // bottom menu buttons
-  document.addEventListener("click", (e) => {
-    const bm = e.target.closest(".bm-btn");
-    if (!bm) return;
-    const v = bm.getAttribute("data-bm");
-    // make it look like a choice
-    handleChoice(v, bm);
-  });
+document.addEventListener("click", (e) => {
+  const bm = e.target.closest(".bm-btn");
+  if (!bm) return;
+
+  // ✅ Profil butonu drawer açıyor, chat akışına karışmasın
+  if (bm.id === "openProfile") return;
+
+  const v = bm.getAttribute("data-bm");
+  if (!v) return; // ✅ data-bm yoksa çık (Profil gibi)
+  closeDrawer();       
+  handleChoice(v, bm);
+});
 
   // quick questions
   document.addEventListener("click", (e) => {
@@ -1307,16 +1317,21 @@ async function sendMessage(){
   function openDrawer(){
     sideSection.classList.add("drawer-open");
     backdrop.classList.add("show");
+    document.body.style.overflow = "hidden";
   }
 
   function closeDrawer(){
     sideSection.classList.remove("drawer-open");
     backdrop.classList.remove("show");
+    document.body.style.overflow = "";
   }
 
   openBtn?.addEventListener("click", openDrawer);
   closeBtn?.addEventListener("click", closeDrawer);
   backdrop.addEventListener("click", closeDrawer);
+  document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeDrawer();
+});
 });
 </script>
 </body>
