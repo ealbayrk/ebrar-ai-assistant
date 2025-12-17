@@ -368,9 +368,9 @@
   .profile-text h2{ font-size: 14px; }
 }
 
-/* ✅ iOS viewport fix */
+
 body { min-height: 100dvh; } 
-    /* ✅ MOBILE FIX: merkezlemeyi kapat, üstten başlat */
+    
 @media (max-width: 800px){
   body{
     align-items: flex-start;
@@ -380,7 +380,7 @@ body { min-height: 100dvh; }
   .card{ width: 100%; }
 }
 
-/* ✅ iOS safe area (alt bar çakışmasın) */
+
 @supports (padding: max(0px, 0px)) {
   body { padding-bottom: max(14px, env(safe-area-inset-bottom)); }
 }  
@@ -1039,9 +1039,8 @@ if (value === "THESIS_RESULTS"){ botSay(KB.thesis.results,[{label:"Bitirme Proje
     ]);
   }
 
-  // ==========
-  // FREE TEXT ANSWERS (light keyword match)
-  // ==========
+
+
 const knowledgeBase = [
 
   // ===== DEVOPS – DOCKER =====
@@ -1205,7 +1204,7 @@ async function sendMessage(){
 
   await typing(320);
 
-  // 🟠 İSİM BEKLENİYORSA
+
   if (state === "awaitingName"){
     const extracted = extractName(text);
 
@@ -1220,7 +1219,7 @@ async function sendMessage(){
     return;
   }
 
-  // 🟠 HİÇ İSİM SORULMADAN GELDİYSE
+
   if (state === "askName"){
     const extracted = extractName(text);
 
@@ -1232,7 +1231,7 @@ async function sendMessage(){
       return;
     }
 
-    // sadece merhaba vb.
+
     botSay(
       "Merhaba 😊 İsmini de paylaşırsan sana daha kişisel yanıt verebilirim.",
       [
@@ -1243,7 +1242,7 @@ async function sendMessage(){
     return;
   }
 
-  // 🟠 NORMAL AKIŞ
+
   const ans = findBestAnswer(text);
 
   if (ans === "__OPEN_THESIS_MENU__"){
