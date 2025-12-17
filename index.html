@@ -381,9 +381,9 @@ body { min-height: 100dvh; }
 }
 
 /* ✅ iOS safe area (alt bar çakışmasın) */
-@supports (padding: max(0px)) {
+@supports (padding: max(0px, 0px)) {
   body { padding-bottom: max(14px, env(safe-area-inset-bottom)); }
-}
+}  
 
     @media (max-width: 520px){
   .input-area{
@@ -396,6 +396,14 @@ body { min-height: 100dvh; }
     backdrop-filter: blur(10px);
     border: 1px solid rgba(148,163,184,0.25);
   }
+}
+
+    @media (max-width: 520px){
+  .chatbox{ padding-bottom: 120px; }
+}
+
+    @media (max-width: 520px){
+  .bottom-menu{ position: static; }
 }
   </style>
 </head>
