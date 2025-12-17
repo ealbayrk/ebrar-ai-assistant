@@ -303,6 +303,73 @@
     }
     .link-box a { color: var(--accent); text-decoration: none; font-weight: 500; }
     .link-box a:hover { text-decoration: underline; }
+
+
+    /* ✅ MOBILE POLISH */
+@media (max-width: 520px) {
+  body { padding: 14px; }
+
+  .card{
+    padding: 14px;
+    gap: 14px;
+    border-radius: 18px;
+  }
+
+  .title-row h1 { font-size: 18px; line-height: 1.25; }
+  .title-row span { font-size: 12px; }
+
+  .pill-row { gap: 6px; }
+  .pill { font-size: 10px; padding: 4px 8px; }
+
+  .chatbox{
+    height: 52vh;
+    min-height: 320px;
+    padding: 12px;
+    border-radius: 14px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .message{
+    max-width: 92%;
+    font-size: 13px;
+  }
+
+  .input-area{ gap: 10px; }
+  .input-wrapper input{
+    padding: 12px 78px 12px 12px;
+    font-size: 14px;
+  }
+
+  .send-btn{ padding: 11px 14px; }
+
+  .bottom-menu{
+    gap: 8px;
+    padding-top: 12px;
+  }
+
+  .bm-btn{
+    flex: 1 1 calc(50% - 4px);
+    text-align: center;
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+
+  .quick-questions{ gap: 8px; }
+  .quick-btn{
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+
+  .side-section{
+    padding-top: 14px;
+    gap: 12px;
+  }
+  .avatar{ width: 46px; height: 46px; }
+  .profile-text h2{ font-size: 14px; }
+}
+
+/* ✅ iOS viewport fix */
+body { min-height: 100dvh; } 
   </style>
 </head>
 
@@ -833,6 +900,7 @@ function goAuditMenu(){
   // CHOICE HANDLER
   // ==========
   async function handleChoice(value, clickedButton){
+    
     // disable same bubble buttons once clicked
     const wrap = clickedButton?.closest?.(".choice-wrap");
     if (wrap) wrap.querySelectorAll("button").forEach(b => b.disabled = true);
