@@ -405,6 +405,7 @@ body { min-height: 100dvh; }
     @media (max-width: 520px){
   .bottom-menu{ position: static; }
 }
+    
   </style>
 </head>
 
@@ -519,9 +520,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const inputEl = document.getElementById("userInput");
   const sendBtn = document.getElementById("sendBtn");
 
-  // ==========
-  // DATA (CV)
-  // ==========
+
   const KB = {
     profile: `
       <b>Ebrar Albayrak</b>, DevOps ve Backend geliştirme odağında; teknik yetkinliği iş ihtiyaçlarıyla birleştiren,
@@ -789,10 +788,7 @@ contact: `
     return new Promise(res => setTimeout(() => { t.remove(); res(); }, ms));
   }
 
-  // ==========
-  // FLOW STATE
-  // ==========
-  let state = "askName";      // askName | awaitingName | mainMenu | internships | devopsMenu | auditMenu
+  let state = "askName";      
   let userName = null;
 
   const mapLabel = {
@@ -1133,6 +1129,27 @@ function normalizeText(text) {
     .replace(/â|î|û/g, "")
     .trim();
 }
+  function extractName(text){
+  const raw = text.trim();
+
+  // tek kelimeyse ve çok uzunsa (ela, ahmet)
+  if (/^[a-zA-ZçğıöşüİĞÜŞÖÇ]{2,20}$/.test(raw)) {
+    return raw;
+  }
+
+  // "ben ela", "adım ela", "ismim ela"
+  const patterns = [
+    /(?:ben|adım|ismim)\s+([a-zA-ZçğıöşüİĞÜŞÖÇ]{2,20})/i,
+    /(?:my name is|i am)\s+([a-zA-Z]{2,20})/i
+  ];
+
+  for (const p of patterns){
+    const m = raw.match(p);
+    if (m) return m[1];
+  }
+
+  return null;
+}
 
     const FALLBACK_CONTACT = `
   Bu noktada en doğru cevabı doğrudan Ebrar’ın kendisinden almak daha anlamlı olur.<br/><br/>
@@ -1188,28 +1205,55 @@ async function sendMessage(){
 
   await typing(320);
 
+  // 🟠 İSİM BEKLENİYORSA
   if (state === "awaitingName"){
-    userName = text;
-    botSay(`Tanıştığıma memnun oldum <b>${userName}</b> ☺️`);
-    await typing(200);
-    goMainMenu();
+    const extracted = extractName(text);
+
+    if (extracted){
+      userName = extracted;
+      botSay(`Tanıştığıma memnun oldum <b>${userName}</b> ☺️`);
+      await typing(200);
+      goMainMenu();
+    } else {
+      botSay("İsmini anlayamadım ama sorun değil 🙂 Tekrar yazmak ister misin?");
+    }
     return;
   }
 
+  // 🟠 HİÇ İSİM SORULMADAN GELDİYSE
+  if (state === "askName"){
+    const extracted = extractName(text);
+
+    if (extracted){
+      userName = extracted;
+      botSay(`Memnun oldum <b>${userName}</b> 😊`);
+      await typing(200);
+      goMainMenu();
+      return;
+    }
+
+    // sadece merhaba vb.
+    botSay(
+      "Merhaba 😊 İsmini de paylaşırsan sana daha kişisel yanıt verebilirim.",
+      [
+        {label:"İsmimi paylaşayım", value:"NAME_YES"},
+        {label:"İsim vermeden devam", value:"NAME_NO", secondary:true}
+      ]
+    );
+    return;
+  }
+
+  // 🟠 NORMAL AKIŞ
   const ans = findBestAnswer(text);
 
-  if (ans === "__OPEN_THESIS_MENU__") {
+  if (ans === "__OPEN_THESIS_MENU__"){
     goThesisMenu();
     return;
   }
 
   botSay(ans);
 }
-
-  // ==========
-  // EVENTS
-  // ==========
-  // choice buttons (event delegation)
+  /
   chatEl.addEventListener("click", (e) => {
     const btn = e.target.closest(".choice-btn");
     if (!btn) return;
@@ -1217,16 +1261,16 @@ async function sendMessage(){
     handleChoice(value, btn);
   });
 
-  // bottom menu buttons
+
   document.addEventListener("click", (e) => {
     const bm = e.target.closest(".bm-btn");
     if (!bm) return;
     const v = bm.getAttribute("data-bm");
-    // make it look like a choice
+
     handleChoice(v, bm);
   });
 
-  // quick questions
+ 
   document.addEventListener("click", (e) => {
     const qb = e.target.closest(".quick-btn");
     if (!qb) return;
@@ -1239,9 +1283,7 @@ async function sendMessage(){
     if (e.key === "Enter"){ e.preventDefault(); sendMessage(); }
   });
 
-  // ==========
-  // INIT
-  // ==========
+
   startFlow();
 });
 </script>
