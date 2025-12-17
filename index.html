@@ -946,59 +946,65 @@ if (value === "THESIS_RESULTS"){ botSay(KB.thesis.results,[{label:"Bitirme Proje
     { keywords: ["iletişim","linkedin","github","mail","ulaş"], answer: KB.contact },
   ];
 
-  function findBestAnswer(text){
-    const lower = (text||"").toLowerCase();
-    let best = null, bestScore = 0;
-    for (const item of knowledgeBase){
-      let score = 0;
-      for (const kw of item.keywords){
-        if (lower.includes(kw)) score++;
-      }
-      if (score > bestScore){
-        bestScore = score;
-        best = item.answer;
-      }
-    }
-   return bestScore > 0
-  ? best
-  : `
-      Bu noktada en doğru cevabı doğrudan Ebrar’ın kendisinden almak daha anlamlı olur.<br/><br/>
-      Konuyla ilgili iletişime geçmek istersen LinkedIn üzerinden ulaşabilirsin:<br/><br/>
-      <a href="https://www.linkedin.com/in/ebrar-a-585222201"
-         target="_blank"
-         rel="noopener noreferrer">
-         Ebrar Albayrak – LinkedIn
-      </a>
-    `;
-
-  async function sendMessage(){
-    const text = inputEl.value.trim();
-    if (!text) return;
-
-    userSay(text);
-    inputEl.value = "";
-
-    await typing(320);
-
-    if (state === "awaitingName"){
-      userName = text;
-      botSay(`Tanıştığıma memnun oldum <b>${userName}</b> ☺️`);
-      await typing(200);
-      goMainMenu();
-      return;
-    }
+  
 
     // serbest soru: keyword-based
     // serbest soru: keyword-based
-const ans = findBestAnswer(text);
+function findBestAnswer(text){
+  const lower = (text||"").toLowerCase();
+  let best = null, bestScore = 0;
 
-if (ans === "__OPEN_THESIS_MENU__") {
-  goThesisMenu();
-  return;
-}
-
-botSay(ans);
+  for (const item of knowledgeBase){
+    let score = 0;
+    for (const kw of item.keywords){
+      if (lower.includes(kw)) score++;
+    }
+    if (score > bestScore){
+      bestScore = score;
+      best = item.answer;
+    }
   }
+
+  return bestScore > 0
+    ? best
+    : `
+        Bu noktada en doğru cevabı doğrudan Ebrar’ın kendisinden almak daha anlamlı olur.<br/><br/>
+        Konuyla ilgili iletişime geçmek istersen LinkedIn üzerinden ulaşabilirsin:<br/><br/>
+        <a href="https://www.linkedin.com/in/ebrar-a-585222201"
+           target="_blank"
+           rel="noopener noreferrer">
+           Ebrar Albayrak – LinkedIn
+        </a>
+      `;
+} // ✅ BU KAPANIŞ EKSİKTİ
+
+
+async function sendMessage(){
+  const text = inputEl.value.trim();
+  if (!text) return;
+
+  userSay(text);
+  inputEl.value = "";
+
+  await typing(320);
+
+  if (state === "awaitingName"){
+    userName = text;
+    botSay(`Tanıştığıma memnun oldum <b>${userName}</b> ☺️`);
+    await typing(200);
+    goMainMenu();
+    return;
+  }
+
+  const ans = findBestAnswer(text);
+
+  if (ans === "__OPEN_THESIS_MENU__") {
+    goThesisMenu();
+    return;
+  }
+
+  botSay(ans);
+}
 
   // ==========
   // EVENTS
