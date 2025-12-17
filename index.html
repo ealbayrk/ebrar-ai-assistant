@@ -511,49 +511,86 @@ audit: {
     • Denetim sürecinin daha <b>şeffaf ve takip edilebilir</b> hale gelmesi
   `
 },
- thesis: {
+thesis: {
   overview: `
     <b>Trade Center (Bitirme Projesi)</b><br/>
-    BIST100 ve kripto piyasaları için, teknik göstergelere dayalı <b>kural tabanlı</b> al-sat kararları üreten algoritmik trading platformu.
+    BIST100 ve kripto piyasaları için, teknik göstergelere dayalı <b>kural tabanlı</b> al-sat kararları üreten; karar süreçlerini otomatikleştirip <b>tek bir panelden</b> izlenebilir hale getiren algoritmik trading platformu.<br/><br/>
+    Amaç: “grafik başında beklemek” yerine; sinyali üret, doğrula, kaydet ve sonucu ölç — hepsi <b>uçtan uca</b> bir sistem içinde.
   `,
+
   problem: `
     <b>Problem / ihtiyaç</b><br/>
-    Manuel işlem: zaman baskısı + duygusal karar riski + yerel pazar (BIST100) için erişilebilir çözüm eksikliği.  [oai_citation:8‡20COMP1038_20SOFT1012_20SOFT102 (1).pdf](sediment://file_0000000068507246bee6d92204c89b2a)
+    Finansal piyasalarda manuel işlem yapmak; <b>zaman baskısı</b>, <b>duygusal kararlar</b> ve <b>tutarsız strateji uygulaması</b> gibi riskleri büyütür.<br/><br/>
+    Trade Center bu noktada şunu hedefler:<br/>
+    • Stratejiyi “kişiye bağlı” olmaktan çıkarıp <b>standardize etmek</b><br/>
+    • Kararları “tahmine” değil, <b>ölçülebilir sinyallere</b> dayandırmak<br/>
+    • Sonuçları geçmişe dönük izleyerek <b>performans değerlendirmesi</b> yapabilmek
   `,
+
   architecture: `
     <b>Mimari (3 alt sistem)</b><br/>
-    • <b>Data Subsystem:</b> SQL Server + EF Core + JSON config<br/>
-    • <b>ASP.NET Core MVC Web:</b> UI + servis katmanı + orchestrator<br/>
-    • <b>Python Bot Worker:</b> indikatör hesapları + sinyal üretimi<br/>
-    Bu ayrım bağımsız geliştirme/test ve ölçeklemeyi kolaylaştırır.  [oai_citation:9‡20COMP1038_20SOFT1012_20SOFT102 (1).pdf](sediment://file_0000000068507246bee6d92204c89b2a)
+    Sistem, bakım/ölçeklenebilirlik için üç parçaya ayrılmıştır:<br/><br/>
+    • <b>Data Subsystem:</b> Konfigürasyon + veri modelleri + kalıcı kayıt katmanı (strateji/işlem/log)<br/>
+    • <b>ASP.NET Core MVC Web:</b> Kullanıcı arayüzü, iş akışı yönetimi ve kararların tek panelden kontrolü<br/>
+    • <b>Python Bot Worker:</b> İndikatör hesapları, sinyal üretimi ve strateji değerlendirme motoru<br/><br/>
+    Bu ayrım sayesinde:<br/>
+    • Bot tarafı bağımsız geliştirilir/test edilir<br/>
+    • UI tarafı “gösterim ve kontrol”e odaklanır<br/>
+    • Veri katmanı düzenli ve izlenebilir bir kayıt sağlar
   `,
+
   features: `
     <b>Özellikler</b><br/>
-    • Bot sinyali dinleme / işleme<br/>
-    • Wallet yönetimi + işlem geçmişi<br/>
-    • Price alert + in-app/email bildirim<br/>
-    • Dashboard ile performans takibi (paper trading dahil)
+    Trade Center bir “grafik uygulaması” değil, <b>karar + takip</b> platformudur:<br/><br/>
+    • <b>Sinyal üretimi ve işleme:</b> Bot, kurallara göre sinyal üretir; sistem sinyali kaydeder ve akışı yönetir<br/>
+    • <b>Wallet & işlem geçmişi:</b> Pozisyon ve geçmiş işlemler tek yerde izlenir<br/>
+    • <b>Bildirimler:</b> Fiyat uyarıları ve kritik eşikler için uygulama içi / e-posta bildirimleri<br/>
+    • <b>Dashboard:</b> Strateji performansı, özet metrikler ve geçmiş sonuçlar<br/>
+    • <b>Paper Trading:</b> Gerçek para riski olmadan strateji deneme ve karşılaştırma imkânı
   `,
+
   technologies: `
     <b>Teknolojiler</b><br/>
-    ASP.NET Core MVC, EF Core, Identity, MSSQL, Python, Yahoo Finance API, TradingView Widgets, SendGrid, Postman, VS2022.  [oai_citation:10‡20COMP1038_20SOFT1012_20SOFT102 (1).pdf](sediment://file_0000000068507246bee6d92204c89b2a)
+    Bu proje “tek teknolojiyle” değil, bilinçli bir stack kurgusuyla inşa edildi:<br/><br/>
+    • <b>Web:</b> ASP.NET Core MVC (UI + kontrol katmanı)<br/>
+    • <b>ORM & Kimlik:</b> EF Core + Identity<br/>
+    • <b>DB:</b> MSSQL (kalıcı kayıt & raporlanabilir veri)<br/>
+    • <b>Worker:</b> Python (hesaplama ve sinyal motoru)<br/>
+    • <b>Veri/Widget:</b> Piyasa verisi entegrasyonu + TradingView widget’ları<br/>
+    • <b>Bildirim:</b> SendGrid<br/>
+    • <b>Geliştirme/Test:</b> Postman, VS2022
   `,
+
   security: `
     <b>Güvenlik</b><br/>
-    • 2FA<br/>
-    • Token expiry (20 dk)<br/>
-    • API key şifreleme + UI input kısıtları  [oai_citation:11‡20COMP1038_20SOFT1012_20SOFT102 (1).pdf](sediment://file_0000000068507246bee6d92204c89b2a)
+    Finans uygulamalarında güvenlik “sonradan eklenen” değil, <b>temelden gelen</b> bir ihtiyaçtır. Bu yüzden:<br/><br/>
+    • <b>2FA:</b> Hesap ele geçirme riskini azaltan ikinci doğrulama katmanı<br/>
+    • <b>Oturum güvenliği:</b> Token/oturum süresi kısıtları (ör. kısa süreli geçerlilik)<br/>
+    • <b>API key koruması:</b> Anahtarların şifrelenmesi ve kullanıcı tarafında giriş/validasyon kontrolleri<br/><br/>
+    Hedef: kullanıcı güveni + sistem bütünlüğü + kötüye kullanım riskinin azaltılması.
   `,
+
   tests: `
     <b>Testler</b><br/>
-    Unit + acceptance + performans + security testleri; paper trading senaryoları.  [oai_citation:12‡20COMP1038_20SOFT1012_20SOFT102 (1).pdf](sediment://file_0000000068507246bee6d92204c89b2a)
+    “Çalışıyor” demek yetmez — <b>doğru çalıştığını</b> göstermek gerekir. Bu yüzden test yaklaşımı çok katmanlıdır:<br/><br/>
+    • <b>Unit test:</b> indikatör hesapları, sinyal kuralları, kritik fonksiyonlar<br/>
+    • <b>Acceptance test:</b> uçtan uca senaryolar (kullanıcı akışı + sinyal → kayıt → görüntüleme)<br/>
+    • <b>Performans test:</b> veri çekme / hesaplama yükü altında sistem davranışı<br/>
+    • <b>Security test:</b> authentication akışı ve temel güvenlik kontrolleri<br/><br/>
+    Ek olarak <b>paper trading</b> senaryoları ile stratejilerin “sahada” simülasyonu yapılır.
   `,
+
   results: `
     <b>Sonuç & gelecek</b><br/>
-    Dakika seviyesinde veriyle stratejiler çalıştı; saniye-altı veri eksikliği HFT’yi sınırladı.
-    Gelecekte daha yüksek çözünürlüklü veri sağlayıcı entegrasyonları hedeflenebilir.
+    Proje; dakika seviyesinde verilerle strateji üretimi ve performans takibini başarılı şekilde gerçekleştirdi.<br/><br/>
+    <b>Sınırlılık:</b> Saniye-altı veri/akış eksikliği, HFT (yüksek frekans) senaryolarını doğal olarak sınırlar.<br/><br/>
+    <b>Gelecek adımlar:</b><br/>
+    • Daha yüksek çözünürlüklü veri sağlayıcı entegrasyonları<br/>
+    • Strateji karşılaştırma modülü (A/B strateji kıyaslama)<br/>
+    • Backtest ekranı ve gelişmiş metrikler (drawdown, sharpe vb.)<br/>
+    • Gerçek zamanlı event-driven mimariye geçiş (queue/stream tabanlı)
   `
-}  ,
+},
     interview: `
       <b>Mülakat Modu (Hızlı)</b><br/>
       Aşağıdakilerden seç, 30 saniyelik net cevap üretelim:<br/>
