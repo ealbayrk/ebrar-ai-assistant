@@ -522,6 +522,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   const KB = {
+    
     profile: `
       <b>Ebrar Albayrak</b>, DevOps ve Backend geliştirme odağında; teknik yetkinliği iş ihtiyaçlarıyla birleştiren,
 <b>süreç, sürdürülebilirlik ve ürünleşme</b> perspektifine sahip bir mühendis profilidir.<br/><br/>
@@ -735,6 +736,16 @@ thesis: {
       • “Docker/Compose ile nasıl deploy edersin?”<br/>
       • “Audit automation projesinde en zor kısım neydi?”<br/>
     `,
+    thanks: `
+Rica ederim 😊<br/><br/>
+Bu arada şunu söyleyebilirim: <b>Ebrar aradığın aday profiline çok yakın</b>.<br/>
+Kendini geliştirmeyi gerçekten sever; hem <b>DevOps & backend</b> hem de <b>denetim otomasyonu</b> tarafında “ürünleşme / sürdürülebilirlik” bakışı var.<br/><br/>
+İstersen hızlıca LinkedIn’den iletişime geçebilirsin:<br/>
+<a href="https://www.linkedin.com/in/ebrar-a-585222201" target="_blank" rel="noopener noreferrer">
+Ebrar Albayrak – LinkedIn
+</a>
+`
+      
 contact: `
   <b>Ebrar’a ulaşmak için:</b><br/><br/>
   • LinkedIn: 
@@ -750,7 +761,9 @@ contact: `
      yazılarım
   </a>
 `
+    
   };
+  
 
   // ==========
   // UI HELPERS
@@ -1042,6 +1055,16 @@ if (value === "THESIS_RESULTS"){ botSay(KB.thesis.results,[{label:"Bitirme Proje
 
 
 const knowledgeBase = [
+
+  {
+  keywords: [
+    "tesekkur", "tesekkurler", "teşekkür", "teşekkürler",
+    "sagol", "sağol", "eyvallah", "eline saglik", "eline sağlık",
+    "bilgiler icin tesekkur", "bilgiler için teşekkür",
+    "cok tesekkur", "çok teşekkür", "thanks", "thank you"
+  ],
+  answer: KB.thanks
+},
 
   // ===== DEVOPS – DOCKER =====
   {
