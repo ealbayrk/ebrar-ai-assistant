@@ -959,8 +959,17 @@ if (value === "THESIS_RESULTS"){ botSay(KB.thesis.results,[{label:"Bitirme Proje
         best = item.answer;
       }
     }
-    return bestScore > 0 ? best : `Bu soruya hazır bir cevap bulamadım ama istersen <b>Ana Menü</b>den başlık seçebiliriz.<br/><br/>${KB.contact}`;
-  }
+   return bestScore > 0
+  ? best
+  : `
+      Bu noktada en doğru cevabı doğrudan Ebrar’ın kendisinden almak daha anlamlı olur.<br/><br/>
+      Konuyla ilgili iletişime geçmek istersen LinkedIn üzerinden ulaşabilirsin:<br/><br/>
+      <a href="https://www.linkedin.com/in/ebrar-a-585222201"
+         target="_blank"
+         rel="noopener noreferrer">
+         Ebrar Albayrak – LinkedIn
+      </a>
+    `;
 
   async function sendMessage(){
     const text = inputEl.value.trim();
