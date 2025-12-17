@@ -397,67 +397,6 @@ body { min-height: 100dvh; }
     border: 1px solid rgba(148,163,184,0.25);
   }
 }
-    /* Drawer altyapısı */
-.drawer-close{
-  display:none;
-  margin-left:auto;
-  border-radius:999px;
-  padding:8px 12px;
-  border:1px solid rgba(148,163,184,0.55);
-  background: rgba(15,23,42,0.85);
-  color: var(--text-main);
-  cursor:pointer;
-}
-
-.drawer-backdrop{
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.55);
-  backdrop-filter: blur(6px);
-  opacity: 0;
-  pointer-events: none;
-  transition: .2s ease;
-  z-index: 50;
-}
-
-/* Mobilde sağ panel => alttan açılan drawer */
-@media (max-width: 800px){
-  .side-section{
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    top: auto;
-
-    border: 1px solid rgba(148, 163, 184, 0.38);
-    border-left: none;
-    border-radius: 18px 18px 0 0;
-
-    padding: 16px;
-    background: rgba(2,6,23,0.92);
-    backdrop-filter: blur(16px);
-
-    transform: translateY(105%);
-    transition: transform .22s ease;
-    z-index: 60;
-
-    max-height: 78vh;
-    overflow: auto;
-  }
-
-  .side-section.drawer-open{ transform: translateY(0); }
-
-  .drawer-close{ display:inline-flex; }
-  .drawer-backdrop.show{
-    opacity: 1;
-    pointer-events: auto;
-  }
-}
-    #openProfile { display: none; }
-
-@media (max-width: 800px){
-  #openProfile { display: inline-flex; }
-}
   </style>
 </head>
 
@@ -501,7 +440,6 @@ body { min-height: 100dvh; }
         <button class="bm-btn" data-bm="MENU_INTERNSHIPS">Stajlar</button>
         <button class="bm-btn" data-bm="MENU_DEVOPS">DevOps</button>
         <button class="bm-btn" data-bm="MENU_AUDIT">Audit</button>
-        <button class="bm-btn" id="openProfile">Profil</button>
       </div>
 
       <div class="quick-questions">
@@ -514,7 +452,6 @@ body { min-height: 100dvh; }
 
     <!-- SAĞ -->
     <aside class="side-section">
-      <button class="drawer-close" id="drawerClose" aria-label="Profili kapat">✕</button>
       <div class="profile-row">
         <div class="avatar"></div>
         <div class="profile-text">
@@ -1273,18 +1210,13 @@ async function sendMessage(){
   });
 
   // bottom menu buttons
-document.addEventListener("click", (e) => {
-  const bm = e.target.closest(".bm-btn");
-  if (!bm) return;
-
-  // ✅ Profil butonu drawer açıyor, chat akışına karışmasın
-  if (bm.id === "openProfile") return;
-
-  const v = bm.getAttribute("data-bm");
-  if (!v) return; // ✅ data-bm yoksa çık (Profil gibi)
-  closeDrawer();       
-  handleChoice(v, bm);
-});
+  document.addEventListener("click", (e) => {
+    const bm = e.target.closest(".bm-btn");
+    if (!bm) return;
+    const v = bm.getAttribute("data-bm");
+    // make it look like a choice
+    handleChoice(v, bm);
+  });
 
   // quick questions
   document.addEventListener("click", (e) => {
@@ -1302,36 +1234,7 @@ document.addEventListener("click", (e) => {
   // ==========
   // INIT
   // ==========
-
   startFlow();
-  const sideSection = document.querySelector(".side-section");
-
-  // backdrop oluştur
-  const backdrop = document.createElement("div");
-  backdrop.className = "drawer-backdrop";
-  document.body.appendChild(backdrop);
-
-  const openBtn = document.getElementById("openProfile");
-  const closeBtn = document.getElementById("drawerClose");
-
-  function openDrawer(){
-    sideSection.classList.add("drawer-open");
-    backdrop.classList.add("show");
-    document.body.style.overflow = "hidden";
-  }
-
-  function closeDrawer(){
-    sideSection.classList.remove("drawer-open");
-    backdrop.classList.remove("show");
-    document.body.style.overflow = "";
-  }
-
-  openBtn?.addEventListener("click", openDrawer);
-  closeBtn?.addEventListener("click", closeDrawer);
-  backdrop.addEventListener("click", closeDrawer);
-  document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") closeDrawer();
-});
 });
 </script>
 </body>
