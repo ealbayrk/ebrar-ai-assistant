@@ -370,6 +370,33 @@
 
 /* ✅ iOS viewport fix */
 body { min-height: 100dvh; } 
+    /* ✅ MOBILE FIX: merkezlemeyi kapat, üstten başlat */
+@media (max-width: 800px){
+  body{
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+  .shell{ width: 100%; }
+  .card{ width: 100%; }
+}
+
+/* ✅ iOS safe area (alt bar çakışmasın) */
+@supports (padding: max(0px)) {
+  body { padding-bottom: max(14px, env(safe-area-inset-bottom)); }
+}
+
+    @media (max-width: 520px){
+  .input-area{
+    position: sticky;
+    bottom: 10px;
+    z-index: 10;
+    padding: 10px;
+    border-radius: 16px;
+    background: rgba(2,6,23,0.75);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(148,163,184,0.25);
+  }
+}
   </style>
 </head>
 
