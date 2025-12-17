@@ -1018,12 +1018,10 @@ const knowledgeBase = [
   }
 ];
 
-  function normalizeText(text) {
+function normalizeText(text) {
   return (text || "")
-    .toLowerCase()
+    .toLocaleLowerCase("tr-TR") // ✅ asıl olay burada
     .replace(/ı/g, "i")
-    .replace(/İ/g, "i")
-    .replace(/I/g, "i")
     .replace(/ş/g, "s")
     .replace(/ğ/g, "g")
     .replace(/ü/g, "u")
@@ -1048,7 +1046,6 @@ const knowledgeBase = [
   </a>
 `;
 
-// ✅ Geliştirilmiş eşleştirme (TR karakter + I/İ uyumlu)
 function findBestAnswer(text){
   const input = normalizeText(text);
   let best = null, bestScore = 0;
@@ -1059,6 +1056,14 @@ function findBestAnswer(text){
     for (const kw of item.keywords){
       const normKw = normalizeText(kw);
       if (!normKw) continue;
+
+      // ✅ kısa kelimelerde false-positive önle
+      if (normKw.length <= 2) {
+        const re = new RegExp(`(^|\\s)${normKw}(\\s|$)`, "i");
+        if (re.test(input)) score++;
+        continue;
+      }
+
       if (input.includes(normKw)) score++;
     }
 
