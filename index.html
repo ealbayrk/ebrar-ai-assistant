@@ -425,6 +425,61 @@
     @media (max-width: 520px){
       .bottom-menu{ position: static; }
     }
+    .lang-select {
+  position: relative;
+  margin-left: auto;
+}
+
+.lang-current {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(148,163,184,0.55);
+  background: rgba(15,23,42,0.85);
+  color: var(--text-main);
+  font-size: 12px;
+  cursor: pointer;
+  transition: .15s ease;
+}
+
+.lang-current:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(249,115,22,0.12);
+}
+
+.lang-menu {
+  position: absolute;
+  right: 0;
+  top: 110%;
+  min-width: 120px;
+  background: #f8fafc;
+  color: #0f172a;
+  border-radius: 14px;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.25);
+  overflow: hidden;
+  display: none;
+  z-index: 20;
+}
+
+.lang-menu button {
+  width: 100%;
+  padding: 12px;
+  font-size: 14px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background .15s ease;
+}
+
+.lang-menu button:hover {
+  background: rgba(15,23,42,0.06);
+}
+
+.lang-select.open .lang-menu {
+  display: block;
+}
   </style>
 </head>
 
@@ -436,7 +491,17 @@
       <div class="badge">
         <span class="badge-dot"></span>
         <span class="badge-text" id="liveLabel">EBRAR AI ASSISTANT · LIVE</span>
-        <button class="lang-toggle" id="langBtn" aria-label="Language Toggle">EN</button>
+        <div class="lang-select">
+  <button class="lang-current" id="langToggle">
+    🌍 Dil
+    <span class="chevron">▾</span>
+  </button>
+
+  <div class="lang-menu" id="langMenu">
+    <button data-lang="tr">TR</button>
+    <button data-lang="en">EN</button>
+  </div>
+</div>
       </div>
 
       <div class="title-row">
@@ -537,7 +602,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const inputEl = document.getElementById("userInput");
   const sendBtn = document.getElementById("sendBtn");
   const sendTextEl = document.getElementById("sendText");
-  const langBtn = document.getElementById("langBtn");
+  const langToggle = document.getElementById("langToggle");
+  const langMenu = document.getElementById("langMenu");
+  const langSelect = document.querySelector(".lang-select");
+
+  
 
   // ======================
   // LANGUAGE (TR/EN)
@@ -1411,7 +1480,7 @@ document.addEventListener("DOMContentLoaded", () => {
     inputEl.placeholder = I18N[lang].placeholder;
     sendTextEl.innerText = I18N[lang].send;
 
-    langBtn.textContent = (lang === "tr") ? "EN" : "TR";
+    
 
     // bottom menu
     document.getElementById("bmMain").innerText = I18N[lang].bm.main;
@@ -1425,6 +1494,8 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("sideBody1").innerHTML = I18N[lang].side.b1;
     document.getElementById("sideTitle2").innerText = I18N[lang].side.t2;
     document.getElementById("sideBody2").innerHTML = I18N[lang].side.b2;
+    const langLabel = (lang === "tr") ? "TR" : "EN";
+langToggle.innerHTML = `🌍 ${langLabel} <span class="chevron">▾</span>`;
   }
 
   // ======================
@@ -1452,20 +1523,40 @@ document.addEventListener("DOMContentLoaded", () => {
     inputEl.focus();
   });
 
+  // ✅ Language dropdown
+langToggle.addEventListener("click", (e) => {
+  e.stopPropagation();
+  langSelect.classList.toggle("open");
+});
+
+langMenu.addEventListener("click", (e) => {
+  const btn = e.target.closest("button[data-lang]");
+  if (!btn) return;
+
+  lang = btn.dataset.lang; // "tr" | "en"
+  localStorage.setItem("lang", lang);
+  applyLang();
+
+  // ✅ Dil değişince sohbeti temizle + akışı yeniden başlat
+  chatEl.innerHTML = "";
+  userName = null;   // ismi korumak istersen bunu sil
+  startFlow();
+
+  langSelect.classList.remove("open");
+});
+
+document.addEventListener("click", (e) => {
+  if (!langSelect.contains(e.target)) {
+    langSelect.classList.remove("open");
+  }
+});
+
   sendBtn.addEventListener("click", sendMessage);
   inputEl.addEventListener("keydown", (e) => {
     if (e.key === "Enter"){ e.preventDefault(); sendMessage(); }
   });
 
-  langBtn.addEventListener("click", () => {
-    lang = (lang === "tr") ? "en" : "tr";
-    localStorage.setItem("lang", lang);
-    applyLang();
 
-    // Optional: after switching language, show a short message + keep flow
-    botSay(lang === "tr" ? "Dil Türkçe olarak ayarlandı." : "Language set to English.");
-    // Keep state as is, no reset.
-  });
 
   // ======================
   // INIT
